@@ -63,19 +63,15 @@ public class MainActivityGroup extends AppCompatActivity {
             }
         });
 
-        // Xử lý sự kiện khi nhấn vào chat nhóm
         ImageView chatOneOne = findViewById(R.id.chatOneOne);
         chatOneOne.setOnClickListener(view -> controller.navigateToMainActivity());
 
-        // Xử lý sự kiện khi nhấn vào tạo nhóm
         ImageView createGroup = findViewById(R.id.createGroup);
         createGroup.setOnClickListener(view -> controller.navigateToCreateGroupActivity());
 
-        // Đăng ký token FCM khi mở ứng dụng
         updateFCMToken();
     }
 
-    // Cập nhật token FCM cho người dùng hiện tại
     private void updateFCMToken() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseMessaging.getInstance().getToken()
@@ -87,10 +83,8 @@ public class MainActivityGroup extends AppCompatActivity {
                                 return;
                             }
 
-                            // Lấy token mới
                             String token = task.getResult();
 
-                            // Lưu token vào Firebase
                             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             DatabaseReference userRef = FirebaseDatabase.getInstance()
                                     .getReference("user")

@@ -5,32 +5,29 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class NotificationHelper {
     private static final String TAG = "NotificationHelper";
     private static final String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    private static final String SERVER_KEY = "key=AAAAMbwBIQg:APA91bGnz7NnX-lQKpj1FSB6eoURSuRZgwfCm5LnVzgQRkEk2rlnSqyL6Exu9io4zX9TW8T0LDpFmYJxhmXKFVFpQeOQBXr_N8F-pVQXEEzBSYXgyFDV1zMBBqIgzQ99j9-cL1IbHROH"; // Thay
-                                                                                                                                                                                                             // bằng
-                                                                                                                                                                                                             // Server
-                                                                                                                                                                                                             // Key
-                                                                                                                                                                                                             // từ
-                                                                                                                                                                                                             // Firebase
-                                                                                                                                                                                                             // Console
+    private static final String SERVER_KEY = "key=AAAAMbwBIQg:APA91bGnz7NnX-lQKpj1FSB6eoURSuRZgwfCm5LnVzgQRkEk2rlnSqyL6Exu9io4zX9TW8T0LDpFmYJxhmXKFVFpQeOQBXr_N8F-pVQXEEzBSYXgyFDV1zMBBqIgzQ99j9-cL1IbHROH";
     private static final String CONTENT_TYPE = "application/json";
+
+    // Sử dụng Executor thay vì AsyncTask (đã bị deprecated)
+    private static final Executor executor = Executors.newSingleThreadExecutor();
 
     /**
      * Gửi thông báo tin nhắn mới đến người dùng
@@ -40,6 +37,15 @@ public class NotificationHelper {
      * @param message    Nội dung tin nhắn
      */
     public static void sendMessageNotification(String receiverId, String senderName, String message) {
+        Log.d(TAG, "Sending notification to user: " + receiverId);
+
+        // Không gửi thông báo cho chính mình
+        if (FirebaseAuth.getInstance().getCurrentUser() != null &&
+                FirebaseAuth.getInstance().getCurrentUser().getUid().equals(receiverId)) {
+            Log.d(TAG, "Skipping notification to self");
+            return;
+        }
+
         // Lấy token FCM của người nhận từ Firebase
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(receiverId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -47,10 +53,29 @@ public class NotificationHelper {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String receiverToken = snapshot.child("fcmToken").getValue(String.class);
+                    Log.d(TAG, "Receiver token: " + (receiverToken != null ? "available" : "null"));
+
                     if (receiverToken != null && !receiverToken.isEmpty()) {
                         // Gửi thông báo qua FCM
-                        sendNotification(receiverToken, senderName, message);
+                        Log.d(TAG, "Sending notification to: " + receiverToken);
+
+                        // Thêm các dữ liệu cho intent khi nhấn vào thông báo
+                        JSONObject dataObject = new JSONObject();
+                        try {
+                            dataObject.put("title", senderName);
+                            dataObject.put("message", message);
+                            dataObject.put("senderId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            dataObject.put("isGroup", "false");
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error creating data JSON: " + e.getMessage());
+                        }
+
+                        sendNotification(receiverToken, senderName, message, dataObject);
+                    } else {
+                        Log.w(TAG, "Cannot send notification: token is empty");
                     }
+                } else {
+                    Log.w(TAG, "Cannot send notification: user not found");
                 }
             }
 
@@ -69,6 +94,10 @@ public class NotificationHelper {
      * @param message    Nội dung tin nhắn
      */
     public static void sendGroupMessageNotification(String groupId, String senderName, String message) {
+        Log.d(TAG, "Sending group notification for group: " + groupId);
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         // Lấy danh sách thành viên trong nhóm
         DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("groups").child(groupId)
                 .child("members");
@@ -76,9 +105,15 @@ public class NotificationHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    Log.d(TAG, "Members count: " + snapshot.getChildrenCount());
+
                     for (DataSnapshot memberSnapshot : snapshot.getChildren()) {
                         String memberId = memberSnapshot.getKey();
-                        if (memberId != null) {
+
+                        // Không gửi thông báo cho người gửi tin nhắn
+                        if (memberId != null && !memberId.equals(currentUserId)) {
+                            Log.d(TAG, "Processing member: " + memberId);
+
                             // Lấy token của từng thành viên và gửi thông báo
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user")
                                     .child(memberId);
@@ -87,9 +122,26 @@ public class NotificationHelper {
                                 public void onDataChange(@NonNull DataSnapshot userSnapshot) {
                                     if (userSnapshot.exists()) {
                                         String token = userSnapshot.child("fcmToken").getValue(String.class);
+
                                         if (token != null && !token.isEmpty()) {
                                             // Gửi thông báo về tin nhắn nhóm
-                                            sendNotification(token, "Nhóm: " + senderName, message);
+                                            Log.d(TAG, "Sending group notification to member: " + memberId);
+
+                                            // Thêm các dữ liệu cho intent khi nhấn vào thông báo
+                                            JSONObject dataObject = new JSONObject();
+                                            try {
+                                                dataObject.put("title", "Nhóm: " + senderName);
+                                                dataObject.put("message", message);
+                                                dataObject.put("isGroup", "true");
+                                                dataObject.put("groupId", groupId);
+                                            } catch (Exception e) {
+                                                Log.e(TAG, "Error creating group data JSON: " + e.getMessage());
+                                            }
+
+                                            sendNotification(token, "Nhóm: " + senderName, message, dataObject);
+                                        } else {
+                                            Log.w(TAG,
+                                                    "Cannot send notification: token is empty for member " + memberId);
                                         }
                                     }
                                 }
@@ -101,6 +153,8 @@ public class NotificationHelper {
                             });
                         }
                     }
+                } else {
+                    Log.w(TAG, "Cannot send group notification: group not found");
                 }
             }
 
@@ -111,43 +165,53 @@ public class NotificationHelper {
         });
     }
 
-    private static void sendNotification(String token, String title, String message) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    URL url = new URL(FCM_API);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setUseCaches(false);
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Authorization", SERVER_KEY);
-                    conn.setRequestProperty("Content-Type", CONTENT_TYPE);
+    private static void sendNotification(String token, String title, String message, JSONObject dataObject) {
+        executor.execute(() -> {
+            HttpURLConnection conn = null;
+            try {
+                URL url = new URL(FCM_API);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setUseCaches(false);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Authorization", SERVER_KEY);
+                conn.setRequestProperty("Content-Type", CONTENT_TYPE);
 
-                    // Tạo dữ liệu JSON cho thông báo
-                    JSONObject json = new JSONObject();
-                    JSONObject dataJson = new JSONObject();
-                    dataJson.put("title", title);
-                    dataJson.put("message", message);
-                    json.put("data", dataJson);
-                    json.put("to", token);
+                // Tạo dữ liệu JSON cho thông báo
+                JSONObject json = new JSONObject();
 
-                    // Gửi dữ liệu
-                    OutputStream os = conn.getOutputStream();
-                    os.write(json.toString().getBytes("UTF-8"));
-                    os.close();
+                // Dữ liệu để xử lý khi ứng dụng đang chạy (data message)
+                json.put("data", dataObject);
 
-                    // Kiểm tra kết quả
-                    int responseCode = conn.getResponseCode();
-                    Log.d(TAG, "Kết quả gửi FCM: " + responseCode + " " + conn.getResponseMessage());
+                // Dữ liệu hiển thị thông báo khi ứng dụng không chạy (notification message)
+                JSONObject notificationObj = new JSONObject();
+                notificationObj.put("title", title);
+                notificationObj.put("body", message);
+                notificationObj.put("sound", "default");
+                notificationObj.put("icon", "icon_check");
 
+                json.put("notification", notificationObj);
+                json.put("to", token);
+                json.put("priority", "high");
+
+                // Gửi dữ liệu
+                OutputStream os = conn.getOutputStream();
+                os.write(json.toString().getBytes("UTF-8"));
+                os.close();
+
+                // Kiểm tra kết quả
+                int responseCode = conn.getResponseCode();
+                String responseMessage = conn.getResponseMessage();
+                Log.d(TAG, "FCM Response: " + responseCode + " " + responseMessage);
+
+            } catch (Exception e) {
+                Log.e(TAG, "Error sending FCM notification", e);
+            } finally {
+                if (conn != null) {
                     conn.disconnect();
-                } catch (Exception e) {
-                    Log.e(TAG, "Lỗi khi gửi thông báo: " + e.getMessage());
                 }
-                return null;
             }
-        }.execute();
+        });
     }
 }

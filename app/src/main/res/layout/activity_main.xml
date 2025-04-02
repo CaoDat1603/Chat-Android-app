@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pink_blue_gradient"
+    android:background="@drawable/gradient_black_background"
     tools:context=".view.MainActivity">
 
     <LinearLayout
@@ -53,7 +53,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolBar"
         android:layout_marginBottom="70dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:background="@drawable/gradient_black_background" />
 
     <LinearLayout
         android:id="@+id/bottomBar"

@@ -1,12 +1,19 @@
 package com.example.myapplication.view;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private RecyclerView mainUserRecyclerView;
     private UserAdapter adapterUse;
@@ -80,32 +88,119 @@ public class MainActivity extends AppCompatActivity {
 
         // Đăng ký token FCM khi mở ứng dụng
         updateFCMToken();
+
+        // Kiểm tra xem thông báo có bị tắt không
+        checkNotificationsEnabled();
+    }
+
+    // Kiểm tra xem thông báo có được bật không
+    private void checkNotificationsEnabled() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Trên Android 8.0 trở lên, kiểm tra thông báo theo channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!notificationManager.areNotificationsEnabled() ||
+                    notificationManager.getNotificationChannel("chat_messages") == null ||
+                    notificationManager.getNotificationChannel("chat_messages")
+                            .getImportance() == NotificationManager.IMPORTANCE_NONE) {
+
+                showNotificationSettingsDialog();
+            }
+        } else {
+            // Trên các phiên bản cũ hơn
+            if (!notificationManager.areNotificationsEnabled()) {
+                showNotificationSettingsDialog();
+            }
+        }
+    }
+
+    // Hiển thị hộp thoại cài đặt thông báo
+    private void showNotificationSettingsDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Thông báo bị tắt")
+                .setMessage("Thông báo đã bị tắt cho ứng dụng này. Bạn cần bật thông báo để nhận tin nhắn mới.")
+                .setPositiveButton("Cài đặt", (dialog, which) -> {
+                    Intent intent = new Intent();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                    } else {
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                        intent.setData(android.net.Uri.parse("package:" + getPackageName()));
+                    }
+
+                    startActivity(intent);
+                })
+                .setNegativeButton("Sau", null)
+                .show();
     }
 
     // Cập nhật token FCM cho người dùng hiện tại
     private void updateFCMToken() {
+        Log.d(TAG, "Updating FCM token");
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
                         public void onComplete(@NonNull Task<String> task) {
                             if (!task.isSuccessful()) {
-                                showMessage("Không thể cập nhật trạng thái thông báo");
+                                Log.e(TAG, "Không thể cập nhật FCM token", task.getException());
                                 return;
                             }
 
                             // Lấy token mới
                             String token = task.getResult();
+                            Log.d(TAG, "FCM Token: " + token);
+
+                            // Hiển thị token cho người dùng
+                            showTokenDialog(token);
 
                             // Lưu token vào Firebase
                             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             DatabaseReference userRef = FirebaseDatabase.getInstance()
                                     .getReference("user")
                                     .child(userId);
-                            userRef.child("fcmToken").setValue(token);
+                            userRef.child("fcmToken").setValue(token)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d(TAG, "FCM token đã được cập nhật thành công");
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e(TAG, "Lỗi khi cập nhật FCM token: " + e.getMessage());
+                                    });
                         }
                     });
+        } else {
+            Log.w(TAG, "Không thể cập nhật FCM token: người dùng chưa đăng nhập");
         }
+    }
+
+    // Hiện dialog hiển thị token
+    private void showTokenDialog(String token) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("FCM Registration Token");
+
+        // Tạo layout với TextView và Button copy
+        View view = getLayoutInflater().inflate(R.layout.dialog_token, null);
+        TextView tokenTextView = view.findViewById(R.id.tokenTextView);
+        tokenTextView.setText(token);
+
+        builder.setView(view);
+
+        builder.setPositiveButton("Copy", (dialog, which) -> {
+            // Copy token vào clipboard
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(
+                    Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("FCM Token", token);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(MainActivity.this, "Token đã được sao chép", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setNegativeButton("Đóng", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     // Method to update user list from controller

@@ -7,4 +7,8 @@
     <color name="purple">#7E57C2</color>
     <color name="transparent_purple">#CC7E57C2</color>
     <color name="transparent_blue">#CC1976D2</color>
+    <color name="dark_grey">#333333</color>
+    <color name="medium_grey">#212121</color>
+    <color name="text_light">#EEEEEE</color>
+    <color name="text_dark_grey">#AAAAAA</color>
 </resources>
