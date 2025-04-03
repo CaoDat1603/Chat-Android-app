@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -72,7 +73,8 @@ public class ChatActivity extends AppCompatActivity {
         senderRoom = SenderUID + reciverUID;
         reciverRoom = reciverUID + SenderUID;
 
-        chatController = new ChatController(this, database, senderRoom, reciverRoom, messagesArrayList, messagesAdapter);
+        chatController = new ChatController(this, database, senderRoom, reciverRoom, messagesArrayList,
+                messagesAdapter);
         chatController.initializeChat();
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
@@ -112,8 +114,18 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // Kiểm tra quyền truy cập bộ nhớ
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, 100);
+        }
+
+        // Request notification permission for Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[] { Manifest.permission.POST_NOTIFICATIONS }, 101);
+            }
         }
     }
 

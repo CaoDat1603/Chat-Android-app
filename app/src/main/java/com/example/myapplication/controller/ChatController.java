@@ -1,14 +1,24 @@
 package com.example.myapplication.controller;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.OpenableColumns;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.example.myapplication.R;
 import com.example.myapplication.view.adapter.messagesAdapter;
 import com.example.myapplication.view.ChatActivity;
 import com.example.myapplication.model.msgModel;
@@ -86,6 +96,11 @@ public class ChatController {
 
                         // Gửi thông báo cho người nhận
                         sendNotificationToReceiver(message);
+                    }
+
+                    // Nếu đây là tin nhắn gửi cho chính mình, tạo thông báo cục bộ
+                    if (chatActivity.reciverUID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        createLocalNotification(message);
                     }
                 });
     }
@@ -197,5 +212,42 @@ public class ChatController {
             fileName = uri.getLastPathSegment();
         }
         return fileName != null ? fileName : "unknown_file"; // Nếu không có tên, trả về "unknown_file"
+    }
+
+    // Tạo thông báo cục bộ cho tin nhắn gửi cho chính mình
+    private void createLocalNotification(String message) {
+        String channelId = "chat_messages";
+        NotificationManager notificationManager = (NotificationManager) chatActivity
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Tạo notification channel cho Android 8.0+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Chat Messages",
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Tạo intent để mở lại màn hình chat khi click vào thông báo
+        Intent intent = new Intent(chatActivity, ChatActivity.class);
+        intent.putExtra("uid", chatActivity.reciverUID);
+        intent.putExtra("name", chatActivity.reciverName);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                chatActivity, 0, intent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(chatActivity, channelId)
+                .setSmallIcon(R.drawable.icon_check)
+                .setContentTitle("Tin nhắn từ chính bạn")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 }

@@ -37,14 +37,12 @@ public class NotificationHelper {
      * @param message    Nội dung tin nhắn
      */
     public static void sendMessageNotification(String receiverId, String senderName, String message) {
-        Log.d(TAG, "Sending notification to user: " + receiverId);
+        Log.d(TAG, "SELF_MSG: Attempting to send notification to: " + receiverId);
+        Log.d(TAG, "SELF_MSG: Current user ID: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.d(TAG, "SELF_MSG: Are they equal? " +
+                FirebaseAuth.getInstance().getCurrentUser().getUid().equals(receiverId));
 
-        // Không gửi thông báo cho chính mình
-        if (FirebaseAuth.getInstance().getCurrentUser() != null &&
-                FirebaseAuth.getInstance().getCurrentUser().getUid().equals(receiverId)) {
-            Log.d(TAG, "Skipping notification to self");
-            return;
-        }
+        Log.d(TAG, "Sending notification to user: " + receiverId);
 
         // Lấy token FCM của người nhận từ Firebase
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(receiverId);
@@ -110,8 +108,7 @@ public class NotificationHelper {
                     for (DataSnapshot memberSnapshot : snapshot.getChildren()) {
                         String memberId = memberSnapshot.getKey();
 
-                        // Không gửi thông báo cho người gửi tin nhắn
-                        if (memberId != null && !memberId.equals(currentUserId)) {
+                        if (memberId != null) {
                             Log.d(TAG, "Processing member: " + memberId);
 
                             // Lấy token của từng thành viên và gửi thông báo
