@@ -27,6 +27,7 @@ public class MainActivityController {
     private MainActivity view; // Direct reference to MainActivity
     private FirebaseAuth auth;
     private DatabaseReference reference;
+    private Dialog logoutDialog; // Add this as a class field
 
     public MainActivityController(MainActivity view) {
         this.view = view;
@@ -140,7 +141,7 @@ public class MainActivityController {
         });
     }
 
-    public  void signOut() {
+    public void signOut() {
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(view, GoogleSignInOptions.DEFAULT_SIGN_IN);
         googleSignInClient.signOut().addOnCompleteListener(task -> {
             // Firebase sign-out
@@ -159,38 +160,29 @@ public class MainActivityController {
         }
     }
 
-
     // Show logout dialog
     public void showLogoutDialog() {
-        Dialog dialog = new Dialog(view, R.style.dialoge);
-        dialog.setContentView(R.layout.dialog_layout);
-        Button no = dialog.findViewById(R.id.nobnt);
-        Button yes = dialog.findViewById(R.id.yesbnt);
-
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View views) {
-                signOut();
-            }
-        });
-
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+        logoutDialog = new AlertDialog.Builder(view)
+                .setTitle("Bạn có chắc chắn muốn đăng xuất không?")
+                .setMessage("Đăng xuất sẽ đưa bạn trở lại trang đăng nhập.")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> signOut())
+                .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                .create();
+        logoutDialog.show();
     }
-    // Phương thức lấy tên người dùng
 
+    public void dismissDialogs() {
+        if (logoutDialog != null && logoutDialog.isShowing()) {
+            logoutDialog.dismiss();
+        }
+    }
+
+    // Phương thức lấy tên người dùng
 
     // Interface listener để truyền kết quả về
     public interface OnUserNameFetchedListener {
         void onFetched(String userName);
     }
-
 
     // Navigate to group chat activity
     public void navigateToChatGroup() {

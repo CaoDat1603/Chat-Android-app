@@ -67,12 +67,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         imgSettingProfile = findViewById(R.id.setting_profile);
-        imgSettingProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.navigateToProfile();
-            }
-        });
+        if (imgSettingProfile != null) {
+            imgSettingProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    controller.navigateToProfile();
+                }
+            });
+        }
 
         // Handle group chat button click
         ImageView chatGroup = findViewById(R.id.chatGroup);
@@ -234,5 +236,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Make sure controller dismisses any open dialogs
+        if (controller != null) {
+            controller.dismissDialogs();
+        }
+        super.onDestroy();
     }
 }
