@@ -60,30 +60,12 @@ public class ChatController {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messagesArrayList.clear();
-                        boolean newMessageReceived = false;
-                        String lastMessageSender = null;
-                        String lastMessageContent = null;
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             msgModel messages = dataSnapshot.getValue(msgModel.class);
                             if (messages != null) {
                                 messagesArrayList.add(messages);
-
-                                // Kiểm tra xem đây có phải là tin nhắn mới và không phải tin nhắn của người
-                                // dùng hiện tại
-                                if (!messages.getSenderId()
-                                        .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    newMessageReceived = true;
-                                    lastMessageSender = messages.getSenderId();
-                                    lastMessageContent = messages.getMessage();
-                                }
                             }
-                        }
-
-                        // Hiển thị thông báo nếu có tin nhắn mới từ người khác
-                        if (newMessageReceived && lastMessageSender != null
-                                && !lastMessageSender.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                            createLocalNotificationForReceivedMessage(lastMessageContent, lastMessageSender);
                         }
 
                         messagesAdapter.notifyDataSetChanged();
@@ -139,12 +121,16 @@ public class ChatController {
                     String senderName = snapshot.child("fullname").getValue(String.class);
                     if (senderName != null) {
                         // Gửi thông báo sử dụng NotificationHelper
-                        NotificationHelper.sendMessageNotification(
-                                chatActivity.reciverUID,
-                                senderName,
-                                message);
-                        Log.d("ChatController",
-                                "Sending notification to " + chatActivity.reciverUID + " with message: " + message);
+                        try {
+                            NotificationHelper.sendMessageNotification(
+                                    chatActivity.reciverUID,
+                                    senderName,
+                                    message);
+                            Log.d("ChatController",
+                                    "Sending notification to " + chatActivity.reciverUID + " with message: " + message);
+                        } catch (Exception e) {
+                            Log.e("ChatController", "Error sending notification: " + e.getMessage());
+                        }
                     }
                 }
             }
@@ -274,41 +260,9 @@ public class ChatController {
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 
-    // Tạo thông báo cục bộ cho tin nhắn nhận được
-    private void createLocalNotificationForReceivedMessage(String message, String senderId) {
-        String channelId = "chat_messages";
-        NotificationManager notificationManager = (NotificationManager) chatActivity
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Tạo notification channel cho Android 8.0+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    channelId,
-                    "Chat Messages",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        // Tạo intent để mở lại màn hình chat khi click vào thông báo
-        Intent intent = new Intent(chatActivity, ChatActivity.class);
-        intent.putExtra("uid", senderId);
-        intent.putExtra("name", chatActivity.reciverName);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                chatActivity, 0, intent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE
-                        : PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(chatActivity, channelId)
-                .setSmallIcon(R.drawable.icon_check)
-                .setContentTitle(chatActivity.reciverName)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
-        Log.d("ChatController", "Created local notification for received message");
-    }
+    // Vô hiệu hóa hàm này tạm thời để tránh crash
+    // private void createLocalNotificationForReceivedMessage(String message, String
+    // senderId) {
+    // // ... code cũ ...
+    // }
 }

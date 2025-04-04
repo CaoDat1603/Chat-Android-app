@@ -2,7 +2,7 @@ package com.example.myapplication.model;
 
 public class msgModel {
     String message;
-    String senderid;
+    String senderId;
     long timeStamp;
     String messageType; // Thêm trường này để phân loại tin nhắn (text, image, file)
     String fileName; // Thêm trường để lưu tên file
@@ -15,16 +15,16 @@ public class msgModel {
     public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName,
             boolean isGroupMessage) {
         this.message = message;
-        this.senderid = senderId;
+        this.senderId = senderId;
         this.timeStamp = timeStamp;
         this.messageType = messageType;
         this.fileName = fileName;
         this.isGroupMessage = isGroupMessage;
     }
 
-    public msgModel(String message, String senderid, long timeStamp, String messageType, String fileName) {
+    public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName) {
         this.message = message;
-        this.senderid = senderid;
+        this.senderId = senderId;
         this.timeStamp = timeStamp;
         this.messageType = messageType;
         this.fileName = fileName; // Khởi tạo tên file
@@ -38,16 +38,12 @@ public class msgModel {
         this.message = message;
     }
 
-    public String getSenderid() {
-        return senderid;
-    }
-
     public String getSenderId() {
-        return senderid;
+        return senderId;
     }
 
-    public void setSenderid(String senderid) {
-        this.senderid = senderid;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
     public long getTimeStamp() {

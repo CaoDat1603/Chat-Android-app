@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -150,10 +151,15 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Xóa các thông báo liên quan đến cuộc trò chuyện này
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.cancelAll();
+        try {
+            // Xóa các thông báo liên quan đến cuộc trò chuyện này
+            NotificationManager notificationManager = (NotificationManager) getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.cancelAll();
+            }
+        } catch (Exception e) {
+            Log.e("ChatActivity", "Error in onResume: " + e.getMessage());
         }
     }
 }

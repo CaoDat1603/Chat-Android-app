@@ -73,7 +73,8 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         msgModel message = messagesAdapterArrayList.get(position);
-        return FirebaseAuth.getInstance().getCurrentUser().getUid().equals(message.getSenderid()) ? ITEM_SEND : ITEM_RECEIVE;
+        return FirebaseAuth.getInstance().getCurrentUser().getUid().equals(message.getSenderId()) ? ITEM_SEND
+                : ITEM_RECEIVE;
     }
 
     private void bindMessage(SenderViewHolder viewHolder, msgModel message) {
@@ -109,16 +110,15 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         viewHolder.fileLayout.setVisibility(View.GONE);
         viewHolder.notedlayout.setVisibility(View.GONE);
 
-
-
         if (message.isGroupMessage()) {
             viewHolder.pro.setVisibility(View.GONE);
 
             // Hiển thị tên người gửi nếu cần
-            if ((position == 0 || !message.getSenderid().equals(messagesAdapterArrayList.get(position - 1).getSenderid()))) {
+            if ((position == 0
+                    || !message.getSenderId().equals(messagesAdapterArrayList.get(position - 1).getSenderId()))) {
                 viewHolder.notedlayout.setVisibility(View.VISIBLE);
                 // Lấy tên người gửi từ Firebase
-                getSenderNamebyID(message.getSenderid(), new SenderNameCallback() {
+                getSenderNamebyID(message.getSenderId(), new SenderNameCallback() {
                     @Override
                     public void onNameReceived(String senderName) {
                         viewHolder.noted.setText(senderName);
@@ -128,7 +128,7 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             if (position == messagesAdapterArrayList.size() - 1 ||
-                    !message.getSenderid().equals(messagesAdapterArrayList.get(position + 1).getSenderid())) {
+                    !message.getSenderId().equals(messagesAdapterArrayList.get(position + 1).getSenderId())) {
                 viewHolder.pro.setVisibility(View.VISIBLE);
             }
 
@@ -153,8 +153,7 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.fileName.setText(message.getFileName());
                 viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
             }
-        }
-        else  {
+        } else {
             if (message.getType().equals("text")) {
                 viewHolder.pro.setVisibility(View.VISIBLE);
                 viewHolder.msgtxt.setVisibility(View.VISIBLE);
@@ -213,7 +212,6 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-
     static class SenderViewHolder extends RecyclerView.ViewHolder {
         TextView msgtxt;
         ImageView imageView;
@@ -264,8 +262,8 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String senderName = dataSnapshot.getValue(String.class);  // Lấy tên người gửi
-                    callback.onNameReceived(senderName);  // Gọi callback với tên người gửi
+                    String senderName = dataSnapshot.getValue(String.class); // Lấy tên người gửi
+                    callback.onNameReceived(senderName); // Gọi callback với tên người gửi
                 } else {
                     callback.onNameReceived("Unknown User");
                 }

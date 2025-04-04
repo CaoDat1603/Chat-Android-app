@@ -37,51 +37,59 @@ public class NotificationHelper {
      * @param message    Nội dung tin nhắn
      */
     public static void sendMessageNotification(String receiverId, String senderName, String message) {
-        Log.d(TAG, "SELF_MSG: Attempting to send notification to: " + receiverId);
-        Log.d(TAG, "SELF_MSG: Current user ID: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        Log.d(TAG, "SELF_MSG: Are they equal? " +
-                FirebaseAuth.getInstance().getCurrentUser().getUid().equals(receiverId));
+        try {
+            Log.d(TAG, "SELF_MSG: Attempting to send notification to: " + receiverId);
+            Log.d(TAG, "SELF_MSG: Current user ID: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Log.d(TAG, "SELF_MSG: Are they equal? " +
+                    FirebaseAuth.getInstance().getCurrentUser().getUid().equals(receiverId));
 
-        Log.d(TAG, "Sending notification to user: " + receiverId);
+            Log.d(TAG, "Sending notification to user: " + receiverId);
 
-        // Lấy token FCM của người nhận từ Firebase
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(receiverId);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String receiverToken = snapshot.child("fcmToken").getValue(String.class);
-                    Log.d(TAG, "Receiver token: " + (receiverToken != null ? "available" : "null"));
+            // Lấy token FCM của người nhận từ Firebase
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(receiverId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try {
+                        if (snapshot.exists()) {
+                            String receiverToken = snapshot.child("fcmToken").getValue(String.class);
+                            Log.d(TAG, "Receiver token: " + (receiverToken != null ? "available" : "null"));
 
-                    if (receiverToken != null && !receiverToken.isEmpty()) {
-                        // Gửi thông báo qua FCM
-                        Log.d(TAG, "Sending notification to: " + receiverToken);
+                            if (receiverToken != null && !receiverToken.isEmpty()) {
+                                // Gửi thông báo qua FCM
+                                Log.d(TAG, "Sending notification to: " + receiverToken);
 
-                        // Thêm các dữ liệu cho intent khi nhấn vào thông báo
-                        JSONObject dataObject = new JSONObject();
-                        try {
-                            dataObject.put("title", senderName);
-                            dataObject.put("message", message);
-                            dataObject.put("senderId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            dataObject.put("isGroup", "false");
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error creating data JSON: " + e.getMessage());
+                                // Thêm các dữ liệu cho intent khi nhấn vào thông báo
+                                JSONObject dataObject = new JSONObject();
+                                try {
+                                    dataObject.put("title", senderName);
+                                    dataObject.put("message", message);
+                                    dataObject.put("senderId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    dataObject.put("isGroup", "false");
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Error creating data JSON: " + e.getMessage());
+                                }
+
+                                sendNotification(receiverToken, senderName, message, dataObject);
+                            } else {
+                                Log.w(TAG, "Cannot send notification: token is empty");
+                            }
+                        } else {
+                            Log.w(TAG, "Cannot send notification: user not found");
                         }
-
-                        sendNotification(receiverToken, senderName, message, dataObject);
-                    } else {
-                        Log.w(TAG, "Cannot send notification: token is empty");
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error in onDataChange: " + e.getMessage());
                     }
-                } else {
-                    Log.w(TAG, "Cannot send notification: user not found");
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Lỗi khi lấy token FCM: " + error.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "Lỗi khi lấy token FCM: " + error.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Error in sendMessageNotification: " + e.getMessage());
+        }
     }
 
     /**
