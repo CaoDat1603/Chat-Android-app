@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.app.NotificationManager;
+import android.content.Context;
 
 import com.example.myapplication.R;
 import androidx.annotation.NonNull;
@@ -141,6 +143,17 @@ public class ChatActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null) {
             Uri fileUri = data.getData();
             chatController.uploadToFirebaseStorage(fileUri, requestCode);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Xóa các thông báo liên quan đến cuộc trò chuyện này
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
         }
     }
 }

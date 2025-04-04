@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,26 +55,46 @@ public class ChatController {
 
     // Khởi tạo cuộc trò chuyện
     public void initializeChat() {
-        DatabaseReference chatReference = database.getReference().child("chats").child(senderRoom).child("messages");
-        chatReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                messagesArrayList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    msgModel messages = dataSnapshot.getValue(msgModel.class);
-                    messagesArrayList.add(messages);
-                }
-                messagesAdapter.notifyDataSetChanged();
+        database.getReference().child("chats").child(senderRoom).child("messages")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        messagesArrayList.clear();
+                        boolean newMessageReceived = false;
+                        String lastMessageSender = null;
+                        String lastMessageContent = null;
 
-                // Cuộn đến tin nhắn cuối cùng
-                chatActivity.scrollToLastMessage();
-            }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            msgModel messages = dataSnapshot.getValue(msgModel.class);
+                            if (messages != null) {
+                                messagesArrayList.add(messages);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(chatActivity, "Error loading messages", Toast.LENGTH_SHORT).show();
-            }
-        });
+                                // Kiểm tra xem đây có phải là tin nhắn mới và không phải tin nhắn của người
+                                // dùng hiện tại
+                                if (!messages.getSenderId()
+                                        .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    newMessageReceived = true;
+                                    lastMessageSender = messages.getSenderId();
+                                    lastMessageContent = messages.getMessage();
+                                }
+                            }
+                        }
+
+                        // Hiển thị thông báo nếu có tin nhắn mới từ người khác
+                        if (newMessageReceived && lastMessageSender != null
+                                && !lastMessageSender.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            createLocalNotificationForReceivedMessage(lastMessageContent, lastMessageSender);
+                        }
+
+                        messagesAdapter.notifyDataSetChanged();
+                        chatActivity.scrollToLastMessage();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("ChatController", "Database error: " + error.getMessage());
+                    }
+                });
     }
 
     // Gửi tin nhắn văn bản
@@ -122,13 +143,15 @@ public class ChatController {
                                 chatActivity.reciverUID,
                                 senderName,
                                 message);
+                        Log.d("ChatController",
+                                "Sending notification to " + chatActivity.reciverUID + " with message: " + message);
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
+                Log.e("ChatController", "Error getting sender data: " + error.getMessage());
             }
         });
     }
@@ -249,5 +272,43 @@ public class ChatController {
                 .setAutoCancel(true);
 
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    // Tạo thông báo cục bộ cho tin nhắn nhận được
+    private void createLocalNotificationForReceivedMessage(String message, String senderId) {
+        String channelId = "chat_messages";
+        NotificationManager notificationManager = (NotificationManager) chatActivity
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Tạo notification channel cho Android 8.0+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Chat Messages",
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Tạo intent để mở lại màn hình chat khi click vào thông báo
+        Intent intent = new Intent(chatActivity, ChatActivity.class);
+        intent.putExtra("uid", senderId);
+        intent.putExtra("name", chatActivity.reciverName);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                chatActivity, 0, intent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE
+                        : PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(chatActivity, channelId)
+                .setSmallIcon(R.drawable.icon_check)
+                .setContentTitle(chatActivity.reciverName)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        Log.d("ChatController", "Created local notification for received message");
     }
 }
