@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "529312422175",
+    "project_id": "dvd-b23b0",
+    "storage_bucket": "dvd-b23b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529312422175:android:62f0928c1515497b98b82a",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqdzIezwts37ybAwkFfrsQrVOARhZB1o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
