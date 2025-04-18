@@ -2,18 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Thêm quyền truy cập internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/dvd"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/dvd"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
 
-        <!-- Activity Splash với intent-filter để xác định điểm vào ứng dụng -->
+        <activity
+            android:name=".login"
+            android:exported="false" />
+
         <activity
             android:name=".splash"
             android:exported="true">
@@ -23,12 +30,12 @@
             </intent-filter>
         </activity>
 
-        <!-- Activity MainActivity -->
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
 
+        <activity
+            android:name=".register"
+            android:exported="false"></activity>
     </application>
-
 </manifest>
