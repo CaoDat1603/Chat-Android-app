@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Thêm quyền truy cập internet -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,27 +15,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+        <service
+            android:name=".controller.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
 
+        </service>
+
+        <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
         <activity
             android:name=".view.LoginActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.MainActivity"
-            android:exported="false"></activity>
-
+            android:exported="false" />
         <activity
             android:name=".view.RegisterActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
+        <activity android:name=".view.ChatActivity" />
+
     </application>
+
+    <!-- Thêm quyền sử dụng thông báo -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>

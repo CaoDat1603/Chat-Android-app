@@ -27,6 +27,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/logoutimg"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="100dp"
@@ -35,6 +36,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainUserRecyclerView"
         android:layout_width="348dp"
         android:layout_height="412dp"
         android:layout_below="@+id/toolBar"

@@ -1,8 +1,11 @@
-package com.example.myapplication;
+package com.example.myapplication.model;
 
 public class Users {
     String userId, fullname, email, password, lastMessage, status;
 
+    public Users() {
+    }
+    
     public Users(String userId, String fullname, String email, String password, String status){
         this.userId = userId;
         this.fullname = fullname;
