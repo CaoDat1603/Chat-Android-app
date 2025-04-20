@@ -1,5 +1,5 @@
-package com.example.myapplication;
-
+package com.example.myapplication.view;
+import com.example.myapplication.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log; // Thêm import này để sử dụng Log
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (auth.getCurrentUser() == null) {
-            Intent intent = new Intent(MainActivity.this, login.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
             return;
