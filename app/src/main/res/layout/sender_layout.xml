@@ -2,17 +2,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Thêm TextView cho 'noted' -->
+    <TextView
+        android:id="@+id/noted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text="Note: This is a sender message"
+        android:textColor="@color/black"
+        android:fontFamily="@font/spartan_regular"
+        android:padding="5dp"
+        android:textStyle="italic"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/sendertextset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/noted"
         android:layout_centerVertical="true"
         android:layout_marginStart="1.30dp"
         android:layout_marginTop="6.50dp"
         android:layout_marginEnd="6.50dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="6.50dp"
-        android:layout_toLeftOf="@+id/pro"
+        android:layout_toLeftOf="@+id/profileContainer"
         android:background="@drawable/send_shape"
         android:fontFamily="@font/spartan_regular"
         android:padding="9.10dp"
@@ -20,43 +41,62 @@
         android:textColor="@color/black"
         android:textStyle="bold" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pro"
-        android:layout_width="32.50dp"
-        android:layout_height="32.50dp"
+    <FrameLayout
+        android:id="@+id/profileContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/noted"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="13dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="13dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="13dp"
-        android:src="@drawable/user"
-        android:visibility="gone"/>
+        android:layout_marginBottom="13dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pro"
+            android:layout_width="32.50dp"
+            android:layout_height="32.50dp"
+            android:src="@drawable/user"
+            android:visibility="gone" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pronone"
+            android:layout_width="32.50dp"
+            android:layout_height="32.50dp"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/senderImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@id/sendertextset"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="6.50dp"
-        android:visibility="gone"/>
-
-    <!-- Thêm layout cho file -->
-    <LinearLayout
-        android:id="@+id/fileLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/sendertextset"
         android:layout_centerVertical="true"
         android:layout_marginStart="1.30dp"
         android:layout_marginTop="6.50dp"
         android:layout_marginEnd="6.50dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="6.50dp"
-        android:layout_toLeftOf="@+id/pro"
+        android:layout_toLeftOf="@+id/profileContainer"
+        android:maxHeight="200dp"
+        android:maxWidth="300dp"
+        android:adjustViewBounds="true" />
+
+
+    <LinearLayout
+        android:id="@+id/fileLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/noted"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="1.30dp"
+        android:layout_marginTop="6.50dp"
+        android:layout_marginEnd="6.50dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="6.50dp"
+        android:layout_toLeftOf="@+id/profileContainer"
         android:background="@drawable/send_shape"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -79,5 +119,4 @@
             android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
-
 </RelativeLayout>

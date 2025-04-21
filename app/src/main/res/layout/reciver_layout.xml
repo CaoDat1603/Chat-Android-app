@@ -2,60 +2,107 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pro"
-        android:layout_width="32.50dp"
-        android:layout_height="32.50dp"
+    <!-- Thêm TextView cho 'noted' -->
+    <LinearLayout
+        android:id="@+id/notedlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="0dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32.50dp"
+            android:layout_height="32.50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noted"
+            android:text="This is a note"
+            android:textColor="@color/black"
+            android:fontFamily="@font/spartan_regular"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/profileContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="-3dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="13dp"
-        android:src="@drawable/user"
-        android:visibility="gone"/>
+        android:layout_below="@id/notedlayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pro"
+            android:layout_width="32.50dp"
+            android:layout_height="32.50dp"
+            android:src="@drawable/user"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pronone"
+            android:layout_width="32.50dp"
+            android:layout_height="32.50dp"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/recivertextset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/notedlayout"
         android:layout_centerVertical="true"
         android:layout_marginStart="1.30dp"
-        android:layout_marginTop="6.50dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="-3dp"
         android:layout_marginEnd="6.50dp"
         android:layout_marginBottom="6.50dp"
-        android:layout_toRightOf="@+id/pro"
+        android:layout_toRightOf="@+id/profileContainer"
         android:background="@drawable/reciver_shape"
         android:fontFamily="@font/spartan_regular"
         android:padding="9.10dp"
         android:text="Hello, How are you?"
         android:textColor="@color/black"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/receiverImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/recivertextset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notedlayout"
+        android:layout_toRightOf="@+id/profileContainer"
+        android:layout_centerVertical="true"
         android:layout_marginStart="1.30dp"
-        android:layout_marginTop="6.50dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="-3dp"
         android:layout_marginEnd="6.50dp"
         android:layout_marginBottom="6.50dp"
-        android:visibility="gone"/> <!-- Ẩn đi mặc định -->
+        android:visibility="gone"
+        android:maxHeight="200dp"
+        android:maxWidth="300dp"
+        android:adjustViewBounds="true" />
 
-    <!-- Thêm layout cho file -->
+
     <LinearLayout
         android:id="@+id/fileLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_below="@id/notedlayout"
         android:layout_marginStart="1.30dp"
         android:layout_marginTop="6.50dp"
         android:layout_marginEnd="6.50dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="6.50dp"
-        android:layout_toRightOf="@+id/pro"
+        android:layout_toRightOf="@+id/profileContainer"
         android:background="@drawable/reciver_shape"
         android:orientation="horizontal"
         android:visibility="gone">

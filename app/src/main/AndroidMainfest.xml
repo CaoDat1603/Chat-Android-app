@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Thêm quyền truy cập internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Thêm quyền sử dụng thông báo -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/dvd"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/dvd"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+        <activity
+            android:name=".view.ShowImageMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.GroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.CreateGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.MainActivityGroup"
+            android:exported="false" />
+
         <service
             android:name=".controller.MyFirebaseMessagingService"
             android:enabled="true"
-            android:exported="true">
-
-        </service>
+            android:exported="true" />
 
         <activity
-            android:name=".SettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ChatActivity"
+            android:name=".view.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".view.LoginActivity"
@@ -46,10 +54,6 @@
         <activity
             android:name=".view.RegisterActivity"
             android:exported="false" />
-        <activity android:name=".view.ChatActivity" />
-
     </application>
 
-    <!-- Thêm quyền sử dụng thông báo -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 </manifest>

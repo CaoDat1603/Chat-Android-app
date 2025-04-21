@@ -2,37 +2,27 @@
 package com.example.myapplication.view;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.view.messagesAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.controller.ChatController;
 import com.example.myapplication.model.msgModel;
+import com.example.myapplication.view.adapter.messagesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -95,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
         ImageButton sendImage = findViewById(R.id.sendImage);
         ImageButton sendFile = findViewById(R.id.sendFile);
+        ImageButton turnback = findViewById(R.id.turnback);
 
         // Chọn ảnh
         sendImage.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +103,23 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // Turn back
+        turnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         // Kiểm tra quyền truy cập bộ nhớ
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        }
+    }
+
+    public void scrollToLastMessage() {
+        if (!messagesArrayList.isEmpty()) {
+            msgAdapter.scrollToPosition(messagesArrayList.size() - 1);
         }
     }
 

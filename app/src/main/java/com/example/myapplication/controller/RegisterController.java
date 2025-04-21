@@ -1,8 +1,6 @@
 package com.example.myapplication.controller;
-import com.example.myapplication.Users;
+import com.example.myapplication.model.Users;
 import android.content.Context;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

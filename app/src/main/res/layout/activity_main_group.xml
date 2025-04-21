@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgmaiin"
     tools:context=".view.MainActivity">
 
     <LinearLayout
@@ -13,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="90dp"
+        android:layout_marginStart="108dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
         android:gravity="center">
@@ -29,38 +28,52 @@
 
         <ImageView
             android:id="@+id/logoutimg"
-            android:layout_width="64dp"
-            android:layout_height="61dp"
-            android:layout_marginStart="125dp"
-            android:src="@drawable/note" />
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="100dp"
+            android:src="@drawable/logout" />
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/createGroup"
+        android:layout_width="73dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="592dp"
+        android:src="@drawable/chat" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mainUserRecyclerView"
+        android:id="@+id/groupChatText"
         android:layout_width="348dp"
         android:layout_height="412dp"
         android:layout_below="@+id/toolBar"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="105dp" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="158dp" />
 
     <ImageView
         android:id="@+id/chatOneOne"
-        android:layout_width="85dp"
-        android:layout_height="62dp"
+        android:layout_width="73dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="67dp"
-        android:layout_marginTop="669dp"
-        android:layout_marginEnd="259dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="659dp"
+        android:layout_marginEnd="230dp"
+        android:layout_marginBottom="22dp"
         android:src="@drawable/chat" />
 
     <ImageView
@@ -71,10 +84,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="259dp"
-        android:layout_marginTop="676dp"
-        android:layout_marginEnd="78dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="658dp"
+        android:layout_marginEnd="109dp"
+        android:layout_marginBottom="23dp"
         android:src="@drawable/setting" />
 
 </RelativeLayout>

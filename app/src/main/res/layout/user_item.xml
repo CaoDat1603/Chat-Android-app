@@ -2,45 +2,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="13.00dp"
+    android:layout_margin="13dp"
     android:background="@drawable/bordermain">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
+        android:gravity="center_vertical">
 
+        <!-- Hình Avatar -->
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/user"/>
         <LinearLayout
-            android:layout_marginStart="20dp"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spartan_bold"
                 android:text="Name"
                 android:textColor="@color/black"
-                android:textSize="25dp"/>
-
+                android:textSize="20sp" />
             <TextView
                 android:id="@+id/userstatus"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:fontFamily="@font/spartan_bold"
-                android:textSize="10.40dp"
-                android:text="Status"/>
+                android:text="Status"
+                android:textColor="@color/black"
+                android:textSize="10.40sp" />
 
         </LinearLayout>
 
-
-
     </LinearLayout>
-
 
 </RelativeLayout>

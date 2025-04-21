@@ -5,13 +5,13 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_margin="13dp"
-    android:background="@drawable/shapedialog">
+    android:background="#f0ffff">
 
     <ImageView
         android:id="@+id/logoutdia"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/logout"
+        android:src="@drawable/exit"
         android:layout_gravity="center"
         android:layout_margin="13dp"/>
 
@@ -22,7 +22,7 @@
         android:textSize="18dp"
         android:gravity="center"
         android:layout_margin="8dp"
-        android:fontFamily="@font/spartan_regular"/>
+        android:fontFamily="@font/spartan_bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,21 +33,23 @@
             android:id="@+id/nobnt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="13dp"
+            android:layout_margin="15dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="No"
-            android:backgroundTint="@color/black"/>
+            android:textSize="18dp"
+            android:backgroundTint="#b0e0e6"/>
 
         <Button
             android:id="@+id/yesbnt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="13sp"
+            android:layout_margin="15sp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Yes"
-            android:backgroundTint="@color/black"/>
+            android:textSize="18dp"
+            android:backgroundTint="#b0e0e6"/>
 
     </LinearLayout>
 </LinearLayout>

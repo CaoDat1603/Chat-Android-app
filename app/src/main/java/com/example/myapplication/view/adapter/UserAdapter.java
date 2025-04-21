@@ -1,5 +1,6 @@
-package com.example.myapplication.view;
+package com.example.myapplication.view.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.Users;
+import com.example.myapplication.view.ChatActivity;
+
 import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
-    MainActivity mainActivity;
+    private Context context;
     ArrayList<Users> usersArrayList;
 
-    public UserAdapter(ArrayList<Users> usersArrayList, MainActivity mainActivity) {
+    public UserAdapter(ArrayList<Users> usersArrayList, Context context) {
         this.usersArrayList = usersArrayList;
-        this.mainActivity = mainActivity;
+        this.context = context;
     }
 
     @NonNull
@@ -37,10 +40,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mainActivity, ChatActivity.class);
+                Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("name", users.getFullname());
                 intent.putExtra("uid", users.getUserId());
-                mainActivity.startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }
