@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:gravity="center_vertical"
-        android:background="#fdf5e6"
+        android:background="#BDEDFF"
         android:orientation="horizontal">
 
         <ImageButton
@@ -18,27 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:background="@drawable/exit"
+            android:background="@drawable/back1"
             android:contentDescription="Back button" />
-
-    </LinearLayout>
-    <!-- Thanh tiêu đề -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_below="@id/ll1"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:text="Quay lại"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -46,15 +27,17 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Nhóm mới"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/createButton"
-            android:layout_width="wrap_content"
+            android:layout_width="45dp"
             android:layout_height="45dp"
+            android:gravity="center"
             android:text="TẠO"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
 

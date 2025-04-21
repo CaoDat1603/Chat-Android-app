@@ -1,8 +1,12 @@
 package com.example.myapplication.view.adapter;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,18 +87,19 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (message.getType().equals("image")) {
             viewHolder.imageView.setVisibility(View.VISIBLE);
             Picasso.get().load(message.getMessage()).into(viewHolder.imageView);
-            viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage()));
+            viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
 
             // Gắn sự kiện mở ShowImageActivity khi nhấn vào hình ảnh
             viewHolder.imageView.setOnClickListener(v -> {
                 Intent intent = new Intent(viewHolder.itemView.getContext(), ShowImageMessageActivity.class);
                 intent.putExtra("image_url", message.getMessage()); // Truyền URL hình ảnh
+                intent.putExtra("image_name", message.getFileName());
                 viewHolder.itemView.getContext().startActivity(intent);
             });
         } else if (message.getType().equals("file")) {
             viewHolder.fileLayout.setVisibility(View.VISIBLE);
             viewHolder.fileName.setText(message.getFileName());
-            viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage()));
+            viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
         }
     }
 
@@ -146,7 +151,7 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.pronone.setVisibility(View.VISIBLE);
                 viewHolder.fileLayout.setVisibility(View.VISIBLE);
                 viewHolder.fileName.setText(message.getFileName());
-                viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage()));
+                viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
             }
         }
         else  {
@@ -169,25 +174,53 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.pro.setVisibility(View.VISIBLE);
                 viewHolder.fileLayout.setVisibility(View.VISIBLE);
                 viewHolder.fileName.setText(message.getFileName());
-                viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage()));
+                viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
             }
         }
     }
 
-    private void downloadFile(String fileLinks) {
+    private void downloadFile(String fileLinks, String fileName) {
+        if (fileLinks == null || fileLinks.isEmpty()) {
+            return;
+        }
+
+        // Tách các liên kết
         String[] links = fileLinks.split(",");
+
+        // Duyệt qua từng liên kết
         for (String link : links) {
             String cleanLink = link.trim();
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(cleanLink));
-            context.startActivity(intent);
+
+            if (cleanLink.isEmpty()) {
+                continue;
+            }
+
+            // Sử dụng DownloadManager để tải file
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(cleanLink);
+
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setDescription("Downloading file from URL...");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            // Chọn thư mục lưu trữ trong bộ nhớ ngoài (có thể thay đổi tên file nếu muốn)
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+
+            // Bắt đầu tải file
+            if (downloadManager != null) {
+                downloadManager.enqueue(request);
+            }
         }
     }
+
 
     static class SenderViewHolder extends RecyclerView.ViewHolder {
         TextView msgtxt;
         ImageView imageView;
         TextView fileName;
         View fileLayout;
+        TextView noted;
+        View notedlayout;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -195,6 +228,8 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             imageView = itemView.findViewById(R.id.senderImageView);
             fileLayout = itemView.findViewById(R.id.fileLayout);
             fileName = itemView.findViewById(R.id.fileName);
+            notedlayout = itemView.findViewById(R.id.notedlayout);
+            noted = itemView.findViewById(R.id.noted);
         }
     }
 

@@ -24,6 +24,7 @@ public class ShowImageMessageActivity extends AppCompatActivity {
 
         // Lấy URL hình ảnh từ Intent
         String imageUrl = getIntent().getStringExtra("image_url");
+        String imageName = getIntent().getStringExtra("image_name");
 
         // Hiển thị hình ảnh bằng Picasso
         if (imageUrl != null) {
@@ -37,10 +38,10 @@ public class ShowImageMessageActivity extends AppCompatActivity {
         turnBack.setOnClickListener(view -> finish());
 
         // Tải ảnh
-        dowImage.setOnClickListener(view -> downloadImage(imageUrl));
+        dowImage.setOnClickListener(view -> downloadImage(imageUrl, imageName));
     }
 
-    private void downloadImage(String imageUrl) {
+    private void downloadImage(String imageUrl, String imageName) {
         if (imageUrl == null || imageUrl.isEmpty()) {
             return;
         }
@@ -50,10 +51,9 @@ public class ShowImageMessageActivity extends AppCompatActivity {
         Uri uri = Uri.parse(imageUrl);
 
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setTitle("Downloading Image");
         request.setDescription("Downloading file...");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "downloaded_image.jpg");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, imageName);
 
         // Bắt đầu tải
         if (downloadManager != null) {

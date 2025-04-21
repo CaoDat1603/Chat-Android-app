@@ -39,6 +39,7 @@
         android:padding="9.10dp"
         android:text="I'm fine. And you?"
         android:textColor="@color/black"
+        android:textSize="15dp"
         android:textStyle="bold" />
 
     <FrameLayout
@@ -106,7 +107,7 @@
             android:layout_width="32.50dp"
             android:layout_height="32.50dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/error" />
+            android:src="@drawable/filed" />
 
         <TextView
             android:id="@+id/fileName"

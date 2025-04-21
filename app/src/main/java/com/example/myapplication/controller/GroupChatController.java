@@ -1,5 +1,6 @@
 package com.example.myapplication.controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -96,6 +97,12 @@ public class GroupChatController {
 
     // Upload hình ảnh hoặc file lên Firebase Storage
     public void uploadToFirebaseStorage(Uri fileUri, int requestCode) {
+        // Hiển thị ProgressDialog
+        ProgressDialog progressDialog = new ProgressDialog(groupChatActivity);
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.setCancelable(false); // Không cho phép hủy bằng cách nhấn ra ngoài
+        progressDialog.show();
+
         String fileName = getFileName(fileUri);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("uploads");
         StorageReference filePath = storageReference.child(System.currentTimeMillis() + "");
@@ -107,9 +114,14 @@ public class GroupChatController {
                         String downloadUrl = task1.getResult().toString();
                         sendFileMessage(downloadUrl, requestCode, fileName);
                     }
+                    // Ẩn ProgressDialog sau khi hoàn thành
+                    progressDialog.dismiss();
+                    Toast.makeText(groupChatActivity, "Tải tệp thành công", Toast.LENGTH_SHORT).show();
                 });
             } else {
-                Toast.makeText(groupChatActivity, "Failed to upload file", Toast.LENGTH_SHORT).show();
+                // Hiển thị thông báo lỗi và ẩn ProgressDialog
+                progressDialog.dismiss();
+                Toast.makeText(groupChatActivity, "Tải tệp thất bại", Toast.LENGTH_SHORT).show();
             }
         });
     }

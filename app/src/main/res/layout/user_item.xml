@@ -2,23 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="13dp"
-    android:background="@drawable/bordermain">
+    android:layout_margin="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_margin="8dp"
+        android:background="@drawable/bordermain">
 
         <!-- Hình Avatar -->
         <ImageView
             android:id="@+id/user_avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/user"/>
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/users" />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
                 android:fontFamily="@font/spartan_bold"
                 android:text="Name"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/userstatus"
                 android:layout_width="wrap_content"
