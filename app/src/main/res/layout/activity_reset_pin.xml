@@ -2,36 +2,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    android:layout_height="match_parent"
-    tools:context=".view.LoginActivity">
-
-    <!-- Background Image -->
 
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/sigin"
+        android:src="@drawable/sigup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="248dp"
-        android:layout_height="194dp"
+        android:layout_width="208dp"
+        android:layout_height="168dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.088"
+        app:layout_constraintVertical_bias="0.117"
         app:srcCompat="@drawable/logo_name" />
 
     <TextView
@@ -39,32 +36,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/spartan_bold"
-        android:text="Login"
+        android:text="Reset PIN"
         android:textColor="@color/cardview_dark_background"
         android:textSize="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.432" />
+        app:layout_constraintVertical_bias="0.363" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/spartan_bold"
-        android:text="Đăng nhập với tài khoản Google"
+        android:text="Đặt lại mã pin"
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintVertical_bias="0.56" />
+
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="If you have remember your PIN, just login"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.977" />
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSignInButton"
+        android:id="@+id/btnGoogleSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -72,22 +82,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735" />
-
-    <TextView
-        android:id="@+id/create_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create new account "
-        android:textSize="17dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
-
-
-
+        app:layout_constraintVertical_bias="0.639" />
 </androidx.constraintlayout.widget.ConstraintLayout>

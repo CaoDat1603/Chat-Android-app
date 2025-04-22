@@ -10,11 +10,12 @@
 
     <LinearLayout
         android:id="@+id/toolBar"
-        android:layout_width="5000dp"
-        android:layout_height="135dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="343dp"
+        android:layout_height="119dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="60dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center">
 
         <TextView
@@ -75,5 +76,15 @@
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="24dp"
         android:src="@drawable/reunion" />
+
+    <ImageView
+        android:id="@+id/setting_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="345dp"
+        android:layout_marginBottom="762dp"
+        app:srcCompat="@drawable/setting" />
 
 </RelativeLayout>

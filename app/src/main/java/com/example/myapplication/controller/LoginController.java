@@ -1,32 +1,65 @@
 package com.example.myapplication.controller;
-import com.example.myapplication.view.LoginActivity;
-import com.example.myapplication.model.AuthModel;
-import com.example.myapplication.R;
 
-import android.text.TextUtils;
-import android.widget.Toast;
+import android.content.Context;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginController {
-    private AuthModel authModel;
+    private static final String TAG = "LoginController";
+    private FirebaseAuth auth;
+    private Context context;
 
-    public LoginController() {
-        authModel = new AuthModel();
+    public LoginController(Context context) {
+        this.context = context;
+        auth = FirebaseAuth.getInstance();
     }
 
-    public void loginUser(String email, String password, OnCompleteListener<AuthResult> listener, LoginActivity activity) {
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(activity, "Enter The Email", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(activity, "Enter The Password", Toast.LENGTH_SHORT).show();
-        } else if (!authModel.isEmailValid(email)) {
-            activity.findViewById(R.id.editTextLogEmail).setTop(Integer.parseInt("Give Proper Email Address"));
-        } else if (!authModel.isPasswordValid(password)) {
-            activity.findViewById(R.id.editTextLogPassword).setTop(Integer.parseInt("Password must be at least 8 characters"));
-        } else {
-            authModel.login(email, password, listener);
-        }
+    // Xử lý đăng nhập bằng Google
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct, OnLoginCompleteListener listener) {
+        Log.d(TAG, "firebaseAuthWithGoogle: " + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener((AppCompatActivity) context, task -> {
+                    if (task.isSuccessful()) {
+                        // Đăng nhập thành công
+                        Log.d(TAG, "signInWithCredential: success");
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        if (user != null) {
+                            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                                // Người dùng hợp lệ
+                                listener.onSuccess(user);
+                            } else {
+                                // Trường hợp email null hoặc rỗng
+                                listener.onError("Người dùng không có email hợp lệ. Vui lòng thử lại với tài khoản khác.");
+                            }
+                        } else {
+                            listener.onError("Người dùng không tồn tại!");
+                        }
+                    } else {
+                        // Đăng nhập thất bại
+                        Log.w(TAG, "signInWithCredential: failure", task.getException());
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Lỗi không xác định";
+                        listener.onError("Authentication Failed: " + errorMessage);
+                    }
+                });
+    }
+
+
+    // Interface thông báo kết quả đăng nhập
+    public interface OnLoginCompleteListener {
+        void onSuccess(FirebaseUser user); // Trả về người dùng đã đăng nhập thành công
+        void onError(String errorMessage);
     }
 }

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CoreChat</string>
+    <string name="app_name">DvD Messenger</string>
+    <string name="default_web_client_id">891598146858-3jfkgohi75qrkjo4t0dij3m6saplbff2.apps.googleusercontent.com</string>
+
 </resources>
