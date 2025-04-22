@@ -29,47 +29,51 @@ public class RegisterController {
         database = FirebaseDatabase.getInstance();
     }
 
-    // Đăng nhập hoặc đăng ký bằng Google
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct, OnRegistrationCompleteListener listener) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
+        // Kiểm tra email có đuôi hợp lệ
+        String email = acct.getEmail();
+        if (!isValidEmail(email)) {
+            listener.onError("Email không hợp lệ! Vui lòng sử dụng email có đuôi @ut.edu.");
+            return;
+        }
+
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = auth.getCurrentUser();
 
-        auth.signInWithCredential(credential).addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Đăng nhập thành công
-                    Log.d(TAG, "signInWithCredential:success");
-                    FirebaseUser user = auth.getCurrentUser();
-
-                    if (user != null) {
-                        checkAndSaveUser(user, listener);
-                    } else {
-                        listener.onError("Người dùng không tồn tại!");
+                            if (user != null) {
+                                checkAndSaveUser(user, listener);
+                            } else {
+                                listener.onError("Người dùng không tồn tại!");
+                            }
+                        } else {
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            listener.onError("Authentication Failed: " + task.getException().getMessage());
+                        }
                     }
-                } else {
-                    // Đăng nhập thất bại
-                    Log.w(TAG, "signInWithCredential:failure", task.getException());
-                    listener.onError("Authentication Failed: " + task.getException().getMessage());
-                }
-            }
-        });
+                });
     }
 
-    // Kiểm tra và lưu thông tin người dùng
+    private boolean isValidEmail(String email) {
+        return email != null && email.endsWith("@ut.edu.vn");
+    }
+
     private void checkAndSaveUser(FirebaseUser firebaseUser, OnRegistrationCompleteListener listener) {
         String userId = firebaseUser.getUid();
         DatabaseReference userRef = database.getReference("user").child(userId);
 
-        // Kiểm tra xem người dùng đã tồn tại hay chưa
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                // Người dùng đã tồn tại
                 Log.d(TAG, "User already exists.");
                 listener.onSuccess();
             } else {
-                // Người dùng chưa tồn tại, lưu thông tin mới
                 Users userModel = new Users(
                         userId,
                         firebaseUser.getDisplayName(),
@@ -91,7 +95,6 @@ public class RegisterController {
         });
     }
 
-    // Interface để thông báo kết quả đăng ký hoặc đăng nhập
     public interface OnRegistrationCompleteListener {
         void onSuccess();
         void onError(String errorMessage);

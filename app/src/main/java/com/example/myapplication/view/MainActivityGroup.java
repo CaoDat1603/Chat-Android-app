@@ -2,6 +2,7 @@ package com.example.myapplication.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class MainActivityGroup extends AppCompatActivity {
     private ArrayList<Group> groupArrayList;
     private ImageView imglogout;
     private MainActivityGroupController controller;
+    private ImageView imgSettingProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,12 @@ public class MainActivityGroup extends AppCompatActivity {
         // Xử lý sự kiện đăng xuất
         imglogout = findViewById(R.id.logoutimg);
         imglogout.setOnClickListener(view -> controller.showLogoutDialog());
+
+        imgSettingProfile = findViewById(R.id.setting_profile);
+        imgSettingProfile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {controller.navigateToProfile();}
+        });
 
         // Xử lý sự kiện khi nhấn vào chat nhóm
         ImageView chatOneOne = findViewById(R.id.chatOneOne);
@@ -83,5 +91,11 @@ public class MainActivityGroup extends AppCompatActivity {
     public void navigateToCreateGroupActivity() {
         Intent intent = new Intent(MainActivityGroup.this, CreateGroupActivity.class);
         startActivity(intent);
+    }
+
+    public void navigateToProfile() {
+        Intent intent = new Intent(MainActivityGroup.this, ProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

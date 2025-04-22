@@ -1,0 +1,82 @@
+[
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/group_item.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/group_item.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/dialog_layout.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/dialog_layout.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_group_chat.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_group_chat.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_main.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_login.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_show_image_message.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_show_image_message.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/group_member_item.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/group_member_item.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_reset_pin.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_reset_pin.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_main_group.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_main_group.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_create_group.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_create_group.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_profile.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_profile.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/user_item.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/user_item.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/reciver_layout.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/reciver_layout.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_splash.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_manage_member.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_manage_member.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_register.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_register.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/sender_layout.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/sender_layout.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/user_search_item.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/user_search_item.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_chat.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_chat.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_setting_group.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_setting_group.xml"
+    }
+]

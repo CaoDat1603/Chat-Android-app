@@ -17,11 +17,13 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
     private Context context;
     private List<Users> userList;
     private OnUserSelectedListener listener;
+    private boolean isSelectList; // Xác định đây có phải là RecyclerView của người đã chọn không
 
-    public UserSearchAdapter(Context context, List<Users> userList, OnUserSelectedListener listener) {
+    public UserSearchAdapter(Context context, List<Users> userList, OnUserSelectedListener listener, boolean isSelectList) {
         this.context = context;
         this.userList = userList;
         this.listener = listener;
+        this.isSelectList = isSelectList; // Gán giá trị cho biến này
     }
 
     @Override
@@ -35,11 +37,16 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         Users user = userList.get(position);
         holder.usernameTextView.setText(user.getFullname());
 
+        // Nếu đây là danh sách người đã chọn, checkbox phải được chọn
+        // Nếu không phải là danh sách đã chọn, checkbox không cần chọn
+        holder.selectCheckBox.setChecked(isSelectList);
+
+        // Đặt sự kiện thay đổi trạng thái checkbox
         holder.selectCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                listener.onUserSelected(user);
+                listener.onUserSelected(user, true); // Gọi phương thức khi chọn
             } else {
-                listener.onUserSelected(user); // Remove the user from the selected list
+                listener.onUserDeselected(user, false); // Gọi phương thức khi bỏ chọn
             }
         });
     }
@@ -50,8 +57,10 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
     }
 
     public interface OnUserSelectedListener {
-        void onUserSelected(Users user);
+        void onUserSelected(Users user, boolean isSelected); // Khi chọn người dùng
+        void onUserDeselected(Users user, boolean isSelected); // Khi bỏ chọn người dùng
     }
+
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
 

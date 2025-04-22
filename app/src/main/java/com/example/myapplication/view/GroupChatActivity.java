@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.GroupChatController;
+import com.example.myapplication.controller.SettingGroupController;
+import com.example.myapplication.model.Group;
 import com.example.myapplication.model.msgModel;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +44,7 @@ public class GroupChatActivity extends AppCompatActivity {
     private GroupChatController groupChatController;
     FirebaseAuth firebaseAuth;
     TextView reciverNameAc;
+    public boolean isChange = false;
 
     //private TextView groupNameTextView;
 
@@ -75,6 +78,7 @@ public class GroupChatActivity extends AppCompatActivity {
         sendImageButton = findViewById(R.id.sendImage);
         sendButton = findViewById(R.id.sendbtn);
         ImageButton turnback = findViewById(R.id.turnback);
+        ImageButton setting = findViewById(R.id.settinggroup);
         //groupNameTextView = findViewById(R.id.groupNameTextView);
 
         // Hiển thị tên nhóm
@@ -110,8 +114,20 @@ public class GroupChatActivity extends AppCompatActivity {
         turnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if (isChange) {
+                    // Kết thúc activity cũ và mở activity mới
+                    Intent intent = new Intent(GroupChatActivity.this, MainActivityGroup.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Tạo một task mới và xóa tất cả các activity phía trước
+                    startActivity(intent);
+                    finish();
+                } else {
+                    finish();
+                }
             }
+        });
+
+        setting.setOnClickListener(v -> {
+            groupChatController.settingGroup();
         });
 
         // Kiểm tra quyền truy cập bộ nhớ
@@ -145,6 +161,11 @@ public class GroupChatActivity extends AppCompatActivity {
         recyclerView.scrollToPosition(messagesArrayList.size() - 1);
     }
 
+    public Intent nextStingActivity() {
+        Intent intent = new Intent(GroupChatActivity.this, SettingGroupActivity.class);
+        return intent;
+    }
+
     // Xử lý kết quả khi chọn hình ảnh hoặc file từ bộ nhớ
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
@@ -156,4 +177,29 @@ public class GroupChatActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Lấy lại thông tin nhóm sau khi trở lại Activity này
+        SettingGroupController settingGroupController = new SettingGroupController(groupId);
+        settingGroupController.getGroupInfo(new SettingGroupController.OnGroupInfoListener() {
+            @Override
+            public void onSuccess(Group group) {
+                // Cập nhật tên nhóm vào UI
+                if (!reciverName.equals(group.getGroupName())) {
+                    TextView groupNameTextView = findViewById(R.id.recivername);
+                    groupNameTextView.setText(group.getGroupName());
+                    isChange = true;
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Xử lý lỗi nếu cần
+                Toast.makeText(GroupChatActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

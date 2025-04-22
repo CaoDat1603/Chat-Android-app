@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -43,7 +44,12 @@ public class ShowImageMessageActivity extends AppCompatActivity {
 
     private void downloadImage(String imageUrl, String imageName) {
         if (imageUrl == null || imageUrl.isEmpty()) {
+            Log.e("DownloadImage", "Image URL is null or empty");
             return;
+        }
+
+        if (imageName == null || imageName.isEmpty()) {
+            imageName = "default_image_name.jpg"; // Giá trị mặc định
         }
 
         // Sử dụng DownloadManager để tải ảnh
@@ -55,9 +61,13 @@ public class ShowImageMessageActivity extends AppCompatActivity {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, imageName);
 
-        // Bắt đầu tải
-        if (downloadManager != null) {
-            downloadManager.enqueue(request);
+        try {
+            if (downloadManager != null) {
+                downloadManager.enqueue(request);
+            }
+        } catch (Exception e) {
+            Log.e("ShowImageMessageActivity", "Download failed", e);
         }
+
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">DvD Messenger</string>
+    <string name="default_web_client_id">891598146858-3jfkgohi75qrkjo4t0dij3m6saplbff2.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://dvd-messenger-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">891598146858</string>
+    <string name="google_api_key" translatable="false">AIzaSyAAbTM2NQ3J6yvZbSb2h0kHNm9A6Vg8uzE</string>
+    <string name="google_app_id" translatable="false">1:891598146858:android:db273c6acc15fa9bdf2253</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAAbTM2NQ3J6yvZbSb2h0kHNm9A6Vg8uzE</string>
+    <string name="google_storage_bucket" translatable="false">dvd-messenger.appspot.com</string>
+    <string name="project_id" translatable="false">dvd-messenger</string>
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication"/>
+    <style name="dialoge">
+        <item name="android:windowBackground">@drawable/emty_background</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowMinWidthMajor">80%</item>
+        <item name="windowActionBar">false</item>
+    </style>
+</resources>

@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private UserAdapter adapterUse;
     private ArrayList<Users> usersArrayList;
     private ImageView imglogout;
+    private ImageView imgSettingProfile;
 
     private MainActivityController controller;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainUserRecyclerView = findViewById(R.id.mainUserRecyclerView);
         imglogout = findViewById(R.id.logoutimg);
+
 
         // Initialize the list and adapter
         usersArrayList = new ArrayList<>();
@@ -48,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 controller.showLogoutDialog();
             }
+        });
+
+        imgSettingProfile = findViewById(R.id.setting_profile);
+        imgSettingProfile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {controller.navigateToProfile();}
         });
 
         // Handle group chat button click
@@ -85,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
     // Method to navigate to chat group activity
     public void navigateToChatGroup() {
         Intent intent = new Intent(MainActivity.this, MainActivityGroup.class);
+        startActivity(intent);
+        finish();
+    }
+    // Phương thức chuyển hướng sang Profile
+    public void navigateToProfile(){
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
         startActivity(intent);
         finish();
     }

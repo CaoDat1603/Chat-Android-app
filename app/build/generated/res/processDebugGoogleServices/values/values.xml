@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="firebase_database_url" translatable="false">https://dvd-messenger-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">891598146858</string>
+    <string name="google_api_key" translatable="false">AIzaSyAAbTM2NQ3J6yvZbSb2h0kHNm9A6Vg8uzE</string>
+    <string name="google_app_id" translatable="false">1:891598146858:android:db273c6acc15fa9bdf2253</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAAbTM2NQ3J6yvZbSb2h0kHNm9A6Vg8uzE</string>
+    <string name="google_storage_bucket" translatable="false">dvd-messenger.appspot.com</string>
+    <string name="project_id" translatable="false">dvd-messenger</string>
+</resources>

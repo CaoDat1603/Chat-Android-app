@@ -20,16 +20,13 @@ public class GroupController {
     public GroupController(CreateGroupActivity createGroupActivity) {
         this.createGroupActivity = createGroupActivity;
         this.database = FirebaseDatabase.getInstance();
-
     }
 
     public void createGroup(String groupName, List<Users> selectedUsers, String adminId) {
+        addCurrentUserToGroup(selectedUsers, adminId);
         if (groupName == null || groupName.isEmpty()) {
             groupName = generateGroupName(selectedUsers);
         }
-
-        // Tự động thêm người dùng hiện tại (admin) vào danh sách thành viên
-        addCurrentUserToGroup(selectedUsers, adminId);
 
         // Tạo Group object
         Group group = new Group();
@@ -37,6 +34,8 @@ public class GroupController {
         group.setCreatedAt(System.currentTimeMillis());
         group.setGroupId("group_" + System.currentTimeMillis());  // Tạo ID nhóm (ví dụ: dùng timestamp)
         group.setAdminId(adminId);  // Thiết lập ID quản trị viên nhóm
+
+        // Lưu nhóm và thành viên nhóm vào cơ sở dữ liệu
         saveGroupToDatabase(group, selectedUsers);
     }
 
@@ -59,6 +58,7 @@ public class GroupController {
 
         groupReference.setValue(group).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                // Lưu các thành viên nhóm vào cơ sở dữ liệu
                 for (Users user : selectedUsers) {
                     GroupMember groupMember = new GroupMember(group.getGroupId(), user.getUserId(), System.currentTimeMillis());
                     saveGroupMemberToDatabase(groupMember);
@@ -77,7 +77,7 @@ public class GroupController {
         groupMemberReference.setValue(groupMember);
     }
 
-    private void addCurrentUserToGroup(List<Users> selectedUsers, String adminId) {
+    public void addCurrentUserToGroup(List<Users> selectedUsers, String adminId) {
         // Lấy thông tin người dùng hiện tại từ Firebase
         DatabaseReference currentUserRef = database.getReference().child("user").child(adminId);
         currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,8 +87,8 @@ public class GroupController {
                     Users currentUser = snapshot.getValue(Users.class); // Lấy thông tin người dùng hiện tại
 
                     // Kiểm tra và thêm người dùng hiện tại vào danh sách nếu chưa có
-                    if (!selectedUsers.contains(currentUser)) {
-                        selectedUsers.add(currentUser);
+                    if (currentUser != null && !selectedUsers.contains(currentUser)) {
+                        selectedUsers.add(currentUser); // Thêm người dùng hiện tại vào danh sách
                     }
                 } else {
                     createGroupActivity.showErrorMessage("Không tìm thấy thông tin người dùng hiện tại.");

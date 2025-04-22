@@ -6,8 +6,19 @@ public class msgModel {
     long timeStamp;
     String messageType;  // Thêm trường này để phân loại tin nhắn (text, image, file)
     String fileName;     // Thêm trường để lưu tên file
+    private boolean isGroupMessage = false;
 
     public msgModel() {
+    }
+
+    // Constructor với tất cả các tham số
+    public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName, boolean isGroupMessage) {
+        this.message = message;
+        this.senderid = senderId;
+        this.timeStamp = timeStamp;
+        this.messageType = messageType;
+        this.fileName = fileName;
+        this.isGroupMessage = isGroupMessage;
     }
 
     public msgModel(String message, String senderid, long timeStamp, String messageType, String fileName) {
@@ -56,5 +67,13 @@ public class msgModel {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;  // Phương thức để set tên file
+    }
+
+    public boolean isGroupMessage() {
+        return isGroupMessage;
+    }
+
+    public void setGroupMessage(boolean isGroupMessage) {
+        this.isGroupMessage = isGroupMessage;
     }
 }

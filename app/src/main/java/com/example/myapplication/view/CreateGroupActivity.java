@@ -30,12 +30,13 @@ import java.util.List;
 public class CreateGroupActivity extends AppCompatActivity {
 
     private GroupController groupController;
-    private UserSearchAdapter userAdapter;
+    private UserSearchAdapter searchAdapter, selectedAdapter;
     private EditText groupNameEditText, searchUsersEditText;
-    private RecyclerView userRecyclerView;
-    private List<Users> userList; // Danh sách người dùng
-    private List<Users> filteredUserList; // Danh sách người dùng lọc từ tìm kiếm
+    private RecyclerView searchRecyclerView, selectedRecyclerView;
+    private List<Users> allUsers; // Danh sách tất cả người dùng
+    private List<Users> filteredUsers; // Danh sách người dùng sau khi tìm kiếm
     private List<Users> selectedUsers; // Danh sách người dùng đã chọn
+    private Users users;
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -48,31 +49,10 @@ public class CreateGroupActivity extends AppCompatActivity {
         // Khởi tạo các thành phần giao diện
         groupNameEditText = findViewById(R.id.groupName);
         searchUsersEditText = findViewById(R.id.searchUsers);
-        userRecyclerView = findViewById(R.id.userRecyclerView);
-
-        // Khởi tạo danh sách người dùng và danh sách đã chọn
-        userList = new ArrayList<>();
-        filteredUserList = new ArrayList<>();
-        selectedUsers = new ArrayList<>();
-
-        // adminId là ID của người dùng hiện tại
-        String adminId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        // Khởi tạo UserSearchAdapter
-        userAdapter = new UserSearchAdapter(this, filteredUserList, new UserSearchAdapter.OnUserSelectedListener() {
-            @Override
-            public void onUserSelected(Users user) {
-                // Thêm hoặc loại bỏ người dùng vào/ra danh sách đã chọn
-                if (selectedUsers.contains(user)) {
-                    selectedUsers.remove(user);
-                } else {
-                    selectedUsers.add(user);
-                }
-            }
-        });
+        searchRecyclerView = findViewById(R.id.searchRecyclerView);
+        selectedRecyclerView = findViewById(R.id.selectedRecyclerView);
 
         ImageButton turnback = findViewById(R.id.turnback);
-
         // Turn back
         turnback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,28 +61,76 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        // Cài đặt RecyclerView để hiển thị danh sách người dùng
-        userRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        userRecyclerView.setAdapter(userAdapter);
+        allUsers = new ArrayList<>();
+        filteredUsers = new ArrayList<>();
+        selectedUsers = new ArrayList<>();
 
-        // Khởi tạo Firebase
+        String adminId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Khởi tạo adapter cho RecyclerView tìm kiếm (isSelectList = false)
+        searchAdapter = new UserSearchAdapter(this, filteredUsers, new UserSearchAdapter.OnUserSelectedListener() {
+            @Override
+            public void onUserSelected(Users user, boolean isSelected) {
+                if (isSelected) {
+                    selectedUsers.add(user);
+                    updateFilteredUsers(user, false);
+                }
+                updateSelectedRecyclerView();
+            }
+
+            @Override
+            public void onUserDeselected(Users user, boolean isSelected) {
+                if (!isSelected) {
+
+                }
+                updateSelectedRecyclerView();  // Cập nhật lại RecyclerView đã chọn
+            }
+
+        }, false); // false vì đây là danh sách người dùng tìm kiếm
+
+        // Khởi tạo adapter cho RecyclerView đã chọn (isSelectList = true)
+        selectedAdapter = new UserSearchAdapter(this, selectedUsers, new UserSearchAdapter.OnUserSelectedListener() {
+            @Override
+            public void onUserSelected(Users user, boolean isSelected) {
+                if (isSelected) {
+
+                }
+                updateSelectedRecyclerView();
+            }
+
+            @Override
+            public void onUserDeselected(Users user, boolean isSelected) {
+                if (!isSelected) {
+                    selectedUsers.remove(user);
+                    updateFilteredUsers(user, true);
+                }
+                updateSelectedRecyclerView();
+            }
+        }, true); // true vì đây là danh sách người dùng đã chọn
+
+        // Cài đặt RecyclerView
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchRecyclerView.setAdapter(searchAdapter);
+
+        selectedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        selectedRecyclerView.setAdapter(selectedAdapter);
+
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("user");
 
-        // Lấy dữ liệu người dùng từ Firebase và cập nhật adapter
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                userList.clear();
+                allUsers.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users user = dataSnapshot.getValue(Users.class);
-
-                    // Chỉ thêm những người dùng KHÁC với user hiện tại vào danh sách
                     if (!user.getUserId().equals(adminId)) {
-                        userList.add(user);
+                        allUsers.add(user);
+                    } else {
+                        users = user;
                     }
                 }
-                filterUserList(""); // Lọc lại danh sách khi dữ liệu thay đổi
+                filterUserList(""); // Lọc lại danh sách khi có dữ liệu
             }
 
             @Override
@@ -111,31 +139,31 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        // Khởi tạo GroupController với Context hiện tại (CreateGroupActivity)
         groupController = new GroupController(this);
 
-        // Xử lý sự kiện khi người dùng nhấn nút tạo nhóm
         findViewById(R.id.createButton).setOnClickListener(v -> {
-            String groupName = groupNameEditText.getText().toString();
-
-            // Kiểm tra xem có người dùng được chọn hay không
             if (selectedUsers.isEmpty()) {
                 showErrorMessage("Bạn chưa chọn thành viên cho nhóm.");
                 return;
             }
 
-            // Gọi GroupController để tạo nhóm
+            if (selectedUsers.size() < 2) {
+                showErrorMessage("Nhóm phải có ít nhất 3 người.");
+                return;
+            }
+
+            String groupName = groupNameEditText.getText().toString();
+
+            selectedUsers.add(users);
             groupController.createGroup(groupName, selectedUsers, adminId);
         });
 
-        // Thêm TextWatcher để theo dõi thay đổi trong trường tìm kiếm người dùng
         searchUsersEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Lọc danh sách người dùng khi có thay đổi trong ô tìm kiếm
                 filterUserList(charSequence.toString());
             }
 
@@ -145,17 +173,46 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     private void filterUserList(String query) {
-        filteredUserList.clear();
-        if (query.isEmpty()) {
-            filteredUserList.addAll(userList);
-        } else {
-            for (Users user : userList) {
-                if (user.getFullname().toLowerCase().contains(query.toLowerCase())) {
-                    filteredUserList.add(user);
+        filteredUsers.clear();
+        for (Users user : allUsers) {
+            if (query.isEmpty() || user.getFullname().toLowerCase().contains(query.toLowerCase())) {
+                if (!selectedUsers.contains(user)) {
+                    filteredUsers.add(user);
                 }
             }
         }
-        userAdapter.notifyDataSetChanged();
+        // Kiểm tra xem RecyclerView có đang tính toán layout không trước khi gọi notifyDataSetChanged()
+        if (!searchRecyclerView.isComputingLayout()) {
+            searchAdapter.notifyDataSetChanged();
+        } else {
+            // Trì hoãn việc gọi notifyDataSetChanged() cho đến khi RecyclerView hoàn tất tính toán
+            searchRecyclerView.post(() -> searchAdapter.notifyDataSetChanged());
+        }
+    }
+
+    private void updateSelectedRecyclerView() {
+        // Kiểm tra nếu RecyclerView không đang tính toán layout
+        if (!selectedRecyclerView.isComputingLayout()) {
+            selectedAdapter.notifyDataSetChanged();
+        } else {
+            // Trì hoãn việc gọi notifyDataSetChanged() nếu RecyclerView đang tính toán layout
+            selectedRecyclerView.post(() -> selectedAdapter.notifyDataSetChanged());
+        }
+    }
+
+    private void updateFilteredUsers(Users user, boolean isAdding) {
+        if (isAdding) {
+            filteredUsers.add(user);
+        } else {
+            filteredUsers.remove(user);
+        }
+        // Kiểm tra nếu RecyclerView không đang tính toán layout
+        if (!searchRecyclerView.isComputingLayout()) {
+            searchAdapter.notifyDataSetChanged();
+        } else {
+            // Trì hoãn việc gọi notifyDataSetChanged() nếu RecyclerView đang tính toán layout
+            searchRecyclerView.post(() -> searchAdapter.notifyDataSetChanged());
+        }
     }
 
     public void showErrorMessage(String message) {
@@ -165,7 +222,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     public void onGroupCreated() {
         Toast.makeText(this, "Nhóm đã được tạo thành công!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(CreateGroupActivity.this, MainActivityGroup.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Đảm bảo MainActivityGroup cũ bị đóng
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }

@@ -1,5 +1,7 @@
 package com.example.myapplication.controller;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -153,5 +155,11 @@ public class GroupChatController {
             fileName = uri.getLastPathSegment();
         }
         return fileName != null ? fileName : "unknown_file"; // Nếu không có tên, trả về "unknown_file"
+    }
+
+    public void settingGroup() {
+        Intent intent = groupChatActivity.nextStingActivity();
+        intent.putExtra("groupId", groupId);
+        groupChatActivity.startActivity(intent);
     }
 }

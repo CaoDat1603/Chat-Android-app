@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity"
+    android:background="@drawable/group">
+
+    <LinearLayout
+        android:id="@+id/toolBar"
+        android:layout_width="363dp"
+        android:layout_height="57dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:fontFamily="@font/spartan_bold"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/logoutimg"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:src="@drawable/logout3" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/createGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="298dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="635dp"
+        android:src="@drawable/add" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupChatText"
+        android:layout_width="348dp"
+        android:layout_height="412dp"
+        android:layout_below="@+id/toolBar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="100dp" />
+
+    <ImageView
+        android:id="@+id/chatOneOne"
+        android:layout_width="wrap_content"
+        android:layout_height="69dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="705dp"
+        android:layout_marginEnd="249dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/chat" />
+
+    <ImageView
+        android:id="@+id/chatGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="251dp"
+        android:layout_marginTop="708dp"
+        android:layout_marginEnd="86dp"
+        android:layout_marginBottom="21dp"
+        android:src="@drawable/reunion" />
+
+    <ImageView
+        android:id="@+id/setting_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="344dp"
+        android:layout_marginBottom="791dp"
+        app:srcCompat="@drawable/setting" />
+
+</RelativeLayout>

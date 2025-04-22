@@ -1,50 +1,30 @@
-plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.google.gms.google.services)
-
-}
-
-android {
-    namespace 'com.example.myapplication'
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.example.myapplication"
-        minSdk 24
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+{
+  "project_info": {
+    "project_number": "891598146858",
+    "firebase_url": "https://dvd-messenger-default-rtdb.firebaseio.com",
+    "project_id": "dvd-messenger",
+    "storage_bucket": "dvd-messenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891598146858:android:db273c6acc15fa9bdf2253",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
         }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAbTM2NQ3J6yvZbSb2h0kHNm9A6Vg8uzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  ],
+  "configuration_version": "1"
 }
-
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation libs.appcompat
-    implementation libs.material
-    implementation libs.activity
-    implementation libs.constraintlayout
-    implementation libs.firebase.database
-    implementation libs.firebase.auth
-    implementation libs.firebase.storage
-    testImplementation libs.junit
-    androidTestImplementation libs.ext.junit
-    androidTestImplementation libs.espresso.core
-}
-
-
-// Đừng quên áp dụng plugin Google Services
-apply plugin: 'com.google.gms.google-services'

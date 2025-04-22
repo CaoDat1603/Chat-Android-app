@@ -1,74 +1,110 @@
 package com.example.myapplication.view;
-import com.example.myapplication.controller.RegisterController;
-
-
-import com.example.myapplication.R;
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.R;
+import com.example.myapplication.controller.RegisterController;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+
 public class RegisterActivity extends AppCompatActivity {
-    TextView loginbut;
-    EditText rg_fullname, rg_email, rg_password, rg_repassword;
-    Button rg_signup;
-    RegisterController registerController;
+
+    private static final int RC_SIGN_IN = 9001;
+    private GoogleSignInClient googleSignInClient;
+    private RegisterController registerController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
 
+        // Initialize RegisterController
         registerController = new RegisterController(this);
 
-        // Khai báo các thành phần giao diện
-        loginbut = findViewById(R.id.textViewLogin);
-        rg_fullname = findViewById(R.id.editTextFullName);
-        rg_email = findViewById(R.id.editTextEmailAddress);
-        rg_password = findViewById(R.id.editTextPassword);
-        rg_repassword = findViewById(R.id.editReEnterTextPassword);
-        rg_signup = findViewById(R.id.signupbutton);
+        // Configure Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Xử lý sự kiện click vào nút đăng nhập
-        loginbut.setOnClickListener(new View.OnClickListener() {
+        // Set Google Sign-In button listener
+        SignInButton btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        btnGoogleSignIn.setOnClickListener(v -> signInWithGoogle());
+
+        // Set "already have an account" listener
+        TextView textViewLogin = findViewById(R.id.textViewLogin);
+        textViewLogin.setOnClickListener(v -> navigateToLoginActivity());
+    }
+
+    private void signInWithGoogle() {
+        signOut(); // Đăng xuất trước khi thực hiện đăng nhập
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void signOut() {
+        googleSignInClient.signOut().addOnCompleteListener(task ->
+                Log.d("RegisterActivity", "User signed out successfully.")
+        );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            try {
+                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
+                if (account != null) {
+                    handleGoogleSignIn(account);
+                }
+            } catch (ApiException e) {
+                Log.e("RegisterActivity", "Google Sign-In failed", e);
+                showMessage("Google Sign-In failed: " + e.getMessage());
+            }
+        }
+    }
+
+    private void handleGoogleSignIn(GoogleSignInAccount account) {
+        registerController.firebaseAuthWithGoogle(account, new RegisterController.OnRegistrationCompleteListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+            public void onSuccess() {
+                showMessage("Đăng ký/Đăng nhập thành công!");
+                navigateToMainActivity();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                showMessage(errorMessage);
             }
         });
+    }
 
-        // Xử lý sự kiện click vào nút đăng ký
-        rg_signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String fullname = rg_fullname.getText().toString().trim();
-                String email = rg_email.getText().toString().trim();
-                String password = rg_password.getText().toString().trim();
-                String cPassword = rg_repassword.getText().toString().trim();
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-                registerController.registerUser(fullname, email, password, cPassword, new RegisterController.OnRegistrationCompleteListener() {
-                    @Override
-                    public void onSuccess() {
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+    private void navigateToLoginActivity() {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-                    @Override
-                    public void onError(String errorMessage) {
-                        Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
