@@ -22,6 +22,9 @@ public final class ActivityMainBinding implements ViewBinding {
   private final RelativeLayout rootView;
 
   @NonNull
+  public final LinearLayout bottomBar;
+
+  @NonNull
   public final ImageView chatGroup;
 
   @NonNull
@@ -42,11 +45,12 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final LinearLayout toolBar;
 
-  private ActivityMainBinding(@NonNull RelativeLayout rootView, @NonNull ImageView chatGroup,
-      @NonNull ImageView chatOneOne, @NonNull ImageView logoutimg, @NonNull RelativeLayout main,
-      @NonNull RecyclerView mainUserRecyclerView, @NonNull ImageView settingProfile,
-      @NonNull LinearLayout toolBar) {
+  private ActivityMainBinding(@NonNull RelativeLayout rootView, @NonNull LinearLayout bottomBar,
+      @NonNull ImageView chatGroup, @NonNull ImageView chatOneOne, @NonNull ImageView logoutimg,
+      @NonNull RelativeLayout main, @NonNull RecyclerView mainUserRecyclerView,
+      @NonNull ImageView settingProfile, @NonNull LinearLayout toolBar) {
     this.rootView = rootView;
+    this.bottomBar = bottomBar;
     this.chatGroup = chatGroup;
     this.chatOneOne = chatOneOne;
     this.logoutimg = logoutimg;
@@ -83,6 +87,12 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.bottomBar;
+      LinearLayout bottomBar = ViewBindings.findChildViewById(rootView, id);
+      if (bottomBar == null) {
+        break missingId;
+      }
+
       id = R.id.chatGroup;
       ImageView chatGroup = ViewBindings.findChildViewById(rootView, id);
       if (chatGroup == null) {
@@ -121,8 +131,8 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityMainBinding((RelativeLayout) rootView, chatGroup, chatOneOne, logoutimg,
-          main, mainUserRecyclerView, settingProfile, toolBar);
+      return new ActivityMainBinding((RelativeLayout) rootView, bottomBar, chatGroup, chatOneOne,
+          logoutimg, main, mainUserRecyclerView, settingProfile, toolBar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

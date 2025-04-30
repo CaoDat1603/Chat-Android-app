@@ -8,22 +8,26 @@
         android:minSdkVersion="24"
         android:targetSdkVersion="34" />
     <!-- Thêm quyền truy cập internet -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Thêm quyền sử dụng thông báo -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Thêm quyền sử dụng thông báo -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <permission
@@ -33,6 +37,7 @@
     <uses-permission android:name="com.example.myapplication.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
+        android:name="com.example.myapplication.MyApp"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -64,12 +69,6 @@
         <activity
             android:name="com.example.myapplication.view.MainActivityGroup"
             android:exported="false" />
-
-        <service
-            android:name="com.example.myapplication.controller.MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name="com.example.myapplication.view.ChatActivity"
             android:exported="true" />

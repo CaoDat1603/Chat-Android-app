@@ -1,5 +1,7 @@
 package com.example.myapplication.model;
 
+import java.time.OffsetDateTime;
+
 public class Users {
     private String userId;
     private String fullname;
@@ -8,6 +10,25 @@ public class Users {
     private String lastMessage;
     private String status;
     private String PIN;
+    private String lastMessageTime;
+    private String fcmToken; // Token cho Firebase Cloud Messaging
+
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public String getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(String lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    }
 
     public String getPIN() {
         return PIN;
@@ -22,13 +43,18 @@ public class Users {
     }
 
     // Constructor với tham số
+
     public Users(String userId, String fullname, String email, String status, String PIN) {
         this.userId = userId;
         this.fullname = fullname;
         this.email = email;
         this.status = status;
         this.PIN = PIN;
+        this.lastMessageTime = "";
+        this.fcmToken = "";
     }
+
+
 
     // Getters và Setters
 
@@ -71,4 +97,6 @@ public class Users {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 }

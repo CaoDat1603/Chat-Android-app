@@ -6,60 +6,87 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.model.Users;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginController {
     private static final String TAG = "LoginController";
+    private FirebaseDatabase database;
     private FirebaseAuth auth;
     private Context context;
 
     public LoginController(Context context) {
         this.context = context;
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
     }
 
-    // Xử lý đăng nhập bằng Google
+    // Chỉ đăng nhập, không đăng ký tài khoản mới
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct, OnLoginCompleteListener listener) {
-        Log.d(TAG, "firebaseAuthWithGoogle: " + acct.getId());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        // Kiểm tra email có đuôi hợp lệ
+        String email = acct.getEmail();
+        if (!isValidEmail(email)) {
+            listener.onError("Email không hợp lệ! Vui lòng sử dụng email có đuôi @ut.edu.vn.");
+            return;
+        }
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         auth.signInWithCredential(credential)
-                .addOnCompleteListener((AppCompatActivity) context, task -> {
-                    if (task.isSuccessful()) {
-                        // Đăng nhập thành công
-                        Log.d(TAG, "signInWithCredential: success");
-                        FirebaseUser user = auth.getCurrentUser();
+                .addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = auth.getCurrentUser();
 
-                        if (user != null) {
-                            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-                                // Người dùng hợp lệ
-                                listener.onSuccess(user);
+                            if (user != null) {
+                                checkAndSaveUser(user, listener);
                             } else {
-                                // Trường hợp email null hoặc rỗng
-                                listener.onError("Người dùng không có email hợp lệ. Vui lòng thử lại với tài khoản khác.");
+                                listener.onError("Người dùng không tồn tại!");
                             }
                         } else {
-                            listener.onError("Người dùng không tồn tại!");
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            listener.onError("Authentication Failed: " + task.getException().getMessage());
                         }
-                    } else {
-                        // Đăng nhập thất bại
-                        Log.w(TAG, "signInWithCredential: failure", task.getException());
-                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Lỗi không xác định";
-                        listener.onError("Authentication Failed: " + errorMessage);
                     }
                 });
     }
 
+    private void checkAndSaveUser(FirebaseUser firebaseUser, OnLoginCompleteListener listener) {
+        String userId = firebaseUser.getUid();
+        DatabaseReference userRef = database.getReference("user").child(userId);
 
-    // Interface thông báo kết quả đăng nhập
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                Log.d(TAG, "User already exists.");
+                listener.onSuccess(firebaseUser); // ✅ TRUYỀN ĐÚNG KIỂU
+            } else {
+                Log.w(TAG, "signInWithCredential: failure", task.getException());
+                String errorMessage = task.getException() != null ? task.getException().getMessage() : "Lỗi không xác định";
+                listener.onError("Authentication Failed: " + errorMessage);
+            }
+        }).addOnFailureListener(e -> {
+            listener.onError("Lỗi khi kiểm tra người dùng: " + e.getMessage());
+        });
+    }
+
+    private boolean isValidEmail(String email) {
+        return email != null && email.endsWith("@ut.edu.vn");
+    }
+
     public interface OnLoginCompleteListener {
-        void onSuccess(FirebaseUser user); // Trả về người dùng đã đăng nhập thành công
+        void onSuccess(FirebaseUser user); // ✅ GIỮ NGUYÊN
         void onError(String errorMessage);
     }
 }

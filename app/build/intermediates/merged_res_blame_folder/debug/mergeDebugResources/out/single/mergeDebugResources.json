@@ -28,6 +28,10 @@
         "source": "com.example.myapplication.app-main-43:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
+        "merged": "com.example.myapplication.app-debug-41:/drawable_pink_blue_gradient.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/drawable/pink_blue_gradient.xml"
+    },
+    {
         "merged": "com.example.myapplication.app-debug-41:/layout_activity_main_group.xml.flat",
         "source": "com.example.myapplication.app-main-43:/layout/activity_main_group.xml"
     },
@@ -232,16 +236,20 @@
         "source": "com.example.myapplication.app-main-43:/drawable/ic_launcher_foreground.xml"
     },
     {
+        "merged": "com.example.myapplication.app-debug-41:/drawable_bottom_nav_background.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/drawable/bottom_nav_background.xml"
+    },
+    {
         "merged": "com.example.myapplication.app-debug-41:/layout_user_search_item.xml.flat",
         "source": "com.example.myapplication.app-main-43:/layout/user_search_item.xml"
     },
     {
-        "merged": "com.example.myapplication.app-debug-41:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.myapplication.app-main-43:/mipmap-anydpi-v26/ic_launcher.xml"
-    },
-    {
         "merged": "com.example.myapplication.app-debug-41:/mipmap-xxhdpi_dvd_round.webp.flat",
         "source": "com.example.myapplication.app-main-43:/mipmap-xxhdpi/dvd_round.webp"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-41:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
         "merged": "com.example.myapplication.app-debug-41:/drawable-xhdpi_photocamera.png.flat",
@@ -266,6 +274,10 @@
     {
         "merged": "com.example.myapplication.app-debug-41:/layout_activity_chat.xml.flat",
         "source": "com.example.myapplication.app-main-43:/layout/activity_chat.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-41:/layout_dialog_token.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/layout/dialog_token.xml"
     },
     {
         "merged": "com.example.myapplication.app-debug-41:/drawable-xhdpi_file.png.flat",
@@ -344,6 +356,10 @@
         "source": "com.example.myapplication.app-main-43:/drawable-xhdpi/exit.png"
     },
     {
+        "merged": "com.example.myapplication.app-debug-41:/drawable_gradient_black_background.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/drawable/gradient_black_background.xml"
+    },
+    {
         "merged": "com.example.myapplication.app-debug-41:/layout_group_item.xml.flat",
         "source": "com.example.myapplication.app-main-43:/layout/group_item.xml"
     },
@@ -378,6 +394,14 @@
     {
         "merged": "com.example.myapplication.app-debug-41:/drawable-xhdpi_chat.png.flat",
         "source": "com.example.myapplication.app-main-43:/drawable-xhdpi/chat.png"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-41:/drawable_dark_card_background.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/drawable/dark_card_background.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-41:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/menu/bottom_nav_menu.xml"
     },
     {
         "merged": "com.example.myapplication.app-debug-41:/layout_activity_splash.xml.flat",
@@ -438,6 +462,10 @@
     {
         "merged": "com.example.myapplication.app-debug-41:/layout_activity_create_group.xml.flat",
         "source": "com.example.myapplication.app-main-43:/layout/activity_create_group.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-debug-41:/drawable_icon_check.xml.flat",
+        "source": "com.example.myapplication.app-main-43:/drawable/icon_check.xml"
     },
     {
         "merged": "com.example.myapplication.app-debug-41:/mipmap-mdpi_ic_launcher_foreground.webp.flat",

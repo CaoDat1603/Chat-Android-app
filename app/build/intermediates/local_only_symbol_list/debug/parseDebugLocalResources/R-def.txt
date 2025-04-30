@@ -1,17 +1,28 @@
 R_DEF: Internal format may change without notice
 local
 color black
+color blue
+color dark_grey
 color ic_launcher_background
+color medium_grey
+color pink
+color purple
+color text_dark_grey
+color text_light
+color transparent_blue
+color transparent_purple
 color white
 drawable add
 drawable back
 drawable back1
 drawable bordermain
+drawable bottom_nav_background
 drawable camera
 drawable change_key
 drawable chat
 drawable check_icon
 drawable checked
+drawable dark_card_background
 drawable delete
 drawable dvd
 drawable dvd_background
@@ -22,9 +33,11 @@ drawable error
 drawable exit
 drawable file
 drawable filed
+drawable gradient_black_background
 drawable group
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable icon_check
 drawable imageadd
 drawable key
 drawable layouta
@@ -42,6 +55,7 @@ drawable main
 drawable next
 drawable people
 drawable photocamera
+drawable pink_blue_gradient
 drawable receive
 drawable reciver_shape
 drawable reseau
@@ -64,6 +78,7 @@ font spartan_regular
 font spartan_thin
 id avatar
 id backgroundImage
+id bottomBar
 id btnGoogleSignIn
 id btn_edit
 id buttonQuit
@@ -97,13 +112,18 @@ id imageView2
 id imageView5
 id imageView6
 id isadmin
+id lastMessage
 id ll1
 id lnMdtxt
 id logoutdia
 id logoutimg
 id main
 id mainUserRecyclerView
+id messageStatus
+id messageTime
 id msgadapter
+id nav_chats
+id nav_groups
 id nextgrmember
 id nobnt
 id noted
@@ -126,6 +146,7 @@ id senderImageView
 id sendertextset
 id setting_profile
 id settinggroup
+id subToolbar
 id textView
 id textView2
 id textView3
@@ -135,6 +156,7 @@ id textView8
 id textViewLogin
 id textmsg
 id timeCreateGr
+id tokenTextView
 id toolBar
 id turnback
 id user_avatar
@@ -155,12 +177,14 @@ layout activity_setting_group
 layout activity_show_image_message
 layout activity_splash
 layout dialog_layout
+layout dialog_token
 layout group_item
 layout group_member_item
 layout reciver_layout
 layout sender_layout
 layout user_item
 layout user_search_item
+menu bottom_nav_menu
 mipmap dvd
 mipmap dvd_foreground
 mipmap dvd_round

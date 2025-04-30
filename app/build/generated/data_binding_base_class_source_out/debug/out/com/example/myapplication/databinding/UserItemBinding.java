@@ -5,23 +5,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.myapplication.R;
+import com.google.android.material.card.MaterialCardView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class UserItemBinding implements ViewBinding {
   @NonNull
-  private final RelativeLayout rootView;
+  private final MaterialCardView rootView;
 
   @NonNull
-  public final ImageView userAvatar;
+  public final TextView lastMessage;
+
+  @NonNull
+  public final ImageView messageStatus;
+
+  @NonNull
+  public final TextView messageTime;
+
+  @NonNull
+  public final CircleImageView userAvatar;
 
   @NonNull
   public final TextView username;
@@ -29,9 +39,14 @@ public final class UserItemBinding implements ViewBinding {
   @NonNull
   public final TextView userstatus;
 
-  private UserItemBinding(@NonNull RelativeLayout rootView, @NonNull ImageView userAvatar,
-      @NonNull TextView username, @NonNull TextView userstatus) {
+  private UserItemBinding(@NonNull MaterialCardView rootView, @NonNull TextView lastMessage,
+      @NonNull ImageView messageStatus, @NonNull TextView messageTime,
+      @NonNull CircleImageView userAvatar, @NonNull TextView username,
+      @NonNull TextView userstatus) {
     this.rootView = rootView;
+    this.lastMessage = lastMessage;
+    this.messageStatus = messageStatus;
+    this.messageTime = messageTime;
     this.userAvatar = userAvatar;
     this.username = username;
     this.userstatus = userstatus;
@@ -39,7 +54,7 @@ public final class UserItemBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public RelativeLayout getRoot() {
+  public MaterialCardView getRoot() {
     return rootView;
   }
 
@@ -64,8 +79,26 @@ public final class UserItemBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.lastMessage;
+      TextView lastMessage = ViewBindings.findChildViewById(rootView, id);
+      if (lastMessage == null) {
+        break missingId;
+      }
+
+      id = R.id.messageStatus;
+      ImageView messageStatus = ViewBindings.findChildViewById(rootView, id);
+      if (messageStatus == null) {
+        break missingId;
+      }
+
+      id = R.id.messageTime;
+      TextView messageTime = ViewBindings.findChildViewById(rootView, id);
+      if (messageTime == null) {
+        break missingId;
+      }
+
       id = R.id.user_avatar;
-      ImageView userAvatar = ViewBindings.findChildViewById(rootView, id);
+      CircleImageView userAvatar = ViewBindings.findChildViewById(rootView, id);
       if (userAvatar == null) {
         break missingId;
       }
@@ -82,7 +115,8 @@ public final class UserItemBinding implements ViewBinding {
         break missingId;
       }
 
-      return new UserItemBinding((RelativeLayout) rootView, userAvatar, username, userstatus);
+      return new UserItemBinding((MaterialCardView) rootView, lastMessage, messageStatus,
+          messageTime, userAvatar, username, userstatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

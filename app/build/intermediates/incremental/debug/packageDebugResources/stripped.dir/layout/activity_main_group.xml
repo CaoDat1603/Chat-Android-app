@@ -5,99 +5,110 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
-    android:background="@drawable/group">
+    tools:context=".view.MainActivityGroup"
+    android:background="@drawable/gradient_black_background">
 
     <LinearLayout
         android:id="@+id/toolBar"
-        android:layout_width="363dp"
-        android:layout_height="57dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:elevation="4dp"
+        android:background="#33FFFFFF">
+
+        <ImageView
+            android:id="@+id/setting_profile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/setting" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:fontFamily="@font/spartan_bold"
-            android:text="@string/app_name"
+            android:text="Nhóm Chat"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2" />
 
         <ImageView
             android:id="@+id/logoutimg"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="80dp"
-            android:src="@drawable/logout3" />
-
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/logout2" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/createGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="298dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginBottom="635dp"
-        android:src="@drawable/add" />
+    <LinearLayout
+        android:id="@+id/subToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/toolBar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="#33FFFFFF">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Danh sách nhóm"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1" />
+
+        <ImageView
+            android:id="@+id/createGroup"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/add" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groupChatText"
-        android:layout_width="348dp"
-        android:layout_height="412dp"
-        android:layout_below="@+id/toolBar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="98dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="100dp" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/subToolbar"
+        android:layout_marginBottom="70dp"
+        android:padding="8dp"
+        android:background="@drawable/gradient_black_background" />
 
-    <ImageView
-        android:id="@+id/chatOneOne"
-        android:layout_width="wrap_content"
-        android:layout_height="69dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="705dp"
-        android:layout_marginEnd="249dp"
-        android:layout_marginBottom="12dp"
-        android:src="@drawable/chat" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/bottom_nav_background">
 
-    <ImageView
-        android:id="@+id/chatGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="251dp"
-        android:layout_marginTop="708dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginBottom="21dp"
-        android:src="@drawable/reunion" />
+        <ImageView
+            android:id="@+id/chatOneOne"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="40dp"
+            android:src="@drawable/chat" />
 
-    <ImageView
-        android:id="@+id/setting_profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="344dp"
-        android:layout_marginBottom="791dp"
-        app:srcCompat="@drawable/setting" />
+        <ImageView
+            android:id="@+id/chatGroup"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:src="@drawable/reunion" />
+    </LinearLayout>
 
 </RelativeLayout>

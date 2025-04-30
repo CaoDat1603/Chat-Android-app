@@ -28,6 +28,10 @@
         "source": "com.example.myapplication.app-main-43:/layout/group_member_item.xml"
     },
     {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/dialog_token.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/dialog_token.xml"
+    },
+    {
         "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_reset_pin.xml",
         "source": "com.example.myapplication.app-main-43:/layout/activity_reset_pin.xml"
     },

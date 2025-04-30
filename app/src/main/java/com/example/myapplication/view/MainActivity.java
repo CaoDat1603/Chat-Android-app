@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the list and adapter
         usersArrayList = new ArrayList<>();
-        adapterUse = new UserAdapter(usersArrayList, MainActivity.this);
+        adapterUse = new UserAdapter(MainActivity.this, usersArrayList);
         mainUserRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mainUserRecyclerView.setAdapter(adapterUse);
 

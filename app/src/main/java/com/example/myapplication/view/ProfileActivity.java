@@ -111,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void navigateToLogin() {
-        Intent intent = new Intent(ProfileActivity.this, LoginController.class);
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

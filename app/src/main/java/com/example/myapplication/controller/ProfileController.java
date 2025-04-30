@@ -1,6 +1,7 @@
 package com.example.myapplication.controller;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,7 +28,6 @@ public class ProfileController {
     private FirebaseAuth auth;
     private DatabaseReference reference;
 
-
     public ProfileController(ProfileActivity view) {
         this.view = view;
         auth = FirebaseAuth.getInstance();
@@ -39,7 +39,7 @@ public class ProfileController {
         reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Users user = dataSnapshot.getValue(Users.class); // Sử dụng model User
+                Users user = dataSnapshot.getValue(Users.class);
                 if (user != null && user.getFullname() != null) {
                     listener.onFetched(user.getFullname());
                 } else {
@@ -67,50 +67,42 @@ public class ProfileController {
         view.navigateToResetPinActivity();
     }
 
-    // Hiển thị hộp thoại xác nhận xóa tài khoản
     public void deleteAccount() {
         Dialog dialog = new Dialog(view, R.style.dialoge);
         dialog.setContentView(R.layout.dialog_layout);
         Button no = dialog.findViewById(R.id.nobnt);
         Button yes = dialog.findViewById(R.id.yesbnt);
 
-        // Xác nhận xóa tài khoản
         yes.setOnClickListener(v -> {
             dialog.dismiss();
-            deleteFirebaseAccountAndData();
+            deleteFirebaseAccountOnly();
         });
 
-        // Đóng hộp thoại nếu không đồng ý
         no.setOnClickListener(v -> dialog.dismiss());
-
         dialog.show();
     }
 
-    private void deleteFirebaseAccountAndData() {
+
+    private void deleteFirebaseAccountOnly() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
-            String userId = currentUser.getUid();
+            currentUser.delete().addOnCompleteListener(deleteTask -> {
+                if (deleteTask.isSuccessful()) {
+                    clearAppData();
+                    signOutFromGoogle();
 
-            // Xóa dữ liệu trong Realtime Database trước
-            reference.child(userId).removeValue().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // Tiếp tục xóa tài khoản Firebase Authentication
-                    currentUser.delete().addOnCompleteListener(deleteTask -> {
-                        if (deleteTask.isSuccessful()) {
-                            Toast.makeText(view, "Tài khoản và dữ liệu đã được xóa thành công!", Toast.LENGTH_SHORT).show();
-                            view.navigateToLogin(); // Điều hướng về màn hình đăng nhập
-                        } else {
-                            handleDeleteError(deleteTask.getException(), currentUser);
-                        }
-                    });
+                    Toast.makeText(view, "Tài khoản đã được xóa, dữ liệu vẫn được giữ lại!", Toast.LENGTH_SHORT).show();
+                    view.navigateToLogin();
                 } else {
-                    Toast.makeText(view, "Không thể xóa dữ liệu tài khoản: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    handleDeleteError(deleteTask.getException(), currentUser);
                 }
             });
         } else {
             Toast.makeText(view, "Người dùng không tồn tại!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void handleDeleteError(Exception exception, FirebaseUser user) {
         if (exception != null && exception.getMessage().contains("requires recent login")) {
@@ -121,17 +113,15 @@ public class ProfileController {
     }
 
     private void reauthenticateAndDelete(FirebaseUser user) {
-        // Lấy thông tin Google Credential
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(view, GoogleSignInOptions.DEFAULT_SIGN_IN);
         googleSignInClient.silentSignIn().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 String idToken = task.getResult().getIdToken();
                 AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
-                // Xác thực lại
                 user.reauthenticate(credential).addOnCompleteListener(authTask -> {
                     if (authTask.isSuccessful()) {
-                        deleteFirebaseAccountAndData(); // Thực hiện xóa lại
+                        deleteFirebaseAccountOnly();
                     } else {
                         Toast.makeText(view, "Xác thực lại thất bại: " + authTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -142,12 +132,41 @@ public class ProfileController {
         });
     }
 
-    // Đăng xuất người dùng
     public void signOut() {
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(view, GoogleSignInOptions.DEFAULT_SIGN_IN);
         googleSignInClient.signOut().addOnCompleteListener(task -> {
             FirebaseAuth.getInstance().signOut();
+            clearAppData();
             view.navigateToLogin();
         });
     }
+
+    private void signOutFromGoogle() {
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(view, GoogleSignInOptions.DEFAULT_SIGN_IN);
+        googleSignInClient.revokeAccess().addOnCompleteListener(task -> {
+            googleSignInClient.signOut();
+        });
+    }
+
+    private void clearAppData() {
+        // Xóa SharedPreferences
+        SharedPreferences preferences = view.getSharedPreferences("your_pref_name", 0);
+        if (preferences != null) {
+            preferences.edit().clear().apply();
+        }
+
+        // Xóa cache
+        try {
+            String[] files = view.fileList();
+            for (String file : files) {
+                view.deleteFile(file);
+            }
+
+            // Xóa cache nội bộ
+            view.getCacheDir().delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

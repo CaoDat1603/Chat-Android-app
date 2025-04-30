@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp">
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#212121">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_margin="8dp"
-        android:background="@drawable/bordermain">
+        android:padding="12dp"
+        android:background="@drawable/dark_card_background">
 
-        <!-- Hình Avatar -->
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/users" />
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/users"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/purple" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
 
             <TextView
                 android:id="@+id/username"
@@ -32,19 +41,51 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/spartan_bold"
                 android:text="Name"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/text_light"
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+            
+            <TextView
+                android:id="@+id/lastMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="No messages yet"
+                android:textColor="@color/text_dark_grey"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
             <TextView
                 android:id="@+id/userstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:fontFamily="@font/spartan_bold"
                 android:text="Status"
-                android:textColor="@color/black"
-                android:textSize="10.40sp" />
-
+                android:textColor="@color/purple"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/messageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="12:30"
+            android:textSize="12sp"
+            android:textColor="@color/text_dark_grey" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/messageStatus"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/icon_check"
+            android:visibility="gone"
+            android:tint="@color/text_light" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

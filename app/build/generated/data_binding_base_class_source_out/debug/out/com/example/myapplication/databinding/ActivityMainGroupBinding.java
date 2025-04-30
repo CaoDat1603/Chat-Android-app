@@ -22,6 +22,9 @@ public final class ActivityMainGroupBinding implements ViewBinding {
   private final RelativeLayout rootView;
 
   @NonNull
+  public final LinearLayout bottomBar;
+
+  @NonNull
   public final ImageView chatGroup;
 
   @NonNull
@@ -43,14 +46,18 @@ public final class ActivityMainGroupBinding implements ViewBinding {
   public final ImageView settingProfile;
 
   @NonNull
+  public final LinearLayout subToolbar;
+
+  @NonNull
   public final LinearLayout toolBar;
 
-  private ActivityMainGroupBinding(@NonNull RelativeLayout rootView, @NonNull ImageView chatGroup,
-      @NonNull ImageView chatOneOne, @NonNull ImageView createGroup,
-      @NonNull RecyclerView groupChatText, @NonNull ImageView logoutimg,
-      @NonNull RelativeLayout main, @NonNull ImageView settingProfile,
-      @NonNull LinearLayout toolBar) {
+  private ActivityMainGroupBinding(@NonNull RelativeLayout rootView,
+      @NonNull LinearLayout bottomBar, @NonNull ImageView chatGroup, @NonNull ImageView chatOneOne,
+      @NonNull ImageView createGroup, @NonNull RecyclerView groupChatText,
+      @NonNull ImageView logoutimg, @NonNull RelativeLayout main, @NonNull ImageView settingProfile,
+      @NonNull LinearLayout subToolbar, @NonNull LinearLayout toolBar) {
     this.rootView = rootView;
+    this.bottomBar = bottomBar;
     this.chatGroup = chatGroup;
     this.chatOneOne = chatOneOne;
     this.createGroup = createGroup;
@@ -58,6 +65,7 @@ public final class ActivityMainGroupBinding implements ViewBinding {
     this.logoutimg = logoutimg;
     this.main = main;
     this.settingProfile = settingProfile;
+    this.subToolbar = subToolbar;
     this.toolBar = toolBar;
   }
 
@@ -88,6 +96,12 @@ public final class ActivityMainGroupBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.bottomBar;
+      LinearLayout bottomBar = ViewBindings.findChildViewById(rootView, id);
+      if (bottomBar == null) {
+        break missingId;
+      }
+
       id = R.id.chatGroup;
       ImageView chatGroup = ViewBindings.findChildViewById(rootView, id);
       if (chatGroup == null) {
@@ -126,14 +140,21 @@ public final class ActivityMainGroupBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.subToolbar;
+      LinearLayout subToolbar = ViewBindings.findChildViewById(rootView, id);
+      if (subToolbar == null) {
+        break missingId;
+      }
+
       id = R.id.toolBar;
       LinearLayout toolBar = ViewBindings.findChildViewById(rootView, id);
       if (toolBar == null) {
         break missingId;
       }
 
-      return new ActivityMainGroupBinding((RelativeLayout) rootView, chatGroup, chatOneOne,
-          createGroup, groupChatText, logoutimg, main, settingProfile, toolBar);
+      return new ActivityMainGroupBinding((RelativeLayout) rootView, bottomBar, chatGroup,
+          chatOneOne, createGroup, groupChatText, logoutimg, main, settingProfile, subToolbar,
+          toolBar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
