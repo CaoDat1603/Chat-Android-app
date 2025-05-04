@@ -66,32 +66,31 @@ public class GroupRepository {
     public void listenToGroups() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        groupMemberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        groupMemberRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot memberSnapshot) {
                 List<String> userGroupIds = new ArrayList<>();
 
-                for (DataSnapshot groupSnapshot : snapshot.getChildren()) {
-                    String groupId = groupSnapshot.getKey(); // ví dụ: "group_1745997268296"
+                for (DataSnapshot groupSnapshot : memberSnapshot.getChildren()) {
+                    String groupId = groupSnapshot.getKey();
                     if (groupId != null) {
-                        for (DataSnapshot memberSnapshot : groupSnapshot.getChildren()) {
-                            String memberId = memberSnapshot.getKey(); // ví dụ: userId
+                        for (DataSnapshot member : groupSnapshot.getChildren()) {
+                            String memberId = member.getKey();
                             if (memberId != null && memberId.equals(currentUserId)) {
-                                userGroupIds.add(groupId); // Người dùng là thành viên của group này
+                                userGroupIds.add(groupId);
                                 break;
                             }
                         }
                     }
                 }
 
-                // Sau khi có danh sách groupId, lấy thông tin nhóm tương ứng
-                groupRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                groupRef.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onDataChange(@NonNull DataSnapshot groupSnapshot) {
                         List<Group> userGroups = new ArrayList<>();
 
-                        for (DataSnapshot groupSnapshot : snapshot.getChildren()) {
-                            Group group = groupSnapshot.getValue(Group.class);
+                        for (DataSnapshot groupData : groupSnapshot.getChildren()) {
+                            Group group = groupData.getValue(Group.class);
                             if (group != null && userGroupIds.contains(group.getGroupId())) {
                                 userGroups.add(group);
                             }
@@ -102,7 +101,7 @@ public class GroupRepository {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        controller.showMessage("Lỗi khi tải thông tin nhóm.");
+                        controller.showMessage("Lỗi khi tải danh sách nhóm.");
                     }
                 });
             }
@@ -113,6 +112,7 @@ public class GroupRepository {
             }
         });
     }
+
 
 
     // Cập nhật danh sách nhóm trong repository

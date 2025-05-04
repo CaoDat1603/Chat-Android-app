@@ -72,23 +72,7 @@ public class GroupChatActivity extends AppCompatActivity {
         findViewById(R.id.sendImage).setOnClickListener(v -> chatController.chooseImage());
         findViewById(R.id.sendFile).setOnClickListener(v -> chatController.chooseFile());
         findViewById(R.id.settinggroup).setOnClickListener(v -> settingGroup());
-
-        ImageButton turnback = findViewById(R.id.turnback);
-        // Turn back
-        turnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isChange) {
-                    // Kết thúc activity cũ và mở activity mới
-                    Intent intent = new Intent(GroupChatActivity.this, MainActivityGroup.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Tạo một task mới và xóa tất cả các activity phía trước
-                    startActivity(intent);
-                    finish();
-                } else {
-                    finish();
-                }
-            }
-        });
+        findViewById(R.id.turnback).setOnClickListener(v -> finish());
     }
 
     void settingGroup() {
@@ -101,11 +85,6 @@ public class GroupChatActivity extends AppCompatActivity {
         if (!messagesArrayList.isEmpty()) {
             msgAdapter.scrollToPosition(messagesArrayList.size() - 1);
         }
-    }
-
-    public Intent nextStingActivity() {
-        Intent intent = new Intent(GroupChatActivity.this, SettingGroupActivity.class);
-        return intent;
     }
 
     @Override

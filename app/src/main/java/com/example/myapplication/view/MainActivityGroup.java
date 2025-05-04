@@ -27,7 +27,6 @@ public class MainActivityGroup extends AppCompatActivity {
     private ImageView imglogout;
     private MainActivityGroupController controller;
     private ImageView imgSettingProfile;
-    private boolean isGroupUpdated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +103,5 @@ public class MainActivityGroup extends AppCompatActivity {
         Intent intent = new Intent(MainActivityGroup.this, ProfileActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    protected void onResume() {
-        super.onResume();
-        if (isGroupUpdated) {
-            controller.loadGroupList();
-            isGroupUpdated = false;  // Reset flag
-        }
     }
 }
