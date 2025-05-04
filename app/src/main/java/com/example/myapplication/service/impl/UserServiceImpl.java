@@ -6,10 +6,8 @@ import android.widget.EditText;
 
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.UserService;
+import com.example.myapplication.service.IUserService;
 import com.example.myapplication.view.MainActivity;
-import com.example.myapplication.R;
-import com.example.myapplication.view.MainActivityGroup;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -18,7 +16,7 @@ import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
     private final MainActivity view;
     private final FirebaseAuth auth;

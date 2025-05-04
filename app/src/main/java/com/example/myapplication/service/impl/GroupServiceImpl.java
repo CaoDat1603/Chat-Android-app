@@ -11,7 +11,7 @@ import com.example.myapplication.controller.MainActivityGroupController;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.GroupRepository;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.GroupService;
+import com.example.myapplication.service.IGroupService;
 import com.example.myapplication.view.MainActivityGroup;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,7 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-public class GroupServiceImpl implements GroupService {
+public class GroupServiceImpl implements IGroupService {
     private final MainActivityGroupController controller;
     private final GroupRepository repository;
     private final FirebaseAuth auth;

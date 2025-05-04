@@ -1,32 +1,32 @@
 package com.example.myapplication.controller;
 
 import android.net.Uri;
-import com.example.myapplication.service.ChatService;
+import com.example.myapplication.service.IChatService;
 
 public class ChatController {
-    private final ChatService chatService;
+    private final IChatService IChatService;
 
-    public ChatController(ChatService chatService) {
-        this.chatService = chatService;
+    public ChatController(IChatService IChatService) {
+        this.IChatService = IChatService;
     }
 
     public void initChat() {
-        chatService.initializeChat();
+        IChatService.initializeChat();
     }
 
     public void sendText(String msg) {
-        chatService.sendMessage(msg);
+        IChatService.sendMessage(msg);
     }
 
     public void chooseImage() {
-        chatService.selectImage();
+        IChatService.selectImage();
     }
 
     public void chooseFile() {
-        chatService.selectFile();
+        IChatService.selectFile();
     }
 
     public void uploadFile(Uri fileUri, int requestCode) {
-        chatService.sendMediaMessage(fileUri, requestCode);
+        IChatService.sendMediaMessage(fileUri, requestCode);
     }
 }

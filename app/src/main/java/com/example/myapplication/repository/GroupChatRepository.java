@@ -9,7 +9,7 @@ public class GroupChatRepository {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     public DatabaseReference getMessagesReference(String groupId) {
-        return database.getReference().child("groups").child(groupId).child("messages");
+        return database.getReference().child("room").child(groupId).child("messages");
     }
 
     public Task<Void> sendMessageToRoom(String groupId, msgModel message) {

@@ -1,10 +1,7 @@
 package com.example.myapplication.controller;
 
-import com.example.myapplication.service.FirebaseService;
+import com.example.myapplication.service.IFirebaseService;
 import com.example.myapplication.service.impl.FirebaseServiceImpl;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class StatusController {
-    private final FirebaseService service = new FirebaseServiceImpl();
+    private final IFirebaseService service = new FirebaseServiceImpl();
 
     public void updateDateOnline() {
         service.updateDateOnline();

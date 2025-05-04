@@ -7,7 +7,7 @@ import com.example.myapplication.controller.ManageMemberController;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.GroupRepository;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.ManageMemberService;
+import com.example.myapplication.service.IManageMemberService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageMemberServiceImpl implements ManageMemberService {
+public class ManageMemberServiceImpl implements IManageMemberService {
     private final ManageMemberController controller;
     private final GroupRepository repository;
     private final UserRepository userRepository;

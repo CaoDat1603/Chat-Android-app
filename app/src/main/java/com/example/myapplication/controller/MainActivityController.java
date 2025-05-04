@@ -1,11 +1,11 @@
 package com.example.myapplication.controller;
 
-import com.example.myapplication.service.UserService;
+import com.example.myapplication.service.IUserService;
 
 public class MainActivityController {
-    private final UserService userService;
+    private final IUserService userService;
 
-    public MainActivityController(UserService userService) {
+    public MainActivityController(IUserService userService) {
         this.userService = userService;
     }
 

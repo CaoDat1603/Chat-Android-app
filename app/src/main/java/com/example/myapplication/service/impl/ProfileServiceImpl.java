@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.ProfileService;
-import com.example.myapplication.service.UsernameCallback;
+import com.example.myapplication.service.IProfileService;
+import com.example.myapplication.service.IUsernameCallback;
 import com.example.myapplication.view.LoginActivity;
 import com.example.myapplication.view.MainActivity;
 import com.example.myapplication.view.ResetPinActivity;
@@ -18,7 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileServiceImpl implements ProfileService {
+public class ProfileServiceImpl implements IProfileService {
     private final Activity activity;
     private final UserRepository userRepository;
     private final FirebaseUser currentUser;
@@ -30,7 +30,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void fetchUserName(UsernameCallback callback) {
+    public void fetchUserName(IUsernameCallback callback) {
         if (currentUser != null) {
             userRepository.getUser(currentUser.getUid(), new ValueEventListener() {
                 @Override

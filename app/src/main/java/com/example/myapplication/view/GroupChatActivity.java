@@ -4,9 +4,7 @@ package com.example.myapplication.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +19,7 @@ import com.example.myapplication.controller.GroupChatController;
 import com.example.myapplication.controller.SettingGroupController;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.model.msgModel;
-import com.example.myapplication.service.GroupChatService;
+import com.example.myapplication.service.IGroupChatService;
 import com.example.myapplication.service.impl.GroupChatServiceImpl;
 import com.example.myapplication.view.adapter.messagesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +55,7 @@ public class GroupChatActivity extends AppCompatActivity {
         messagesAdapter = new messagesAdapter(this, messagesArrayList);
         msgAdapter.setAdapter(messagesAdapter);
 
-        GroupChatService chatService = new GroupChatServiceImpl(this, groupID, senderUID, messagesArrayList, messagesAdapter);
+        IGroupChatService chatService = new GroupChatServiceImpl(this, groupID, senderUID, messagesArrayList, messagesAdapter);
         chatController = new GroupChatController(chatService);
         chatController.initGroupChat();
 

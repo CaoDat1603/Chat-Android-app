@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.model.msgModel;
 import com.example.myapplication.repository.GroupChatRepository;
-import com.example.myapplication.service.GroupChatService;
+import com.example.myapplication.service.IGroupChatService;
 import com.example.myapplication.view.GroupChatActivity;
 import com.example.myapplication.view.adapter.messagesAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class GroupChatServiceImpl implements GroupChatService {
+public class GroupChatServiceImpl implements IGroupChatService {
     private final GroupChatActivity groupChatActivity;
     private final String groupID;
     private final String senderID;

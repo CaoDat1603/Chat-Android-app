@@ -1,10 +1,7 @@
 package com.example.myapplication.service.impl;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,30 +11,20 @@ import com.example.myapplication.controller.RegisterController;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.FirebaseRepositor;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.FirebaseService;
-import com.example.myapplication.service.UserService;
-import com.example.myapplication.view.MainActivity;
-import com.example.myapplication.R;
-import com.example.myapplication.view.MainActivityGroup;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.example.myapplication.service.IFirebaseService;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class FirebaseServiceImpl implements FirebaseService {
+public class FirebaseServiceImpl implements IFirebaseService {
     private static final String TAG = "LoginController";
     private final FirebaseRepositor repositor;
     private final UserRepository userRepository;

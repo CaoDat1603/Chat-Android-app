@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.controller.ChatController;
 import com.example.myapplication.model.msgModel;
-import com.example.myapplication.service.ChatService;
+import com.example.myapplication.service.IChatService;
 import com.example.myapplication.service.impl.ChatServiceImpl;
 import com.example.myapplication.view.adapter.messagesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,8 +50,8 @@ public class ChatActivity extends AppCompatActivity {
         String senderRoom = SenderUID + reciverUID;
         String receiverRoom = reciverUID + SenderUID;
 
-        ChatService chatService = new ChatServiceImpl(this, senderRoom, receiverRoom, SenderUID, messagesArrayList, messagesAdapter);
-        chatController = new ChatController(chatService);
+        IChatService IChatService = new ChatServiceImpl(this, senderRoom, receiverRoom, SenderUID, messagesArrayList, messagesAdapter);
+        chatController = new ChatController(IChatService);
         chatController.initChat();
 
         sendbtn = findViewById(R.id.sendbtn);

@@ -1,37 +1,22 @@
 package com.example.myapplication.service.impl;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.text.InputType;
-import android.widget.Button;
-import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.R;
 import com.example.myapplication.controller.GroupController;
-import com.example.myapplication.controller.MainActivityGroupController;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.model.GroupMember;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.GroupRepository;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.CreateGroupService;
-import com.example.myapplication.service.GroupService;
+import com.example.myapplication.service.ICreateGroupService;
 import com.example.myapplication.view.CreateGroupActivity;
-import com.example.myapplication.view.MainActivityGroup;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class CreateGroupServiceImpl implements CreateGroupService {
+public class CreateGroupServiceImpl implements ICreateGroupService {
     private final GroupController controller;
     private final GroupRepository repository;
     private final UserRepository userRreository;

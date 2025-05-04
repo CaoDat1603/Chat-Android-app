@@ -1,25 +1,16 @@
 package com.example.myapplication.controller;
 
 import android.content.Context;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.example.myapplication.model.Users;
-import com.example.myapplication.service.ManageMemberService;
+import com.example.myapplication.service.IManageMemberService;
 import com.example.myapplication.service.impl.ManageMemberServiceImpl;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageMemberController {
     private final Context context;
-    private final ManageMemberService service;
+    private final IManageMemberService service;
 
     public ManageMemberController(Context context) {
         this.context = context;

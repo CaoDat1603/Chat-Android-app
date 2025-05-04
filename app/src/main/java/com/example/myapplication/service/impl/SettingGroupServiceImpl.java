@@ -1,34 +1,20 @@
 package com.example.myapplication.service.impl;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.text.InputType;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.R;
-import com.example.myapplication.controller.MainActivityGroupController;
 import com.example.myapplication.controller.SettingGroupController;
 import com.example.myapplication.model.Group;
-import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.GroupRepository;
-import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.GroupService;
-import com.example.myapplication.service.SettingGroupService;
+import com.example.myapplication.service.ISettingGroupService;
 import com.example.myapplication.view.MainActivityGroup;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-public class SettingGroupServiceImpl implements SettingGroupService {
+public class SettingGroupServiceImpl implements ISettingGroupService {
     private final SettingGroupController controller;
     private final GroupRepository repository;
 

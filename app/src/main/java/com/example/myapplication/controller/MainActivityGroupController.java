@@ -1,14 +1,14 @@
 package com.example.myapplication.controller;
 
 import com.example.myapplication.model.Group;
-import com.example.myapplication.service.GroupService;
+import com.example.myapplication.service.IGroupService;
 import com.example.myapplication.service.impl.GroupServiceImpl;
 import com.example.myapplication.view.MainActivityGroup;
 import java.util.ArrayList;
 
 public class MainActivityGroupController {
     public final MainActivityGroup view;
-    private final GroupService service;
+    private final IGroupService service;
 
     public MainActivityGroupController(MainActivityGroup view) {
         this.view = view;

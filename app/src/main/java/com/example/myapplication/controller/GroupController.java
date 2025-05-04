@@ -1,7 +1,7 @@
 package com.example.myapplication.controller;
 
 import com.example.myapplication.model.Users;
-import com.example.myapplication.service.CreateGroupService;
+import com.example.myapplication.service.ICreateGroupService;
 import com.example.myapplication.service.impl.CreateGroupServiceImpl;
 import com.example.myapplication.view.CreateGroupActivity;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GroupController {
     private final CreateGroupActivity view;
-    private final CreateGroupService service;
+    private final ICreateGroupService service;
 
     public GroupController(CreateGroupActivity view) {
         this.view = view;

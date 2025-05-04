@@ -1,23 +1,14 @@
 package com.example.myapplication.controller;
 
-import android.content.Intent;
-import android.widget.Toast;
-
 import com.example.myapplication.model.Group;
-import com.example.myapplication.service.SettingGroupService;
+import com.example.myapplication.service.ISettingGroupService;
 import com.example.myapplication.service.impl.SettingGroupServiceImpl;
-import com.example.myapplication.view.MainActivityGroup;
 import com.example.myapplication.view.SettingGroupActivity;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 public class SettingGroupController {
     public String groupId;
     public SettingGroupActivity view; // Giữ reference đến SettingGroupActivity
-    private final SettingGroupService service;
+    private final ISettingGroupService service;
 
 
     // Constructor với groupId

@@ -2,19 +2,19 @@ package com.example.myapplication.controller;
 
 
 import android.app.Activity;
-import com.example.myapplication.service.ProfileService;
+import com.example.myapplication.service.IProfileService;
 import com.example.myapplication.service.impl.ProfileServiceImpl;
-import com.example.myapplication.service.UsernameCallback;
+import com.example.myapplication.service.IUsernameCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 public class ProfileController {
-    private final ProfileService profileService;
+    private final IProfileService profileService;
 
     public ProfileController(Activity activity) {
         this.profileService = new ProfileServiceImpl(activity);
     }
 
-    public void fetchUserName(UsernameCallback callback) {
+    public void fetchUserName(IUsernameCallback callback) {
         profileService.fetchUserName(callback);
     }
 

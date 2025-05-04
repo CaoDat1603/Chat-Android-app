@@ -1,14 +1,12 @@
 package com.example.myapplication.controller;
 
-import android.content.Intent;
 import android.net.Uri;
-import com.example.myapplication.service.GroupChatService;
-import com.example.myapplication.view.GroupChatActivity;
+import com.example.myapplication.service.IGroupChatService;
 
 public class GroupChatController {
-    private final GroupChatService groupChatService;
+    private final IGroupChatService groupChatService;
 
-    public GroupChatController(GroupChatService groupChatService) {
+    public GroupChatController(IGroupChatService groupChatService) {
         this.groupChatService = groupChatService;
     }
 

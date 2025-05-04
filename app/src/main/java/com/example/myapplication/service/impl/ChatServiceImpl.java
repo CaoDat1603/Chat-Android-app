@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.model.msgModel;
 import com.example.myapplication.repository.ChatRepository;
-import com.example.myapplication.service.ChatService;
+import com.example.myapplication.service.IChatService;
 import com.example.myapplication.view.ChatActivity;
 import com.example.myapplication.view.adapter.messagesAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ChatServiceImpl implements ChatService {
+public class ChatServiceImpl implements IChatService {
     private final ChatActivity chatActivity;
     private final String senderRoom;
     private final String receiverRoom;
