@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0FFFF"
+    android:background="@drawable/gradient_black_background"
     tools:context=".view.GroupChatActivity">
 
     <LinearLayout
@@ -47,7 +47,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:padding="12dp"
-        android:textColor="@color/black" />
+        android:textColorHint="@color/white"
+        android:textColor="@color/white" />
 
     <!-- Danh sách người dùng -->
     <androidx.recyclerview.widget.RecyclerView

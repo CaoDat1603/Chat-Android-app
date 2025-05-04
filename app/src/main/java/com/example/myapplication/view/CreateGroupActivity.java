@@ -115,31 +115,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         selectedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedRecyclerView.setAdapter(selectedAdapter);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("user");
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                allUsers.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Users user = dataSnapshot.getValue(Users.class);
-                    if (!user.getUserId().equals(adminId)) {
-                        allUsers.add(user);
-                    } else {
-                        users = user;
-                    }
-                }
-                filterUserList(""); // Lọc lại danh sách khi có dữ liệu
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                showErrorMessage("Lỗi khi tải dữ liệu người dùng.");
-            }
-        });
-
         groupController = new GroupController(this);
+        groupController.filterUser(allUsers, users, adminId);
 
         findViewById(R.id.createButton).setOnClickListener(v -> {
             if (selectedUsers.isEmpty()) {
@@ -154,7 +131,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             String groupName = groupNameEditText.getText().toString();
 
-            selectedUsers.add(users);
             groupController.createGroup(groupName, selectedUsers, adminId);
         });
 
@@ -172,7 +148,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void filterUserList(String query) {
+    public void filterUserList(String query) {
         filteredUsers.clear();
         for (Users user : allUsers) {
             if (query.isEmpty() || user.getFullname().toLowerCase().contains(query.toLowerCase())) {

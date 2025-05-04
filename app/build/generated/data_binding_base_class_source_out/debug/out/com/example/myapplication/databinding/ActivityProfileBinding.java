@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.myapplication.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -49,13 +50,13 @@ public final class ActivityProfileBinding implements ViewBinding {
   public final ImageView imageView5;
 
   @NonNull
-  public final ImageView imageView6;
+  public final CircleImageView imageView6;
 
   private ActivityProfileBinding(@NonNull ConstraintLayout rootView, @NonNull ImageButton btnEdit,
       @NonNull Button buttonChangePin, @NonNull Button buttonDeleteAccount,
       @NonNull ImageButton buttonQuit, @NonNull TextView displayName,
       @NonNull LinearLayout editGroupLayout, @NonNull EditText editName,
-      @NonNull ImageView imageView5, @NonNull ImageView imageView6) {
+      @NonNull ImageView imageView5, @NonNull CircleImageView imageView6) {
     this.rootView = rootView;
     this.btnEdit = btnEdit;
     this.buttonChangePin = buttonChangePin;
@@ -144,7 +145,7 @@ public final class ActivityProfileBinding implements ViewBinding {
       }
 
       id = R.id.imageView6;
-      ImageView imageView6 = ViewBindings.findChildViewById(rootView, id);
+      CircleImageView imageView6 = ViewBindings.findChildViewById(rootView, id);
       if (imageView6 == null) {
         break missingId;
       }

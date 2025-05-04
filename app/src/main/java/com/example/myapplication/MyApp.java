@@ -19,7 +19,7 @@ public class MyApp extends Application {
 
         StatusController statusController = new StatusController();
 
-        // ✅ Cập nhật mỗi 60 giây (vòng lặp nền)
+        // Cập nhật mỗi 60 giây (vòng lặp nền)
         statusRunnable = new Runnable() {
             @Override
             public void run() {

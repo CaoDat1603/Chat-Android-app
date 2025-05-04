@@ -106,9 +106,12 @@ public class ManageMemberActivity extends AppCompatActivity {
     }
 
     private void loadGroupMembers() {
-        controller.loadGroupMembers(groupId, members -> groupMemberAdapter.updateMemberList(members));
+        controller.loadGroupMembers(groupId, members -> {
+            groupMembers.clear(); // Xóa danh sách cũ
+            groupMembers.addAll(members); // Lưu danh sách mới vào biến toàn cục
+            groupMemberAdapter.updateMemberList(members); // Cập nhật adapter
+        });
     }
-
     private void filterMembers(String query) {
         List<Users> filteredMembers = new ArrayList<>();
 

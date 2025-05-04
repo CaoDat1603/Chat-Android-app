@@ -1,5 +1,7 @@
 package com.example.myapplication.controller;
 
+import com.example.myapplication.service.FirebaseService;
+import com.example.myapplication.service.impl.FirebaseServiceImpl;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -10,18 +12,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class StatusController {
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseService service = new FirebaseServiceImpl();
 
     public void updateDateOnline() {
-        if (firebaseAuth.getCurrentUser() == null) return; // Kiểm tra đã login chưa
-        String currentUID = firebaseAuth.getCurrentUser().getUid();
-        DatabaseReference userRef = database.getReference("user").child(currentUID);
-        // Lấy thời gian hiện tại dưới dạng String
-        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                .format(new Date());
-        // Cập nhật status
-        userRef.child("status").setValue(currentTime);
+        service.updateDateOnline();
     }
     public String checkOnline(String status) {
         try {

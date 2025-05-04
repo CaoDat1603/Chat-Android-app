@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/noted"
             android:text="This is a note"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:fontFamily="@font/spartan_regular"
             android:padding="5dp"/>
     </LinearLayout>

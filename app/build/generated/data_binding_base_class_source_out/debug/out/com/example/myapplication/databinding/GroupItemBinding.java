@@ -4,7 +4,6 @@ package com.example.myapplication.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.myapplication.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -24,15 +24,20 @@ public final class GroupItemBinding implements ViewBinding {
   public final TextView groupNameTextView;
 
   @NonNull
+  public final TextView lastMessage;
+
+  @NonNull
   public final TextView timeCreateGr;
 
   @NonNull
-  public final ImageView userAvatar;
+  public final CircleImageView userAvatar;
 
   private GroupItemBinding(@NonNull RelativeLayout rootView, @NonNull TextView groupNameTextView,
-      @NonNull TextView timeCreateGr, @NonNull ImageView userAvatar) {
+      @NonNull TextView lastMessage, @NonNull TextView timeCreateGr,
+      @NonNull CircleImageView userAvatar) {
     this.rootView = rootView;
     this.groupNameTextView = groupNameTextView;
+    this.lastMessage = lastMessage;
     this.timeCreateGr = timeCreateGr;
     this.userAvatar = userAvatar;
   }
@@ -70,6 +75,12 @@ public final class GroupItemBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.lastMessage;
+      TextView lastMessage = ViewBindings.findChildViewById(rootView, id);
+      if (lastMessage == null) {
+        break missingId;
+      }
+
       id = R.id.timeCreateGr;
       TextView timeCreateGr = ViewBindings.findChildViewById(rootView, id);
       if (timeCreateGr == null) {
@@ -77,13 +88,13 @@ public final class GroupItemBinding implements ViewBinding {
       }
 
       id = R.id.user_avatar;
-      ImageView userAvatar = ViewBindings.findChildViewById(rootView, id);
+      CircleImageView userAvatar = ViewBindings.findChildViewById(rootView, id);
       if (userAvatar == null) {
         break missingId;
       }
 
-      return new GroupItemBinding((RelativeLayout) rootView, groupNameTextView, timeCreateGr,
-          userAvatar);
+      return new GroupItemBinding((RelativeLayout) rootView, groupNameTextView, lastMessage,
+          timeCreateGr, userAvatar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

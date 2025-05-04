@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:text="Note: This is a sender message"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:fontFamily="@font/spartan_regular"
         android:padding="5dp"
         android:textStyle="italic"

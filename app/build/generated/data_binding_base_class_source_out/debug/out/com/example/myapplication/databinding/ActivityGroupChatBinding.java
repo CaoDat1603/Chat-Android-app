@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,9 @@ import java.lang.String;
 public final class ActivityGroupChatBinding implements ViewBinding {
   @NonNull
   private final RelativeLayout rootView;
+
+  @NonNull
+  public final ImageView avatar;
 
   @NonNull
   public final LinearLayout ll1;
@@ -57,12 +61,13 @@ public final class ActivityGroupChatBinding implements ViewBinding {
   @NonNull
   public final ImageButton turnback;
 
-  private ActivityGroupChatBinding(@NonNull RelativeLayout rootView, @NonNull LinearLayout ll1,
-      @NonNull LinearLayout lnMdtxt, @NonNull RelativeLayout main, @NonNull RecyclerView msgadapter,
-      @NonNull TextView recivername, @NonNull ImageButton sendFile, @NonNull ImageButton sendImage,
-      @NonNull CardView sendbtn, @NonNull ImageButton settinggroup, @NonNull EditText textmsg,
-      @NonNull ImageButton turnback) {
+  private ActivityGroupChatBinding(@NonNull RelativeLayout rootView, @NonNull ImageView avatar,
+      @NonNull LinearLayout ll1, @NonNull LinearLayout lnMdtxt, @NonNull RelativeLayout main,
+      @NonNull RecyclerView msgadapter, @NonNull TextView recivername,
+      @NonNull ImageButton sendFile, @NonNull ImageButton sendImage, @NonNull CardView sendbtn,
+      @NonNull ImageButton settinggroup, @NonNull EditText textmsg, @NonNull ImageButton turnback) {
     this.rootView = rootView;
+    this.avatar = avatar;
     this.ll1 = ll1;
     this.lnMdtxt = lnMdtxt;
     this.main = main;
@@ -103,6 +108,12 @@ public final class ActivityGroupChatBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.avatar;
+      ImageView avatar = ViewBindings.findChildViewById(rootView, id);
+      if (avatar == null) {
+        break missingId;
+      }
+
       id = R.id.ll1;
       LinearLayout ll1 = ViewBindings.findChildViewById(rootView, id);
       if (ll1 == null) {
@@ -165,8 +176,8 @@ public final class ActivityGroupChatBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityGroupChatBinding((RelativeLayout) rootView, ll1, lnMdtxt, main, msgadapter,
-          recivername, sendFile, sendImage, sendbtn, settinggroup, textmsg, turnback);
+      return new ActivityGroupChatBinding((RelativeLayout) rootView, avatar, ll1, lnMdtxt, main,
+          msgadapter, recivername, sendFile, sendImage, sendbtn, settinggroup, textmsg, turnback);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

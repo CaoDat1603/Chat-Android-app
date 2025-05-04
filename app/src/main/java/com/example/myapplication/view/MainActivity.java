@@ -6,100 +6,94 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.model.Users;
 import com.example.myapplication.controller.MainActivityController;
+import com.example.myapplication.model.Users;
+import com.example.myapplication.service.UserService;
+import com.example.myapplication.service.impl.UserServiceImpl;
 import com.example.myapplication.view.adapter.UserAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mainUserRecyclerView;
-    private UserAdapter adapterUse;
-    private ArrayList<Users> usersArrayList;
-    private ImageView imglogout;
-    private ImageView imgSettingProfile;
-
     private MainActivityController controller;
+    private UserAdapter userAdapter;
+    private ArrayList<Users> userList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ImageView imgLogout, imgSettingProfile, chatGroup; // <- Khai báo logout button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainUserRecyclerView = findViewById(R.id.mainUserRecyclerView);
-        imglogout = findViewById(R.id.logoutimg);
+        recyclerView = findViewById(R.id.mainUserRecyclerView);
+        userAdapter = new UserAdapter(this, userList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(userAdapter);
 
 
-        // Initialize the list and adapter
-        usersArrayList = new ArrayList<>();
-        adapterUse = new UserAdapter(MainActivity.this, usersArrayList);
-        mainUserRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mainUserRecyclerView.setAdapter(adapterUse);
+        // Khởi tạo Service và Controller
+        UserService userService = new UserServiceImpl(this);
+        controller = new MainActivityController(userService);
 
-        controller = new MainActivityController(this); // Pass the view instance to controller
+        // Bắt đầu xử lý khi mở app
+        controller.handleAppStart();
 
-        // Handle logout button click
-        imglogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.showLogoutDialog();
-            }
-        });
+        // Gán nút logout và bắt sự kiện
+        imgLogout = findViewById(R.id.logoutimg);
+        imgLogout.setOnClickListener(view -> showLogoutDialog());
+
+        // Xử lý sự kiện khi nhấn vào chat nhóm
+        chatGroup = findViewById(R.id.chatGroup);
+        chatGroup.setOnClickListener(view -> navigateToChatGroup());
 
         imgSettingProfile = findViewById(R.id.setting_profile);
         imgSettingProfile.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {controller.navigateToProfile();}
+            public void onClick(View view) {navigateToProfile();}
         });
-
-        // Handle group chat button click
-        ImageView chatGroup = findViewById(R.id.chatGroup);
-        chatGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.navigateToChatGroup();
-            }
-        });
-
-        // Check if the user is logged in
-        controller.checkUserLoginStatus();
     }
 
-    // Method to update user list from controller
-    public void updateUserList(ArrayList<Users> usersList) {
-        usersArrayList.clear();
-        usersArrayList.addAll(usersList);
-        adapterUse.notifyDataSetChanged();
-    }
-
-    // Method to show Toast message
     public void showMessage(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    // Method to navigate to login activity
+    public void updateUserList(List<Users> usersList) {
+        userList.clear();
+        userList.addAll(usersList);
+        userAdapter.notifyDataSetChanged();
+    }
+
+    public void showLogoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> controller.onUserSignOut())
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
     public void navigateToLogin() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
-    // Method to navigate to chat group activity
     public void navigateToChatGroup() {
-        Intent intent = new Intent(MainActivity.this, MainActivityGroup.class);
+        Intent intent = new Intent(this, MainActivityGroup.class);
         startActivity(intent);
-        finish();
     }
-    // Phương thức chuyển hướng sang Profile
-    public void navigateToProfile(){
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+
+    public void navigateToProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-        finish();
     }
 }

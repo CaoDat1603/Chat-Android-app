@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0FFFF"
+    android:background="@drawable/gradient_black_background"
     tools:context=".view.GroupChatActivity">
 
     <LinearLayout
@@ -22,14 +22,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/back1"
             android:contentDescription="Back button" />
 
 
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="1.5dp"
+            android:src="@drawable/people" />
+
         <TextView
             android:id="@+id/recivername"
-            android:layout_width="270dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spartan_bold"
             android:text="Name"
@@ -61,44 +69,47 @@
         android:id="@+id/lnMdtxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="2.60dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginEnd="2.60dp">
+        android:layout_marginEnd="2.60dp"
+        android:layout_marginBottom="-2dp"
+        android:background="@drawable/bottom_nav_background"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageButton
             android:id="@+id/sendFile"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="#F0FFFF"
             android:layout_marginStart="6.50dp"
+            android:background="@drawable/bordermain"
             android:src="@drawable/file" />
 
         <ImageButton
             android:id="@+id/sendImage"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="#F0FFFF"
             android:layout_marginStart="6.50dp"
+            android:background="@drawable/bordermain"
             android:src="@drawable/camera" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="45.50dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="32.50dp"
             android:layout_marginStart="6.50dp"
-            android:layout_marginEnd="9.10dp">
+            android:layout_marginEnd="9.10dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="32.50dp">
 
             <EditText
                 android:id="@+id/textmsg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@null"
                 android:fontFamily="@font/spartan_regular"
+                android:textColorHint="@color/dark_grey"
                 android:hint="Messages..."
+                android:background="@drawable/bordermain"
                 android:paddingStart="13dp" />
         </androidx.cardview.widget.CardView>
 
@@ -106,15 +117,16 @@
             android:id="@+id/sendbtn"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:cardCornerRadius="32.50dp"
             android:layout_marginStart="6.50dp"
-            android:layout_marginEnd="6.50dp">
+            android:layout_marginEnd="6.50dp"
+            android:background="@drawable/bordermain"
+            app:cardCornerRadius="32.50dp">
 
             <ImageView
                 android:layout_width="19.50dp"
                 android:layout_height="19.50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/send"/>
+                android:src="@drawable/send" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.SettingGroupController;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.controller.MainActivityGroupController;
 import com.example.myapplication.view.adapter.GroupAdapter;
@@ -25,6 +27,7 @@ public class MainActivityGroup extends AppCompatActivity {
     private ImageView imglogout;
     private MainActivityGroupController controller;
     private ImageView imgSettingProfile;
+    private boolean isGroupUpdated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,7 @@ public class MainActivityGroup extends AppCompatActivity {
         imglogout.setOnClickListener(view -> controller.showLogoutDialog());
 
         imgSettingProfile = findViewById(R.id.setting_profile);
-        imgSettingProfile.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {controller.navigateToProfile();}
-        });
+        imgSettingProfile.setOnClickListener(view -> controller.navigateToProfile());
 
         // Xử lý sự kiện khi nhấn vào chat nhóm
         ImageView chatOneOne = findViewById(R.id.chatOneOne);
@@ -65,6 +65,13 @@ public class MainActivityGroup extends AppCompatActivity {
     // Phương thức thêm nhóm vào danh sách
     public void addGroupToList(Group group) {
         groupArrayList.add(group);
+        adapter.notifyDataSetChanged();
+    }
+
+    // Phương thức cập nhật danh sách nhóm
+    public void updateGroupList(ArrayList<Group> updatedGroups) {
+        groupArrayList.clear();
+        groupArrayList.addAll(updatedGroups);
         adapter.notifyDataSetChanged();
     }
 
@@ -97,5 +104,13 @@ public class MainActivityGroup extends AppCompatActivity {
         Intent intent = new Intent(MainActivityGroup.this, ProfileActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if (isGroupUpdated) {
+            controller.loadGroupList();
+            isGroupUpdated = false;  // Reset flag
+        }
     }
 }

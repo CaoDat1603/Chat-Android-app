@@ -3,6 +3,7 @@ package com.example.myapplication.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,7 +26,7 @@ public class SettingGroupActivity extends AppCompatActivity {
     public String userId;
 
     private SettingGroupController controller;
-    private String groupId;
+    public String groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,11 @@ public class SettingGroupActivity extends AppCompatActivity {
         View outGroup = findViewById(R.id.outgroup);
         View deleteGroup = findViewById(R.id.deletegroup);
 
-
-        // Lấy groupId từ Intent
         groupId = getIntent().getStringExtra("groupId");
+        if (groupId == null) {
+            Log.e("SettingGroupActivity", "groupId is null!");
+            return;
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getUid();

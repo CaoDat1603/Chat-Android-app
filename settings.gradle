@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DvD Messenger"
+rootProject.name = "CoreTalk"
 include ':app'

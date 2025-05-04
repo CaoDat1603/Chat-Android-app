@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0FFFF"
+    android:background="@drawable/gradient_black_background"
     tools:context=".view.GroupChatActivity">
 
     <!-- Bar phía trên (ll1) giữ nguyên -->
@@ -46,6 +46,7 @@
         android:layout_marginTop="109dp"
         android:layout_alignParentTop="true"
         android:paddingStart="16dp"
+        android:background="@color/text_light"
         android:paddingEnd="16dp">
 
         <EditText
@@ -83,14 +84,17 @@
     </LinearLayout>
 
     <!-- Thành viên nhóm -->
+
+    <!-- Thoát nhóm -->
     <LinearLayout
+        android:id="@+id/nextgrmember"
         android:layout_width="match_parent"
         android:layout_height="67dp"
-        android:layout_marginTop="174dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="190dp"
+        android:background="@drawable/bordermain"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:id="@+id/nextgrmember"
-        android:layout_alignParentTop="true"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
@@ -112,7 +116,6 @@
             android:contentDescription="Next button" />
     </LinearLayout>
 
-    <!-- Thoát nhóm -->
     <LinearLayout
         android:id="@+id/outgroup"
         android:layout_width="match_parent"
