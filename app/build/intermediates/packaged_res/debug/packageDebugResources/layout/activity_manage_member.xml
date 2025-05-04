@@ -36,13 +36,44 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/subToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/ll1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="#33FFFFFF">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Danh sách người dùng"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1" />
+
+        <ImageView
+            android:id="@+id/addMember"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/add" />
+    </LinearLayout>
+
     <!-- Ô tìm kiếm -->
     <EditText
         android:id="@+id/searchUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tìm kiếm thành viên"
-        android:layout_below="@id/ll1"
+        android:layout_below="@id/subToolbar"
         android:drawablePadding="8dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"

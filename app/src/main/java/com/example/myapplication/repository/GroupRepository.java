@@ -63,6 +63,10 @@ public class GroupRepository {
         groupMemberRef.child(groupMember.getGroupId()).child(groupMember.getUserId()).setValue(groupMember);
     }
 
+    public void setStatus(String groupId, String status) {
+        groupRef.child(groupId).child("status").setValue(status);
+    }
+
     public void listenToGroups() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -91,7 +95,9 @@ public class GroupRepository {
 
                         for (DataSnapshot groupData : groupSnapshot.getChildren()) {
                             Group group = groupData.getValue(Group.class);
-                            if (group != null && userGroupIds.contains(group.getGroupId())) {
+                            if (group != null
+                                    && userGroupIds.contains(group.getGroupId())
+                                    && (group.getStatus() == null || !group.getStatus().equals("deleted"))) {
                                 userGroups.add(group);
                             }
                         }

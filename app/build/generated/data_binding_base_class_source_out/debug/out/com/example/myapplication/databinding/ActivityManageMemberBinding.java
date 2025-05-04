@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
@@ -23,6 +24,9 @@ public final class ActivityManageMemberBinding implements ViewBinding {
   private final RelativeLayout rootView;
 
   @NonNull
+  public final ImageView addMember;
+
+  @NonNull
   public final RecyclerView groupmemberlist;
 
   @NonNull
@@ -35,16 +39,22 @@ public final class ActivityManageMemberBinding implements ViewBinding {
   public final EditText searchUsers;
 
   @NonNull
+  public final LinearLayout subToolbar;
+
+  @NonNull
   public final ImageButton turnback;
 
   private ActivityManageMemberBinding(@NonNull RelativeLayout rootView,
-      @NonNull RecyclerView groupmemberlist, @NonNull LinearLayout ll1,
-      @NonNull RelativeLayout main, @NonNull EditText searchUsers, @NonNull ImageButton turnback) {
+      @NonNull ImageView addMember, @NonNull RecyclerView groupmemberlist,
+      @NonNull LinearLayout ll1, @NonNull RelativeLayout main, @NonNull EditText searchUsers,
+      @NonNull LinearLayout subToolbar, @NonNull ImageButton turnback) {
     this.rootView = rootView;
+    this.addMember = addMember;
     this.groupmemberlist = groupmemberlist;
     this.ll1 = ll1;
     this.main = main;
     this.searchUsers = searchUsers;
+    this.subToolbar = subToolbar;
     this.turnback = turnback;
   }
 
@@ -75,6 +85,12 @@ public final class ActivityManageMemberBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.addMember;
+      ImageView addMember = ViewBindings.findChildViewById(rootView, id);
+      if (addMember == null) {
+        break missingId;
+      }
+
       id = R.id.groupmemberlist;
       RecyclerView groupmemberlist = ViewBindings.findChildViewById(rootView, id);
       if (groupmemberlist == null) {
@@ -95,14 +111,20 @@ public final class ActivityManageMemberBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.subToolbar;
+      LinearLayout subToolbar = ViewBindings.findChildViewById(rootView, id);
+      if (subToolbar == null) {
+        break missingId;
+      }
+
       id = R.id.turnback;
       ImageButton turnback = ViewBindings.findChildViewById(rootView, id);
       if (turnback == null) {
         break missingId;
       }
 
-      return new ActivityManageMemberBinding((RelativeLayout) rootView, groupmemberlist, ll1, main,
-          searchUsers, turnback);
+      return new ActivityManageMemberBinding((RelativeLayout) rootView, addMember, groupmemberlist,
+          ll1, main, searchUsers, subToolbar, turnback);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

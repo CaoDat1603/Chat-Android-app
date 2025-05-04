@@ -19,6 +19,7 @@ import com.example.myapplication.model.Users;
 import com.example.myapplication.view.adapter.GroupMemberAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ManageMemberActivity extends AppCompatActivity {
         groupMemberListRecyclerView = findViewById(R.id.groupmemberlist);
         searchUsers = findViewById(R.id.searchUsers);
 
+        findViewById(R.id.addMember).setOnClickListener(v -> addMember());
         ImageButton turnback = findViewById(R.id.turnback);
         turnback.setOnClickListener(view -> finish());
 
@@ -133,5 +135,12 @@ public class ManageMemberActivity extends AppCompatActivity {
         intent.putExtra("groupId", groupId);
         startActivity(intent);
         finish();
+    }
+
+    void addMember() {
+        Intent intent = new Intent(this, AddMemeberActivity.class);
+        intent.putExtra("members",(Serializable) groupMembers);
+        intent.putExtra("groupId", groupId);
+        startActivity(intent);
     }
 }

@@ -1,8 +1,8 @@
 package com.example.myapplication.model;
 
-import java.time.OffsetDateTime;
+import java.io.Serializable;
 
-public class Users {
+public class Users implements Serializable {
     private String userId;
     private String fullname;
     private String email;

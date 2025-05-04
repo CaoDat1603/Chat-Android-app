@@ -1,37 +1,86 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
-    <!--  Thêm quyền truy cập internet  -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!--  Thêm quyền sử dụng thông báo  -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <application android:name=".MyApp" android:allowBackup="true" android:dataExtractionRules="@xml/data_extraction_rules" android:enableOnBackInvokedCallback="true" android:fullBackupContent="@xml/backup_rules" android:icon="@mipmap/ic_launcher_foreground" android:label="CoreTalk" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.MyApplication" tools:targetApi="31">
-        <activity android:name=".view.ManageMemberActivity" android:exported="false"/>
-        <activity android:name=".view.SettingGroupActivity" android:exported="false"/>
-        <activity android:name=".view.ShowImageMessageActivity" android:exported="false"/>
-        <activity android:name=".view.GroupChatActivity" android:exported="false"/>
-        <activity android:name=".view.CreateGroupActivity" android:exported="false"/>
-        <activity android:name=".view.MainActivityGroup" android:exported="false"/>
-        <activity android:name=".view.ChatActivity" android:exported="true"/>
-        <activity android:name=".view.LoginActivity" android:exported="false"/>
-        <activity android:name=".view.ProfileActivity" android:exported="false"/>
-        <activity android:name=".view.ResetPinActivity" android:exported="false"/>
-        <activity android:name=".view.SplashActivity" android:exported="true">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Thêm quyền truy cập internet -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Thêm quyền sử dụng thông báo -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:name=".MyApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher_foreground"
+        android:label="CoreTalk"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication"
+        tools:targetApi="31">
+        <activity
+            android:name=".view.AddMemeberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ManageMemberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.SettingGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ShowImageMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.GroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.CreateGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.MainActivityGroup"
+            android:exported="false" />
+        <activity
+            android:name=".view.ChatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ResetPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.SplashActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity" android:exported="false"/>
-        <activity android:name=".view.RegisterActivity" android:exported="false"/>
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.RegisterActivity"
+            android:exported="false" />
     </application>
+
 </manifest>

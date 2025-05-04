@@ -8,7 +8,8 @@ import com.example.myapplication.model.GroupMember;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.GroupRepository;
 import com.example.myapplication.repository.UserRepository;
-import com.example.myapplication.service.ICreateGroupService;
+import com.example.myapplication.service.IManagerGroupService;
+import com.example.myapplication.view.AddMemeberActivity;
 import com.example.myapplication.view.CreateGroupActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,12 +17,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class CreateGroupServiceImpl implements ICreateGroupService {
+public class ManagerGroupServiceImpl implements IManagerGroupService {
     private final GroupController controller;
     private final GroupRepository repository;
     private final UserRepository userRreository;
 
-    public CreateGroupServiceImpl(GroupController controller) {
+    public ManagerGroupServiceImpl(GroupController controller) {
         this.controller = controller;
         this.repository = new GroupRepository();
         this.userRreository = new UserRepository();
@@ -56,6 +57,7 @@ public class CreateGroupServiceImpl implements ICreateGroupService {
                     group.setCreatedAt(System.currentTimeMillis());
                     group.setGroupId("group_" + System.currentTimeMillis());  // Tạo ID nhóm (ví dụ: dùng timestamp)
                     group.setAdminId(adminId);  // Thiết lập ID quản trị viên nhóm
+                    group.setGroupStatus("Online");
 
                     // Lưu nhóm và thành viên nhóm vào cơ sở dữ liệu
                     saveGroupToDatabase(group, selectedUsers, view);
@@ -133,7 +135,8 @@ public class CreateGroupServiceImpl implements ICreateGroupService {
                 allUsers.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users user = dataSnapshot.getValue(Users.class);
-                    if (!user.getUserId().equals(adminId)) {
+                    if (!user.getUserId().equals(adminId)
+                            && (user.getStatus() == null || !user.getStatus().equals("deleted"))) {
                         allUsers.add(user);
                     }
                 }
@@ -145,5 +148,47 @@ public class CreateGroupServiceImpl implements ICreateGroupService {
                 view.showErrorMessage("Lỗi khi tải dữ liệu người dùng.");
             }
         });
+    }
+
+    @Override
+    public void filterUserToAdd(List<Users> allUsers, List<Users> members, Users users, AddMemeberActivity view) {
+        userRreository.getAllUsers(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                allUsers.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Users user = dataSnapshot.getValue(Users.class);
+                    if (user != null
+                            && !isUserInMembers(user, members)
+                            && (user.getStatus() == null || !user.getStatus().equals("deleted"))) {
+                        allUsers.add(user);
+                    }
+                }
+                view.filterUserList(""); // Lọc lại danh sách khi có dữ liệu
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                view.showErrorMessage("Lỗi khi tải dữ liệu người dùng.");
+            }
+        });
+    }
+
+    private boolean isUserInMembers(Users user, List<Users> members) {
+        for (Users member : members) {
+            if (member.getUserId().equals(user.getUserId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void addMember(List<Users> selectedUsers, String groupId, AddMemeberActivity view) {
+        for (Users user : selectedUsers) {
+            GroupMember groupMember = new GroupMember(groupId, user.getUserId(), System.currentTimeMillis());
+            repository.saveGroupMemberToDatabase(groupMember);
+        }
+        view.onAddMember(); // Gọi phương thức thông báo khi xong
     }
 }

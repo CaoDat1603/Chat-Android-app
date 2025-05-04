@@ -135,6 +135,33 @@ public class SettingGroupServiceImpl implements ISettingGroupService {
                 if (dataSnapshot.exists()) {
                     Group group = dataSnapshot.getValue(Group.class);
 
+                    if (group != null && group.getAdminId().equals(userId)) {
+                        repository.setStatus(groupId, "deleted");
+                        Toast.makeText(controller.view, "Nhóm đã được xóa.", Toast.LENGTH_SHORT).show();
+                        controller.view.turnMain();
+                    } else {
+                        Toast.makeText(controller.view, "Chỉ admin mới có thể xóa nhóm.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(controller.view, "Nhóm không tồn tại.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(controller.view, "Lỗi kết nối với cơ sở dữ liệu.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*
+    public void deleteGroup(String userId, String groupId) {
+        repository.getGroup(groupId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Group group = dataSnapshot.getValue(Group.class);
+
                     // Kiểm tra nếu người yêu cầu xóa nhóm là admin của nhóm
                     if (group != null && group.getAdminId().equals(userId)) {
                         // Xóa thông tin nhóm trong "groups"
@@ -176,4 +203,6 @@ public class SettingGroupServiceImpl implements ISettingGroupService {
             }
         });
     }
+    */
+
 }

@@ -76,6 +76,8 @@ font dancing
 font spartan_bold
 font spartan_regular
 font spartan_thin
+id addButton
+id addMember
 id avatar
 id backgroundImage
 id bottomBar
@@ -163,6 +165,7 @@ id user_avatar
 id username
 id userstatus
 id yesbnt
+layout activity_add_memeber
 layout activity_chat
 layout activity_create_group
 layout activity_group_chat

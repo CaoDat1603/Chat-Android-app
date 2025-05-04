@@ -37,6 +37,7 @@ public class StatusController {
             }
 
         } catch (ParseException | NullPointerException e) {
+            if ("deleted".equals(status)) return "Tài khoản đã xóa";
             return "Không xác định";
         }
     }

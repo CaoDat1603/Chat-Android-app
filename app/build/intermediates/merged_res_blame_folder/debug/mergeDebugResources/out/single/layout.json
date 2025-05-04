@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_add_memeber.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_add_memeber.xml"
+    },
+    {
         "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\user_item.xml",
         "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\user_item.xml"
     },
@@ -20,20 +24,16 @@
         "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\activity_manage_member.xml"
     },
     {
-        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_group_chat.xml",
-        "source": "com.example.myapplication.app-main-43:/layout/activity_group_chat.xml"
-    },
-    {
         "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\activity_setting_group.xml",
         "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\activity_setting_group.xml"
     },
     {
-        "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\activity_profile.xml",
-        "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\activity_profile.xml"
-    },
-    {
         "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\activity_group_chat.xml",
         "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\activity_group_chat.xml"
+    },
+    {
+        "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\activity_profile.xml",
+        "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\activity_profile.xml"
     },
     {
         "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\activity_create_group.xml",
@@ -86,5 +86,9 @@
     {
         "merged": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-mergeDebugResources-40:\\layout\\group_item.xml",
         "source": "C:\\Users\\cao\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\layout\\group_item.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-mergeDebugResources-40:/layout/activity_manage_member.xml",
+        "source": "com.example.myapplication.app-main-43:/layout/activity_manage_member.xml"
     }
 ]

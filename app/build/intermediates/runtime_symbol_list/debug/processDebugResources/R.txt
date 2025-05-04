@@ -3289,6 +3289,8 @@ int id action_text 0x7f090043
 int id actions 0x7f090044
 int id activity_chooser_view_content 0x7f090045
 int id add 0x7f090046
+int id addButton 0x7f090256
+int id addMember 0x7f090257
 int id adjust_height 0x7f090047
 int id adjust_width 0x7f090048
 int id alertTitle 0x7f090049
@@ -3931,6 +3933,7 @@ int layout abc_search_dropdown_item_icons_2line 0x7f0c0018
 int layout abc_search_view 0x7f0c0019
 int layout abc_select_dialog_material 0x7f0c001a
 int layout abc_tooltip 0x7f0c001b
+int layout activity_add_memeber 0x7f0c0082
 int layout activity_chat 0x7f0c001c
 int layout activity_create_group 0x7f0c001d
 int layout activity_group_chat 0x7f0c001e

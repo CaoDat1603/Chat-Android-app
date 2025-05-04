@@ -40,6 +40,7 @@ public class SettingGroupController {
 
     public void deleteGroup(String userId, String groupId) {
         service.deleteGroup(userId, groupId);
+
     }
 
     // Interface listeners

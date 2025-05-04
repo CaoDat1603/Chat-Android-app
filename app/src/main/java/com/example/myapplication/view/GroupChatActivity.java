@@ -70,7 +70,13 @@ public class GroupChatActivity extends AppCompatActivity {
         findViewById(R.id.sendImage).setOnClickListener(v -> chatController.chooseImage());
         findViewById(R.id.sendFile).setOnClickListener(v -> chatController.chooseFile());
         findViewById(R.id.settinggroup).setOnClickListener(v -> settingGroup());
-        findViewById(R.id.turnback).setOnClickListener(v -> finish());
+        findViewById(R.id.turnback).setOnClickListener(v -> turnBack());
+    }
+    public void turnBack() {
+        Intent intent = new Intent(this, MainActivityGroup.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     void settingGroup() {

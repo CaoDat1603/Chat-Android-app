@@ -43,4 +43,8 @@ public class UserRepository {
     public void setUserName(String userId, String name, OnCompleteListener<Void> listener) {
         reference.child(userId).child("fullname").setValue(name).addOnCompleteListener(listener);
     }
+
+    public void setUserStatus(String userId, String status) {
+        reference.child(userId).child("status").setValue(status);
+    }
 }

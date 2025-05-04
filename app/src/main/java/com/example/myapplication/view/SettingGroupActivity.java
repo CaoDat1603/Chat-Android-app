@@ -129,6 +129,11 @@ public class SettingGroupActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void turnMain() {
+        Intent intent = new Intent(SettingGroupActivity.this, MainActivityGroup.class);
+        startActivity(intent);
+    }
+
     // Gọi Controller để cập nhật tên nhóm
     private void updateGroupName(String newGroupName) {
         controller.updateGroupName(newGroupName, new SettingGroupController.OnGroupUpdateListener() {
