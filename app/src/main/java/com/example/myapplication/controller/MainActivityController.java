@@ -20,4 +20,5 @@ public class MainActivityController {
     public void onUserSignOut() {
         userService.signOut();
     }
+
 }

@@ -15,6 +15,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.controller.MainActivityController;
 import com.example.myapplication.model.Users;
 import com.example.myapplication.service.IUserService;
+import com.example.myapplication.service.impl.GetLatestMessage;
 import com.example.myapplication.service.impl.UserServiceImpl;
 import com.example.myapplication.view.adapter.UserAdapter;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Khởi tạo Service và Controller
         IUserService userService = new UserServiceImpl(this);
+        GetLatestMessage getLatestMessage = new GetLatestMessage();
         controller = new MainActivityController(userService);
 
         // Bắt đầu xử lý khi mở app
