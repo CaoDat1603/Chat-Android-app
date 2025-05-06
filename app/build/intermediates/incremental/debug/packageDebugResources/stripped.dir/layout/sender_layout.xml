@@ -26,6 +26,7 @@
         android:id="@+id/sendertextset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="250dp"
         android:layout_below="@id/noted"
         android:layout_centerVertical="true"
         android:layout_marginStart="1.30dp"
@@ -81,14 +82,15 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="6.50dp"
         android:layout_toLeftOf="@+id/profileContainer"
+        android:visibility="gone"
         android:maxHeight="200dp"
         android:maxWidth="300dp"
         android:adjustViewBounds="true" />
 
-
     <LinearLayout
         android:id="@+id/fileLayout"
         android:layout_width="wrap_content"
+        android:maxWidth="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/noted"
         android:layout_centerVertical="true"
@@ -112,6 +114,7 @@
         <TextView
             android:id="@+id/fileName"
             android:layout_width="wrap_content"
+            android:maxWidth="200dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/send_shape"

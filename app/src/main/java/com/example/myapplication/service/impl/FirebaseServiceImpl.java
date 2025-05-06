@@ -72,7 +72,7 @@ public class FirebaseServiceImpl implements IFirebaseService {
         userRepository.getUser(userId).addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
                 Log.d(TAG, "User already exists.");
-                listener.onSuccess(firebaseUser); // ✅ TRUYỀN ĐÚNG KIỂU
+                listener.onSuccess(firebaseUser);
             } else {
                 Log.w(TAG, "signInWithCredential: failure", task.getException());
                 String errorMessage = task.getException() != null ? task.getException().getMessage() : "Lỗi không xác định";

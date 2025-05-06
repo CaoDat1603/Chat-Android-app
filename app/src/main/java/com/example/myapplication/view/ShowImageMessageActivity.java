@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,13 +25,16 @@ public class ShowImageMessageActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.full_image);
 
+
         // Lấy URL hình ảnh từ Intent
         String imageUrl = getIntent().getStringExtra("image_url");
         String imageName = getIntent().getStringExtra("image_name");
 
         // Hiển thị hình ảnh bằng Picasso
         if (imageUrl != null) {
-            Picasso.get().load(imageUrl).into(imageView);
+            // Giả sử bạn có thêm 1 biến "file_type" truyền qua Intent
+                imageView.setVisibility(View.VISIBLE);
+                Picasso.get().load(imageUrl).into(imageView);
         }
 
         ImageButton turnBack = findViewById(R.id.turnback);

@@ -20,7 +20,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class ChatServiceImpl implements IChatService {
     private final ChatActivity chatActivity;
@@ -86,6 +88,7 @@ public class ChatServiceImpl implements IChatService {
 
     @Override
     public void selectFile() {
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         chatActivity.startActivityForResult(intent, 2);
@@ -108,6 +111,9 @@ public class ChatServiceImpl implements IChatService {
                     if (urlTask.isSuccessful()) {
                         String url = urlTask.getResult().toString();
                         String type = (requestCode == 1) ? "image" : "file";
+                        if (isImageFile(fileName)) {
+                            type = "image";
+                        }
                         msgModel msg = new msgModel(url, senderUID, new Date().getTime(), type, fileName);
                         repository.sendMessageToRoom(senderRoom, msg);
                         if (!receiverRoom.equals(senderRoom)) {
@@ -124,6 +130,12 @@ public class ChatServiceImpl implements IChatService {
         });
     }
 
+    private boolean isImageFile(String fileName) {
+        List<String> imageExtensions = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff");
+        String extension = getFileExtension(fileName);
+        return imageExtensions.contains(extension.toLowerCase());
+    }
+
     private String getFileName(Uri uri) {
         if (uri.getScheme().equals("content")) {
             Cursor cursor = chatActivity.getContentResolver().query(uri, null, null, null, null);
@@ -138,6 +150,16 @@ public class ChatServiceImpl implements IChatService {
             }
         }
         return uri.getLastPathSegment();
+    }
+
+    private String getFileExtension(String fileName) {
+        if (fileName != null && fileName.contains(".")) {
+            int lastDotIndex = fileName.lastIndexOf('.');
+            if (lastDotIndex != -1 && lastDotIndex < fileName.length() - 1) {
+                return fileName.substring(lastDotIndex + 1).toLowerCase();
+            }
+        }
+        return "";
     }
 
 }

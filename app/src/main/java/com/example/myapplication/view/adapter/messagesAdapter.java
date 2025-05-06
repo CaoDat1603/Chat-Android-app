@@ -87,6 +87,7 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (message.getType().equals("image")) {
             viewHolder.imageView.setVisibility(View.VISIBLE);
             Picasso.get().load(message.getMessage()).into(viewHolder.imageView);
+
             viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
 
             // Gắn sự kiện mở ShowImageActivity khi nhấn vào hình ảnh
@@ -94,6 +95,7 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Intent intent = new Intent(viewHolder.itemView.getContext(), ShowImageMessageActivity.class);
                 intent.putExtra("image_url", message.getMessage()); // Truyền URL hình ảnh
                 intent.putExtra("image_name", message.getFileName());
+
                 viewHolder.itemView.getContext().startActivity(intent);
             });
         } else if (message.getType().equals("file")) {
@@ -108,8 +110,6 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         viewHolder.imageView.setVisibility(View.GONE);
         viewHolder.fileLayout.setVisibility(View.GONE);
         viewHolder.notedlayout.setVisibility(View.GONE);
-
-
 
         if (message.isGroupMessage()) {
             viewHolder.pro.setVisibility(View.GONE);
@@ -136,22 +136,29 @@ public class messagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.pronone.setVisibility(View.VISIBLE);
                 viewHolder.msgtxt.setVisibility(View.VISIBLE);
                 viewHolder.msgtxt.setText(message.getMessage());
+
             } else if (message.getType().equals("image")) {
-                viewHolder.pronone.setVisibility(View.VISIBLE);
                 viewHolder.imageView.setVisibility(View.VISIBLE);
                 Picasso.get().load(message.getMessage()).into(viewHolder.imageView);
+
+                viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
 
                 // Gắn sự kiện mở ShowImageActivity khi nhấn vào hình ảnh
                 viewHolder.imageView.setOnClickListener(v -> {
                     Intent intent = new Intent(viewHolder.itemView.getContext(), ShowImageMessageActivity.class);
                     intent.putExtra("image_url", message.getMessage()); // Truyền URL hình ảnh
+                    intent.putExtra("image_name", message.getFileName());
+                    intent.putExtra("type", message.getType());
+
                     viewHolder.itemView.getContext().startActivity(intent);
                 });
+
             } else if (message.getType().equals("file")) {
                 viewHolder.pronone.setVisibility(View.VISIBLE);
                 viewHolder.fileLayout.setVisibility(View.VISIBLE);
                 viewHolder.fileName.setText(message.getFileName());
                 viewHolder.itemView.setOnClickListener(v -> downloadFile(message.getMessage(), message.getFileName()));
+
             }
         }
         else  {

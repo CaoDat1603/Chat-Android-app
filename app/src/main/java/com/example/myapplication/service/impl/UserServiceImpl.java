@@ -114,7 +114,9 @@ public class UserServiceImpl implements IUserService {
                 ArrayList<Users> usersList = new ArrayList<>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users user = dataSnapshot.getValue(Users.class);
-                    usersList.add(user);
+                    if (user.getUserId() != null) {
+                        usersList.add(user);
+                    }
                 }
                 view.updateUserList(usersList);
             }

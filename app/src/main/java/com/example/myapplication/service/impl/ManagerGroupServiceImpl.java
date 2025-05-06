@@ -18,12 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class ManagerGroupServiceImpl implements IManagerGroupService {
-    private final GroupController controller;
     private final GroupRepository repository;
     private final UserRepository userRreository;
 
-    public ManagerGroupServiceImpl(GroupController controller) {
-        this.controller = controller;
+    public ManagerGroupServiceImpl() {
         this.repository = new GroupRepository();
         this.userRreository = new UserRepository();
     }
@@ -135,7 +133,8 @@ public class ManagerGroupServiceImpl implements IManagerGroupService {
                 allUsers.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users user = dataSnapshot.getValue(Users.class);
-                    if (!user.getUserId().equals(adminId)
+                    if (user.getUserId() != null
+                            && !adminId.equals(user.getUserId())
                             && (user.getStatus() == null || !user.getStatus().equals("deleted"))) {
                         allUsers.add(user);
                     }
@@ -158,7 +157,7 @@ public class ManagerGroupServiceImpl implements IManagerGroupService {
                 allUsers.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users user = dataSnapshot.getValue(Users.class);
-                    if (user != null
+                    if (user.getUserId() != null
                             && !isUserInMembers(user, members)
                             && (user.getStatus() == null || !user.getStatus().equals("deleted"))) {
                         allUsers.add(user);

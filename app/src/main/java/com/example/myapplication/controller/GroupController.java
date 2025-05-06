@@ -15,12 +15,12 @@ public class GroupController {
 
     public GroupController(CreateGroupActivity view) {
         this.view = view;
-        this.service = new ManagerGroupServiceImpl(this);
+        this.service = new ManagerGroupServiceImpl();
     }
 
     public GroupController(AddMemeberActivity view) {
         this.addView = view;
-        this.service = new ManagerGroupServiceImpl(this);
+        this.service = new ManagerGroupServiceImpl();
     }
 
     public void createGroup(String groupName, List<Users> selectedUsers, String adminId) {

@@ -58,6 +58,7 @@
     <TextView
         android:id="@+id/recivertextset"
         android:layout_width="wrap_content"
+        android:maxWidth="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/notedlayout"
         android:layout_centerVertical="true"
@@ -92,11 +93,11 @@
         android:maxWidth="300dp"
         android:adjustViewBounds="true" />
 
-
     <LinearLayout
         android:id="@+id/fileLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="250dp"
         android:layout_centerVertical="true"
         android:layout_below="@id/notedlayout"
         android:layout_marginStart="1.30dp"
@@ -113,6 +114,7 @@
         <TextView
             android:id="@+id/fileName"
             android:layout_width="wrap_content"
+            android:maxWidth="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/spartan_regular"

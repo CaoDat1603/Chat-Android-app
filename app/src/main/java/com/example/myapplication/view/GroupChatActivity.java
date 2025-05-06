@@ -75,6 +75,7 @@ public class GroupChatActivity extends AppCompatActivity {
     public void turnBack() {
         Intent intent = new Intent(this, MainActivityGroup.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("isBack", true);
         startActivity(intent);
         finish();
     }

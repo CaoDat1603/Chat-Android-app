@@ -42,8 +42,14 @@ public class MainActivityGroup extends AppCompatActivity {
 
         controller = new MainActivityGroupController(this); // Khởi tạo controller
 
-        // Kiểm tra trạng thái đăng nhập
-        controller.checkUserLoginStatus();
+        boolean isBack = getIntent().getBooleanExtra("isBack", false);
+
+        if (isBack) {
+            controller.loadGroupList();
+        } else {
+            // Kiểm tra trạng thái đăng nhập
+            controller.checkUserLoginStatus();
+        }
 
         // Xử lý sự kiện đăng xuất
         imglogout = findViewById(R.id.logoutimg);

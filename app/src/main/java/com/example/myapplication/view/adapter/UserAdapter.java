@@ -57,7 +57,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
         lastMessageController.loadLatestMessage(senderUID, receiverUID, new IOnLatestMessageCallback() {
             @Override
             public void onMessageReceived(String message, long timestamp, String type) {
-                // ✅ Hiển thị nội dung phù hợp theo loại tin nhắn
                 String displayMessage;
 
                 if (type == null || type.equals("text")) {
@@ -69,9 +68,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
                             break;
                         case "file":
                             displayMessage = "Đã gửi 1 tệp file";
-                            break;
-                        case "video":
-                            displayMessage = "Đã gửi 1 video";
                             break;
                         default:
                             displayMessage = "Đã gửi 1 tệp";
