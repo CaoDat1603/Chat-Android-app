@@ -37,6 +37,9 @@ public class ResetPinActivity extends AppCompatActivity {
     // Lưu trữ email người dùng sau khi đăng nhập
     private String userEmail;
 
+    // Lưu trữ mã xác thực đã nhập
+    private String verificationCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +96,7 @@ public class ResetPinActivity extends AppCompatActivity {
 
     // Phương thức xác thực mã
     private void verifyCode() {
-        String verificationCode = etVerificationCode.getText().toString().trim();
+        verificationCode = etVerificationCode.getText().toString().trim();
 
         if (verificationCode.isEmpty()) {
             showToast("Vui lòng nhập mã xác nhận");
@@ -107,34 +110,33 @@ public class ResetPinActivity extends AppCompatActivity {
 
         showStatus("Đang xác thực mã...");
 
-        // Tạo mã PIN mới ngẫu nhiên
-        String newPin = ResetPinController.generateRandomPin();
-        etNewPin.setText(newPin);
+        // Xóa đoạn code tạo mã PIN ngẫu nhiên
+        // Chỉ thực hiện xác thực mã, không đặt PIN
+        resetPinController.verifyCode(userEmail, verificationCode, new ResetPinController.OnVerificationListener() {
+            @Override
+            public void onCodeSent(String message) {
+                // Không được gọi trong trường hợp này
+            }
 
-        resetPinController.verifyCodeAndResetPin(userEmail, verificationCode, newPin,
-                new ResetPinController.OnPinResetListener() {
-                    @Override
-                    public void onCodeSent(String message) {
-                        // Không được gọi trong trường hợp này
-                    }
-
-                    @Override
-                    public void onSuccess(String message) {
-                        // Chuyển sang bước tiếp theo và cho hiệu chỉnh mã PIN
-                        runOnUiThread(() -> {
-                            showStep(3);
-                            showStatus("Mã xác nhận hợp lệ. Vui lòng xác nhận hoặc thay đổi mã PIN mới.");
-                        });
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        runOnUiThread(() -> {
-                            showToast(error);
-                            showStatus(error);
-                        });
-                    }
+            @Override
+            public void onVerified(String message) {
+                // Khi xác thực thành công, chuyển sang bước 3 để nhập PIN mới
+                runOnUiThread(() -> {
+                    showStep(3);
+                    showStatus("Mã xác nhận hợp lệ. Vui lòng nhập mã PIN mới.");
+                    // Xóa giá trị cũ trong trường nhập PIN nếu có
+                    etNewPin.setText("");
                 });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    showToast(error);
+                    showStatus(error);
+                });
+            }
+        });
     }
 
     // Phương thức đặt PIN mới
@@ -152,9 +154,6 @@ public class ResetPinActivity extends AppCompatActivity {
         }
 
         showStatus("Đang cập nhật mã PIN...");
-
-        // Lấy lại mã xác thực đã nhập
-        String verificationCode = etVerificationCode.getText().toString().trim();
 
         resetPinController.verifyCodeAndResetPin(userEmail, verificationCode, newPin,
                 new ResetPinController.OnPinResetListener() {
@@ -249,7 +248,6 @@ public class ResetPinActivity extends AppCompatActivity {
         tvStatus.setVisibility(View.VISIBLE);
     }
 
-    // Hiển thị thông báo
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

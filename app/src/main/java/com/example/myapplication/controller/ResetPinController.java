@@ -69,6 +69,7 @@ public class ResetPinController {
     private void sendVerificationCode(String email, OnPinResetListener listener) {
         // Tạo mã xác thực và lưu vào SharedPreferences
         String verificationCode = VerificationUtil.generateVerificationCode(context, email);
+        Log.d(TAG, "Đã tạo mã xác nhận mới: " + verificationCode + " cho email: " + email);
 
         // Gửi mã xác thực qua email
         emailService.sendVerificationCode(email, verificationCode, new IEmailService.OnEmailSendListener() {
@@ -80,16 +81,51 @@ public class ResetPinController {
             @Override
             public void onError(String errorMessage) {
                 listener.onError("Không thể gửi mã xác nhận: " + errorMessage);
+                // Hiển thị lại thông tin mã để theo dõi khi email không gửi được
+                Log.e(TAG, "Lỗi gửi email. Xem mã trong log hoặc dùng getCurrentVerificationInfo");
             }
         });
     }
 
-    // Xác thực mã và cho phép đặt PIN mới
-    public void verifyCodeAndResetPin(String email, String code, String newPin, OnPinResetListener listener) {
+    /**
+     * Phương thức mới: Chỉ xác thực mã, không đặt lại PIN
+     * 
+     * @param email    Email người dùng
+     * @param code     Mã xác nhận
+     * @param listener Listener xử lý kết quả
+     */
+    public void verifyCode(String email, String code, OnVerificationListener listener) {
+        Log.d(TAG, "Đang xác thực mã: " + code + " cho email: " + email);
+
         // Kiểm tra mã xác thực
         boolean isValid = VerificationUtil.verifyCode(context, code, email);
 
         if (isValid) {
+            Log.d(TAG, "Mã xác nhận hợp lệ");
+            listener.onVerified("Mã xác nhận hợp lệ");
+        } else {
+            // Thêm log để xem thông tin mã xác nhận hiện tại
+            String verificationInfo = VerificationUtil.getCurrentVerificationInfo(context);
+            if (verificationInfo != null) {
+                Log.d(TAG, "Thông tin mã xác nhận: " + verificationInfo);
+            } else {
+                Log.d(TAG, "Không tìm thấy mã xác nhận cho email này hoặc mã đã hết hạn");
+            }
+
+            listener.onError("Mã xác nhận không hợp lệ hoặc đã hết hạn!");
+        }
+    }
+
+    // Xác thực mã và cho phép đặt PIN mới
+    public void verifyCodeAndResetPin(String email, String code, String newPin, OnPinResetListener listener) {
+        Log.d(TAG, "Thực hiện xác thực và đổi PIN: email=" + email + ", code=" + code);
+
+        // Kiểm tra mã xác thực
+        boolean isValid = VerificationUtil.verifyCode(context, code, email);
+
+        if (isValid) {
+            Log.d(TAG, "Mã xác thực hợp lệ, tiến hành cập nhật PIN mới: " + newPin);
+
             // Mã xác thực hợp lệ, tiến hành cập nhật PIN
             FirebaseUser user = auth.getCurrentUser();
             if (user != null) {
@@ -98,15 +134,28 @@ public class ResetPinController {
 
                 userRef.child("PIN").setValue(newPin).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        Log.d(TAG, "Cập nhật PIN thành công");
+                        // Xóa mã xác nhận sau khi đã hoàn tất toàn bộ quy trình
+                        VerificationUtil.clearVerificationCode(context);
                         listener.onSuccess("Mã PIN mới đã được thiết lập thành công!");
                     } else {
+                        Log.e(TAG, "Cập nhật PIN thất bại", task.getException());
                         listener.onError("Không thể cập nhật mã PIN: " + task.getException().getMessage());
                     }
                 });
             } else {
+                Log.e(TAG, "Người dùng không tồn tại hoặc chưa đăng nhập");
                 listener.onError("Người dùng không tồn tại hoặc chưa đăng nhập!");
             }
         } else {
+            // Thêm log để xem thông tin mã xác nhận hiện tại
+            String verificationInfo = VerificationUtil.getCurrentVerificationInfo(context);
+            if (verificationInfo != null) {
+                Log.d(TAG, "Thông tin mã xác nhận: " + verificationInfo);
+            } else {
+                Log.d(TAG, "Không tìm thấy mã xác nhận cho email này hoặc mã đã hết hạn");
+            }
+
             listener.onError("Mã xác nhận không hợp lệ hoặc đã hết hạn!");
         }
     }
@@ -125,5 +174,16 @@ public class ResetPinController {
         void onSuccess(String message);
 
         void onError(String error);
+    }
+
+    /**
+     * Interface lắng nghe kết quả xác thực mã
+     */
+    public interface OnVerificationListener {
+        void onCodeSent(String message);
+
+        void onVerified(String message);
+
+        void onError(String errorMessage);
     }
 }
