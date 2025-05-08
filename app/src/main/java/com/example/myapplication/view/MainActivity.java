@@ -1,8 +1,10 @@
 package com.example.myapplication.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -77,12 +79,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLogoutDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Đăng xuất")
-                .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
-                .setPositiveButton("Đăng xuất", (dialog, which) -> controller.onUserSignOut())
-                .setNegativeButton("Hủy", null)
-                .show();
+        Dialog dialog = new Dialog(this, R.style.dialoge);
+        dialog.setContentView(R.layout.dialog_layout);
+        Button no = dialog.findViewById(R.id.nobnt);
+        Button yes = dialog.findViewById(R.id.yesbnt);
+
+        yes.setOnClickListener(v -> {
+            controller.onUserSignOut();
+        });
+
+        no.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     public void navigateToLogin() {

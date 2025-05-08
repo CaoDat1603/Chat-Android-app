@@ -78,12 +78,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
                 holder.lastMessage.setText(displayMessage);
                 users.setLastMessage(displayMessage);
 
-                // ✅ Format và hiển thị thời gian
+                //Format và hiển thị thời gian
                 String time = formatTimestamp(timestamp);
                 holder.messageTime.setText(time);
                 holder.messageTime.setVisibility(View.VISIBLE);
 
-                // ✅ Hiển thị biểu tượng trạng thái nếu có tin nhắn
+                //Hiển thị biểu tượng trạng thái nếu có tin nhắn
                 holder.messageStatus.setVisibility(View.VISIBLE);
             }
 
@@ -100,6 +100,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
 
                 holder.messageTime.setText("");
                 holder.messageTime.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCallback(String roomId) {
+
             }
         });
 

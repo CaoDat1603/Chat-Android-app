@@ -10,7 +10,6 @@ public class Users implements Serializable {
     private String lastMessage;
     private String status;
     private String PIN;
-    private String lastMessageTime;
     private String fcmToken; // Token cho Firebase Cloud Messaging
 
 
@@ -20,14 +19,6 @@ public class Users implements Serializable {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
-    }
-
-    public String getLastMessageTime() {
-        return lastMessageTime;
-    }
-
-    public void setLastMessageTime(String lastMessageTime) {
-        this.lastMessageTime = lastMessageTime;
     }
 
     public String getPIN() {
@@ -50,7 +41,6 @@ public class Users implements Serializable {
         this.email = email;
         this.status = status;
         this.PIN = PIN;
-        this.lastMessageTime = "";
         this.fcmToken = "";
     }
 
@@ -70,18 +60,6 @@ public class Users implements Serializable {
         return fullname;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getLastMessage() {
         return lastMessage;
     }
@@ -94,9 +72,6 @@ public class Users implements Serializable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
 
 }

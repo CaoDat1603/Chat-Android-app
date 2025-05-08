@@ -4,6 +4,7 @@ package com.example.myapplication.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -27,17 +28,26 @@ public final class GroupItemBinding implements ViewBinding {
   public final TextView lastMessage;
 
   @NonNull
+  public final ImageView messageStatus;
+
+  @NonNull
+  public final TextView messageTime;
+
+  @NonNull
   public final TextView timeCreateGr;
 
   @NonNull
   public final CircleImageView userAvatar;
 
   private GroupItemBinding(@NonNull RelativeLayout rootView, @NonNull TextView groupNameTextView,
-      @NonNull TextView lastMessage, @NonNull TextView timeCreateGr,
+      @NonNull TextView lastMessage, @NonNull ImageView messageStatus,
+      @NonNull TextView messageTime, @NonNull TextView timeCreateGr,
       @NonNull CircleImageView userAvatar) {
     this.rootView = rootView;
     this.groupNameTextView = groupNameTextView;
     this.lastMessage = lastMessage;
+    this.messageStatus = messageStatus;
+    this.messageTime = messageTime;
     this.timeCreateGr = timeCreateGr;
     this.userAvatar = userAvatar;
   }
@@ -81,6 +91,18 @@ public final class GroupItemBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.messageStatus;
+      ImageView messageStatus = ViewBindings.findChildViewById(rootView, id);
+      if (messageStatus == null) {
+        break missingId;
+      }
+
+      id = R.id.messageTime;
+      TextView messageTime = ViewBindings.findChildViewById(rootView, id);
+      if (messageTime == null) {
+        break missingId;
+      }
+
       id = R.id.timeCreateGr;
       TextView timeCreateGr = ViewBindings.findChildViewById(rootView, id);
       if (timeCreateGr == null) {
@@ -94,7 +116,7 @@ public final class GroupItemBinding implements ViewBinding {
       }
 
       return new GroupItemBinding((RelativeLayout) rootView, groupNameTextView, lastMessage,
-          timeCreateGr, userAvatar);
+          messageStatus, messageTime, timeCreateGr, userAvatar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

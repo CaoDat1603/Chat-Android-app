@@ -12,4 +12,10 @@ public class LastMessageController {
     public void loadLatestMessage(String senderUID, String receiverUID, IOnLatestMessageCallback callback) {
         getLatestMessage.getLatestMessage(senderUID, receiverUID, callback);
     }
+    public void loadGroupLatestMessage(String groupId, IOnLatestMessageCallback callback) {
+        getLatestMessage.getGroupLatestMessage(groupId, callback);
+    }
+    public void checkUserInGroup(String userId, String groupId, IOnLatestMessageCallback callback) {
+        getLatestMessage.CheckUserInGroup(userId, groupId, callback);
+    }
 }

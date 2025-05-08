@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class FirebaseServiceImpl implements IFirebaseService {
     private static final String TAG = "LoginController";
@@ -279,7 +280,8 @@ public class FirebaseServiceImpl implements IFirebaseService {
 
         // Lấy thời gian hiện tại dưới dạng String
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                .format(new Date());
+                .format(new Date(System.currentTimeMillis() - TimeZone.getDefault().getRawOffset()));
         userRepository.updateStatus(user.getUid(), currentTime);
     }
+
 }
