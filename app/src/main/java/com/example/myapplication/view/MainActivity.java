@@ -18,6 +18,7 @@ import com.example.myapplication.service.IUserService;
 import com.example.myapplication.service.impl.GetLatestMessage;
 import com.example.myapplication.service.impl.UserServiceImpl;
 import com.example.myapplication.view.adapter.UserAdapter;
+import com.example.myapplication.view.VerificationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private UserAdapter userAdapter;
     private ArrayList<Users> userList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ImageView imgLogout, imgSettingProfile, chatGroup; // <- Khai báo logout button
+    private ImageView imgLogout, imgSettingProfile, chatGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         userAdapter = new UserAdapter(this, userList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(userAdapter);
-
 
         // Khởi tạo Service và Controller
         IUserService userService = new UserServiceImpl(this);
@@ -58,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
         chatGroup.setOnClickListener(view -> navigateToChatGroup());
 
         imgSettingProfile = findViewById(R.id.setting_profile);
-        imgSettingProfile.setOnClickListener(new View.OnClickListener(){
+        imgSettingProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {navigateToProfile();}
+            public void onClick(View view) {
+                navigateToProfile();
+            }
         });
     }
 

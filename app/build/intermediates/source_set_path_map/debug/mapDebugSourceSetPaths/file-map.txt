@@ -34,11 +34,11 @@ com.example.myapplication.app-circleimageview-3.1.0-32 C:\Users\cao\.gradle\cach
 com.example.myapplication.app-play-services-base-18.1.0-33 C:\Users\cao\.gradle\caches\transforms-4\f650a28122da3e3122b14580b62a1a58\transformed\play-services-base-18.1.0\res
 com.example.myapplication.app-lifecycle-livedata-2.6.2-34 C:\Users\cao\.gradle\caches\transforms-4\fd222ad060584ca9bebfca04a47debba\transformed\lifecycle-livedata-2.6.2\res
 com.example.myapplication.app-lifecycle-runtime-2.6.2-35 C:\Users\cao\.gradle\caches\transforms-4\fe209ac485d7102dc2f4c8f31f1d8743\transformed\lifecycle-runtime-2.6.2\res
-com.example.myapplication.app-pngs-36 C:\Users\cao\Desktop\Chat App\app\build\generated\res\pngs\debug
-com.example.myapplication.app-res-37 C:\Users\cao\Desktop\Chat App\app\build\generated\res\processDebugGoogleServices
-com.example.myapplication.app-resValues-38 C:\Users\cao\Desktop\Chat App\app\build\generated\res\resValues\debug
-com.example.myapplication.app-packageDebugResources-39 C:\Users\cao\Desktop\Chat App\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.myapplication.app-packageDebugResources-40 C:\Users\cao\Desktop\Chat App\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.myapplication.app-debug-41 C:\Users\cao\Desktop\Chat App\app\build\intermediates\merged_res\debug\mergeDebugResources
-com.example.myapplication.app-debug-42 C:\Users\cao\Desktop\Chat App\app\src\debug\res
-com.example.myapplication.app-main-43 C:\Users\cao\Desktop\Chat App\app\src\main\res
+com.example.myapplication.app-pngs-36 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\generated\res\pngs\debug
+com.example.myapplication.app-res-37 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\generated\res\processDebugGoogleServices
+com.example.myapplication.app-resValues-38 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\generated\res\resValues\debug
+com.example.myapplication.app-packageDebugResources-39 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.myapplication.app-packageDebugResources-40 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.myapplication.app-debug-41 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.example.myapplication.app-debug-42 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\src\debug\res
+com.example.myapplication.app-main-43 C:\Users\cao\Downloads\Chat-Android-app-feature-reset-pin\Chat-Android-app-feature-reset-pin\app\src\main\res
