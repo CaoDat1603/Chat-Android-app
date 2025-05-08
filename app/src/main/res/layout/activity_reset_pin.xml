@@ -96,25 +96,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/spartan_bold"
-            android:text="Mã xác nhận đã được gửi"
+            android:text="Mã xác nhận đã được gửi đến email của bạn"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18dp"
-            android:layout_marginBottom="8dp" />
-            
-        <!-- TextView để hiển thị mã xác nhận trực tiếp -->
-        <TextView
-            android:id="@+id/tvVerificationCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F8F8F8"
-            android:padding="16dp"
-            android:textColor="#E91E63"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginBottom="16dp" />
 
         <EditText
             android:id="@+id/etVerificationCode"

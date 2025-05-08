@@ -23,7 +23,7 @@ public class EmailServiceImpl implements IEmailService {
     private static final String EMAIL_HOST = "smtp.gmail.com";
     private static final String EMAIL_PORT = "587";
     private static final String EMAIL_USERNAME = "tdthanh.dev2025@gmail.com";
-    private static final String EMAIL_PASSWORD = "vgrn halh ocpw wrki";
+    private static final String EMAIL_PASSWORD = "nefq acms ogur irts";
     private static final String EMAIL_FROM = "App Chat <tdthanh.dev2025@gmail.com>"; // Tên hiển thị
 
     private final Executor executor = Executors.newSingleThreadExecutor();

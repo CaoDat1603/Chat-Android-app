@@ -404,10 +404,6 @@
         "source": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\mipmap-mdpi\\dvd.webp"
     },
     {
-        "merged": "com.example.myapplication.app-debug-41:/xml_network_security_config.xml.flat",
-        "source": "com.example.myapplication.app-main-43:/xml/network_security_config.xml"
-    },
-    {
         "merged": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-debug-41:\\drawable_emty_background.xml.flat",
         "source": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\drawable\\emty_background.xml"
     },
@@ -442,6 +438,10 @@
     {
         "merged": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-debug-41:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
         "source": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\mipmap-xxxhdpi\\ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-debug-41:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-main-43:\\xml\\network_security_config.xml"
     },
     {
         "merged": "C:\\Users\\thanh\\.gradle\\daemon\\8.7\\com.example.myapplication.app-debug-41:\\xml_backup_rules.xml.flat",

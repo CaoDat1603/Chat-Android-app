@@ -26,7 +26,6 @@ public class ResetPinActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private ResetPinController resetPinController;
     private TextView tvStatus;
-    private TextView tvVerificationCode; // Thêm TextView để hiển thị mã xác nhận
 
     // Các phần giao diện cho từng bước
     private LinearLayout loginStep, verificationStep, resetPinStep;
@@ -54,23 +53,6 @@ public class ResetPinActivity extends AppCompatActivity {
         verificationStep = findViewById(R.id.verificationStep);
         resetPinStep = findViewById(R.id.resetPinStep);
         tvStatus = findViewById(R.id.tvStatus);
-
-        // Tìm TextView để hiển thị mã xác nhận
-        tvVerificationCode = findViewById(R.id.tvVerificationCode);
-        if (tvVerificationCode == null) {
-            // Nếu không có trong layout, tạo một TextView mới và thêm vào verificationStep
-            tvVerificationCode = new TextView(this);
-            tvVerificationCode.setId(View.generateViewId());
-            tvVerificationCode.setPadding(16, 16, 16, 16);
-            tvVerificationCode.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-            tvVerificationCode.setTextSize(18);
-            tvVerificationCode.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-            // Thêm TextView vào layout verificationStep ở vị trí đầu tiên
-            if (verificationStep instanceof LinearLayout) {
-                ((LinearLayout) verificationStep).addView(tvVerificationCode, 0);
-            }
-        }
 
         // Khởi tạo các trường nhập liệu
         etVerificationCode = findViewById(R.id.etVerificationCode);
@@ -227,23 +209,8 @@ public class ResetPinActivity extends AppCompatActivity {
                             runOnUiThread(() -> {
                                 // Chuyển sang bước tiếp theo
                                 showStep(2);
-
-                                // Hiển thị mã xác nhận trực tiếp trên giao diện
-                                if (message.contains("Mã xác nhận của bạn là:")) {
-                                    // Hiển thị mã xác nhận đặc biệt
-                                    tvVerificationCode.setText(message);
-                                    tvVerificationCode.setVisibility(View.VISIBLE);
-
-                                    // Lấy mã từ thông báo và đặt vào ô nhập
-                                    String[] parts = message.split(":");
-                                    if (parts.length > 1) {
-                                        String code = parts[1].trim().split("\n")[0].trim();
-                                        etVerificationCode.setText(code);
-                                    }
-                                }
-
-                                showStatus("Mã xác nhận đã được gửi. Bạn có thể xem mã ở trên.");
-                                showToast("Mã xác nhận đã được tạo");
+                                showStatus(message);
+                                showToast(message);
                             });
                         }
 

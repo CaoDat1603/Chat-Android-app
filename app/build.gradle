@@ -61,5 +61,4 @@ dependencies {
 }
 
 
-// Đừng quên áp dụng plugin Google Services
 apply plugin: 'com.google.gms.google-services'

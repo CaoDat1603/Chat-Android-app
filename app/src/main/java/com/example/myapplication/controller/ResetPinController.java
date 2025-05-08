@@ -71,29 +71,18 @@ public class ResetPinController {
         String verificationCode = VerificationUtil.generateVerificationCode(context, email);
         Log.d(TAG, "Đã tạo mã xác nhận mới: " + verificationCode + " cho email: " + email);
 
-        // Lưu trữ thông tin mã xác thực hiện tại để debug
-        String verificationInfo = VerificationUtil.getCurrentVerificationInfo(context);
-
-        // Hiển thị mã xác nhận trực tiếp cho người dùng thay vì chỉ gửi qua email
-        String message = "Mã xác nhận của bạn là: " + verificationCode + "\n\nVui lòng nhập mã này vào ô xác nhận.";
-
-        // Gửi mã xác thực qua email (giữ lại để tương thích, nhưng đã có thông báo trực
-        // tiếp)
+        // Gửi mã xác thực qua email
         emailService.sendVerificationCode(email, verificationCode, new IEmailService.OnEmailSendListener() {
             @Override
-            public void onSuccess(String emailMessage) {
-                // Thông báo thành công với mã xác nhận trực tiếp
-                listener.onCodeSent(message);
+            public void onSuccess(String message) {
+                listener.onCodeSent("Mã xác nhận đã được gửi đến email " + email);
             }
 
             @Override
             public void onError(String errorMessage) {
-                // Vẫn hiển thị mã xác nhận trực tiếp cho người dùng nếu gửi email thất bại
-                Log.e(TAG, "Lỗi gửi email: " + errorMessage);
-                Log.d(TAG, "Cung cấp mã trực tiếp: " + verificationCode);
-
+                listener.onError("Không thể gửi mã xác nhận: " + errorMessage);
                 // Hiển thị lại thông tin mã để theo dõi khi email không gửi được
-                listener.onCodeSent(message);
+                Log.e(TAG, "Lỗi gửi email. Xem mã trong log hoặc dùng getCurrentVerificationInfo");
             }
         });
     }
