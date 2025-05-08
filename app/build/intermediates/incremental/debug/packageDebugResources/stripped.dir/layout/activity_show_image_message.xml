@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Thanh điều hướng trên cùng -->
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="#BDEDFF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Nút quay lại -->
+        <ImageButton
+            android:id="@+id/turnback"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/back"
+            android:contentDescription="Back button"
+            android:scaleType="centerInside" />
+
+        <!-- Khoảng trống giữa các nút -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <!-- Nút tải hình ảnh -->
+        <ImageButton
+            android:id="@+id/dowimage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/filed"
+            android:contentDescription="Download button"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+    <!-- Hình ảnh được hiển thị -->
+    <ImageView
+        android:id="@+id/full_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" />
+</RelativeLayout>

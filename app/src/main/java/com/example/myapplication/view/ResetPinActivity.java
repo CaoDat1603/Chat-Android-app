@@ -115,16 +115,14 @@ public class ResetPinActivity extends AppCompatActivity {
         resetPinController.verifyCode(userEmail, verificationCode, new ResetPinController.OnVerificationListener() {
             @Override
             public void onCodeSent(String message) {
-                // Không được gọi trong trường hợp này
             }
 
             @Override
             public void onVerified(String message) {
-                // Khi xác thực thành công, chuyển sang bước 3 để nhập PIN mới
+                // Khi xác thực thành công, chuyển nhập PIN mới
                 runOnUiThread(() -> {
                     showStep(3);
                     showStatus("Mã xác nhận hợp lệ. Vui lòng nhập mã PIN mới.");
-                    // Xóa giá trị cũ trong trường nhập PIN nếu có
                     etNewPin.setText("");
                 });
             }
