@@ -2,6 +2,7 @@ package com.example.myapplication.service.impl;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.example.myapplication.repository.GroupRepository;
 import com.example.myapplication.repository.UserRepository;
 import com.example.myapplication.service.IGroupService;
 import com.example.myapplication.view.MainActivityGroup;
+import com.example.myapplication.view.ResetPinActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -49,9 +51,9 @@ public class GroupServiceImpl implements IGroupService {
                 Users user = dataSnapshot.getValue(Users.class);
                 if (user != null) {
                     if (user.getPIN() == null || user.getPIN().isEmpty()) {
-                        showPinDialog("Vui lòng thiết lập mã PIN mới:", true, userId,() ->  controller.loadGroupList());
+                        showPinDialog("Vui lòng thiết lập mã PIN mới:", true, userId, () -> controller.loadGroupList());
                     } else {
-                        showPinDialog("Nhập mã PIN của bạn:", false, userId,() ->  controller.loadGroupList());
+                        showPinDialog("Nhập mã PIN của bạn:", false, userId, () -> controller.loadGroupList());
                     }
                 } else {
                     controller.showMessage("Không tìm thấy thông tin người dùng!");
@@ -113,12 +115,21 @@ public class GroupServiceImpl implements IGroupService {
         });
 
         builder.setNegativeButton("Hủy", (dialog, which) -> signOut());
+
+        if (!isSettingPin) {
+            builder.setNeutralButton("Quên mã PIN", (dialog, which) -> {
+                Intent intent = new Intent(controller.view, ResetPinActivity.class);
+                controller.view.startActivity(intent);
+            });
+        }
+
         builder.show();
     }
 
     @Override
     public void signOut() {
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(controller.view, GoogleSignInOptions.DEFAULT_SIGN_IN);
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(controller.view,
+                GoogleSignInOptions.DEFAULT_SIGN_IN);
         googleSignInClient.signOut().addOnCompleteListener(task -> {
             FirebaseAuth.getInstance().signOut();
             controller.navigateToLogin();

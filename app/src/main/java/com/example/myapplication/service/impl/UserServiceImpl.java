@@ -1,6 +1,7 @@
 package com.example.myapplication.service.impl;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -8,6 +9,7 @@ import com.example.myapplication.model.Users;
 import com.example.myapplication.repository.UserRepository;
 import com.example.myapplication.service.IUserService;
 import com.example.myapplication.view.MainActivity;
+import com.example.myapplication.view.ResetPinActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,7 +40,8 @@ public class UserServiceImpl implements IUserService {
                 Users user = dataSnapshot.getValue(Users.class);
                 if (user != null) {
                     if (user.getPIN() == null || user.getPIN().isEmpty()) {
-                        showPinDialog("Vui lòng thiết lập mã PIN mới:", true, userId, UserServiceImpl.this::loadUserData);
+                        showPinDialog("Vui lòng thiết lập mã PIN mới:", true, userId,
+                                UserServiceImpl.this::loadUserData);
                     } else {
                         showPinDialog("Nhập mã PIN của bạn:", false, userId, UserServiceImpl.this::loadUserData);
                     }
@@ -103,6 +106,14 @@ public class UserServiceImpl implements IUserService {
         });
 
         builder.setNegativeButton("Hủy", (dialog, which) -> signOut());
+
+        if (!isSettingPin) {
+            builder.setNeutralButton("Quên mã PIN", (dialog, which) -> {
+                Intent intent = new Intent(view, ResetPinActivity.class);
+                view.startActivity(intent);
+            });
+        }
+
         builder.show();
     }
 

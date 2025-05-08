@@ -3330,6 +3330,10 @@ id browser_actions_menu_item_text
 id browser_actions_menu_items
 id browser_actions_menu_view
 id btnGoogleSignIn
+id btnSendCode
+id btnSetNewPin
+id btnVerify
+id btnVerifyCode
 id btn_edit
 id buttonPanel
 id buttonQuit
@@ -3431,6 +3435,9 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id escape
+id etEmail
+id etNewPin
+id etVerificationCode
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -3511,6 +3518,7 @@ id listMode
 id list_item
 id ll1
 id lnMdtxt
+id loginStep
 id logoutdia
 id logoutimg
 id m3_side_sheet
@@ -3650,6 +3658,7 @@ id recivername
 id recivertextset
 id rectangles
 id report_drawn
+id resetPinStep
 id reverseSawtooth
 id right
 id rightToLeft
@@ -3791,6 +3800,7 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id turnback
+id tvStatus
 id unchecked
 id uniform
 id unlabeled
@@ -3799,6 +3809,7 @@ id useLogo
 id user_avatar
 id username
 id userstatus
+id verificationStep
 id vertical_only
 id view_offset_helper
 id view_transition
@@ -3948,6 +3959,7 @@ layout activity_reset_pin
 layout activity_setting_group
 layout activity_show_image_message
 layout activity_splash
+layout activity_verification
 layout browser_actions_context_menu_page
 layout browser_actions_context_menu_row
 layout custom_dialog
@@ -5535,3 +5547,4 @@ styleable include constraintSet
 xml backup_rules
 xml data_extraction_rules
 xml image_share_filepaths
+xml network_security_config

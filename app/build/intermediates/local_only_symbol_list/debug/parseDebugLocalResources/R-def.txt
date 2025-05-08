@@ -82,6 +82,10 @@ id avatar
 id backgroundImage
 id bottomBar
 id btnGoogleSignIn
+id btnSendCode
+id btnSetNewPin
+id btnVerify
+id btnVerifyCode
 id btn_edit
 id buttonQuit
 id button_change_pin
@@ -100,6 +104,9 @@ id edit_group_layout
 id edit_group_name
 id edit_name
 id editname
+id etEmail
+id etNewPin
+id etVerificationCode
 id fileLayout
 id fileName
 id fileic
@@ -117,6 +124,7 @@ id isadmin
 id lastMessage
 id ll1
 id lnMdtxt
+id loginStep
 id logoutdia
 id logoutimg
 id main
@@ -137,6 +145,7 @@ id pronone
 id receiverImageView
 id recivername
 id recivertextset
+id resetPinStep
 id searchRecyclerView
 id searchUsers
 id selectUser
@@ -161,9 +170,11 @@ id timeCreateGr
 id tokenTextView
 id toolBar
 id turnback
+id tvStatus
 id user_avatar
 id username
 id userstatus
+id verificationStep
 id yesbnt
 layout activity_add_memeber
 layout activity_chat
@@ -179,6 +190,7 @@ layout activity_reset_pin
 layout activity_setting_group
 layout activity_show_image_message
 layout activity_splash
+layout activity_verification
 layout dialog_layout
 layout dialog_token
 layout group_item
@@ -208,3 +220,4 @@ style Theme.MyApplication
 style dialoge
 xml backup_rules
 xml data_extraction_rules
+xml network_security_config

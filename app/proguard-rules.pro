@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# JavaMail related rules
+-keep class javax.mail.** { *; }
+-keep class javax.activation.** { *; }
+-keep class com.sun.mail.** { *; }
+-keep class com.sun.activation.** { *; }
+-dontwarn java.awt.**
+-dontwarn javax.activation.**
+-dontwarn java.beans.**

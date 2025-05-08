@@ -4,8 +4,11 @@ package com.example.myapplication.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +32,25 @@ public final class ActivityResetPinBinding implements ViewBinding {
   public final SignInButton btnGoogleSignIn;
 
   @NonNull
+  public final Button btnSetNewPin;
+
+  @NonNull
+  public final Button btnVerifyCode;
+
+  @NonNull
+  public final EditText etNewPin;
+
+  @NonNull
+  public final EditText etVerificationCode;
+
+  @NonNull
   public final ImageView imageView;
+
+  @NonNull
+  public final LinearLayout loginStep;
+
+  @NonNull
+  public final LinearLayout resetPinStep;
 
   @NonNull
   public final TextView textView;
@@ -40,17 +61,34 @@ public final class ActivityResetPinBinding implements ViewBinding {
   @NonNull
   public final ImageButton turnback;
 
+  @NonNull
+  public final TextView tvStatus;
+
+  @NonNull
+  public final LinearLayout verificationStep;
+
   private ActivityResetPinBinding(@NonNull ConstraintLayout rootView,
       @NonNull ImageView backgroundImage, @NonNull SignInButton btnGoogleSignIn,
-      @NonNull ImageView imageView, @NonNull TextView textView, @NonNull TextView textView8,
-      @NonNull ImageButton turnback) {
+      @NonNull Button btnSetNewPin, @NonNull Button btnVerifyCode, @NonNull EditText etNewPin,
+      @NonNull EditText etVerificationCode, @NonNull ImageView imageView,
+      @NonNull LinearLayout loginStep, @NonNull LinearLayout resetPinStep,
+      @NonNull TextView textView, @NonNull TextView textView8, @NonNull ImageButton turnback,
+      @NonNull TextView tvStatus, @NonNull LinearLayout verificationStep) {
     this.rootView = rootView;
     this.backgroundImage = backgroundImage;
     this.btnGoogleSignIn = btnGoogleSignIn;
+    this.btnSetNewPin = btnSetNewPin;
+    this.btnVerifyCode = btnVerifyCode;
+    this.etNewPin = etNewPin;
+    this.etVerificationCode = etVerificationCode;
     this.imageView = imageView;
+    this.loginStep = loginStep;
+    this.resetPinStep = resetPinStep;
     this.textView = textView;
     this.textView8 = textView8;
     this.turnback = turnback;
+    this.tvStatus = tvStatus;
+    this.verificationStep = verificationStep;
   }
 
   @Override
@@ -92,9 +130,45 @@ public final class ActivityResetPinBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnSetNewPin;
+      Button btnSetNewPin = ViewBindings.findChildViewById(rootView, id);
+      if (btnSetNewPin == null) {
+        break missingId;
+      }
+
+      id = R.id.btnVerifyCode;
+      Button btnVerifyCode = ViewBindings.findChildViewById(rootView, id);
+      if (btnVerifyCode == null) {
+        break missingId;
+      }
+
+      id = R.id.etNewPin;
+      EditText etNewPin = ViewBindings.findChildViewById(rootView, id);
+      if (etNewPin == null) {
+        break missingId;
+      }
+
+      id = R.id.etVerificationCode;
+      EditText etVerificationCode = ViewBindings.findChildViewById(rootView, id);
+      if (etVerificationCode == null) {
+        break missingId;
+      }
+
       id = R.id.imageView;
       ImageView imageView = ViewBindings.findChildViewById(rootView, id);
       if (imageView == null) {
+        break missingId;
+      }
+
+      id = R.id.loginStep;
+      LinearLayout loginStep = ViewBindings.findChildViewById(rootView, id);
+      if (loginStep == null) {
+        break missingId;
+      }
+
+      id = R.id.resetPinStep;
+      LinearLayout resetPinStep = ViewBindings.findChildViewById(rootView, id);
+      if (resetPinStep == null) {
         break missingId;
       }
 
@@ -116,8 +190,21 @@ public final class ActivityResetPinBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvStatus;
+      TextView tvStatus = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatus == null) {
+        break missingId;
+      }
+
+      id = R.id.verificationStep;
+      LinearLayout verificationStep = ViewBindings.findChildViewById(rootView, id);
+      if (verificationStep == null) {
+        break missingId;
+      }
+
       return new ActivityResetPinBinding((ConstraintLayout) rootView, backgroundImage,
-          btnGoogleSignIn, imageView, textView, textView8, turnback);
+          btnGoogleSignIn, btnSetNewPin, btnVerifyCode, etNewPin, etVerificationCode, imageView,
+          loginStep, resetPinStep, textView, textView8, turnback, tvStatus, verificationStep);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

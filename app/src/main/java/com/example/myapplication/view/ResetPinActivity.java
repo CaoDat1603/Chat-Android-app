@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,28 +21,45 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 
-
 public class ResetPinActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001; // Request code for Google Sign-In
     private GoogleSignInClient googleSignInClient;
     private ResetPinController resetPinController;
+    private TextView tvStatus;
+
+    // Các phần giao diện cho từng bước
+    private LinearLayout loginStep, verificationStep, resetPinStep;
+
+    // Các trường nhập liệu
+    private EditText etVerificationCode, etNewPin;
+    private Button btnVerifyCode, btnSetNewPin;
+
+    // Lưu trữ email người dùng sau khi đăng nhập
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_pin);
 
-        ImageButton turnback = findViewById(R.id.turnback);
-        // Turn back
-        turnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        // Khởi tạo ResetPinController
+        // Khởi tạo controller
         resetPinController = new ResetPinController(this);
+
+        // Khởi tạo các phần giao diện
+        loginStep = findViewById(R.id.loginStep);
+        verificationStep = findViewById(R.id.verificationStep);
+        resetPinStep = findViewById(R.id.resetPinStep);
+        tvStatus = findViewById(R.id.tvStatus);
+
+        // Khởi tạo các trường nhập liệu
+        etVerificationCode = findViewById(R.id.etVerificationCode);
+        etNewPin = findViewById(R.id.etNewPin);
+        btnVerifyCode = findViewById(R.id.btnVerifyCode);
+        btnSetNewPin = findViewById(R.id.btnSetNewPin);
+
+        // Nút quay lại
+        ImageButton turnback = findViewById(R.id.turnback);
+        turnback.setOnClickListener(view -> finish());
 
         // Cấu hình Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -50,14 +70,122 @@ public class ResetPinActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Gán sự kiện cho nút Google Sign-In
-        SignInButton btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn); // Sửa thành SignInButton
-        btnGoogleSignIn.setOnClickListener(v -> signInAndResetPin());
+        SignInButton btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        btnGoogleSignIn.setOnClickListener(v -> signInAndGetVerificationCode());
+
+        // Gán sự kiện cho nút xác nhận mã
+        btnVerifyCode.setOnClickListener(v -> verifyCode());
+
+        // Gán sự kiện cho nút đặt PIN mới
+        btnSetNewPin.setOnClickListener(v -> setNewPin());
+
+        // Hiển thị bước đầu tiên
+        showStep(1);
     }
 
-    // Phương thức để đăng nhập và reset PIN
-    private void signInAndResetPin() {
+    // Phương thức để đăng nhập và lấy mã xác nhận
+    private void signInAndGetVerificationCode() {
+        showStatus("Đang xử lý...");
+
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    // Phương thức xác thực mã
+    private void verifyCode() {
+        String verificationCode = etVerificationCode.getText().toString().trim();
+
+        if (verificationCode.isEmpty()) {
+            showToast("Vui lòng nhập mã xác nhận");
+            return;
+        }
+
+        if (verificationCode.length() != 6) {
+            showToast("Mã xác nhận phải có 6 chữ số");
+            return;
+        }
+
+        showStatus("Đang xác thực mã...");
+
+        // Tạo mã PIN mới ngẫu nhiên
+        String newPin = ResetPinController.generateRandomPin();
+        etNewPin.setText(newPin);
+
+        resetPinController.verifyCodeAndResetPin(userEmail, verificationCode, newPin,
+                new ResetPinController.OnPinResetListener() {
+                    @Override
+                    public void onCodeSent(String message) {
+                        // Không được gọi trong trường hợp này
+                    }
+
+                    @Override
+                    public void onSuccess(String message) {
+                        // Chuyển sang bước tiếp theo và cho hiệu chỉnh mã PIN
+                        runOnUiThread(() -> {
+                            showStep(3);
+                            showStatus("Mã xác nhận hợp lệ. Vui lòng xác nhận hoặc thay đổi mã PIN mới.");
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            showToast(error);
+                            showStatus(error);
+                        });
+                    }
+                });
+    }
+
+    // Phương thức đặt PIN mới
+    private void setNewPin() {
+        String newPin = etNewPin.getText().toString().trim();
+
+        if (newPin.isEmpty()) {
+            showToast("Vui lòng nhập mã PIN mới");
+            return;
+        }
+
+        if (newPin.length() != 6) {
+            showToast("Mã PIN phải có 6 chữ số");
+            return;
+        }
+
+        showStatus("Đang cập nhật mã PIN...");
+
+        // Lấy lại mã xác thực đã nhập
+        String verificationCode = etVerificationCode.getText().toString().trim();
+
+        resetPinController.verifyCodeAndResetPin(userEmail, verificationCode, newPin,
+                new ResetPinController.OnPinResetListener() {
+                    @Override
+                    public void onCodeSent(String message) {
+                        // Không được gọi trong trường hợp này
+                    }
+
+                    @Override
+                    public void onSuccess(String message) {
+                        runOnUiThread(() -> {
+                            showToast("Mã PIN mới đã được thiết lập thành công!");
+                            showStatus("Mã PIN mới đã được thiết lập thành công!");
+
+                            // Delay 2 giây trước khi chuyển hướng
+                            tvStatus.postDelayed(() -> {
+                                Intent intent = new Intent(ResetPinActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }, 2000);
+                        });
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        runOnUiThread(() -> {
+                            showToast(error);
+                            showStatus(error);
+                        });
+                    }
+                });
     }
 
     @Override
@@ -69,29 +197,60 @@ public class ResetPinActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 GoogleSignInAccount account = task.getResult();
                 if (account != null) {
-                    // Đăng nhập với Google và thực hiện reset PIN
+                    // Lưu email người dùng
+                    userEmail = account.getEmail();
+
+                    // Hiển thị đang xác thực
+                    showStatus("Đang xác thực tài khoản...");
+
+                    // Đăng nhập với Google và lấy mã xác thực
                     resetPinController.firebaseAuthWithGoogle(account, new ResetPinController.OnPinResetListener() {
                         @Override
-                        public void onSuccess(String message) {
-                            // Đăng nhập và reset PIN thành công
-                            Toast.makeText(ResetPinActivity.this, message, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ResetPinActivity.this, LoginActivity.class);
-                            startActivity(intent);
+                        public void onCodeSent(String message) {
+                            runOnUiThread(() -> {
+                                // Chuyển sang bước tiếp theo
+                                showStep(2);
+                                showStatus(message);
+                                showToast(message);
+                            });
+                        }
 
-                            // Kết thúc trang hiện tại để không quay lại được bằng nút Back
-                            finish();
+                        @Override
+                        public void onSuccess(String message) {
+                            // Không được gọi trong bước này
                         }
 
                         @Override
                         public void onError(String error) {
-                            // Đăng nhập hoặc reset PIN thất bại
-                            Toast.makeText(ResetPinActivity.this, error, Toast.LENGTH_SHORT).show();
+                            runOnUiThread(() -> {
+                                showToast(error);
+                                showStatus(error);
+                            });
                         }
                     });
                 }
             } else {
-                Toast.makeText(this, "Đăng nhập Google thất bại.", Toast.LENGTH_SHORT).show();
+                showStatus("Đăng nhập Google thất bại.");
+                showToast("Đăng nhập Google thất bại.");
             }
         }
+    }
+
+    // Hiển thị bước tương ứng
+    private void showStep(int step) {
+        loginStep.setVisibility(step == 1 ? View.VISIBLE : View.GONE);
+        verificationStep.setVisibility(step == 2 ? View.VISIBLE : View.GONE);
+        resetPinStep.setVisibility(step == 3 ? View.VISIBLE : View.GONE);
+    }
+
+    // Hiển thị trạng thái
+    private void showStatus(String message) {
+        tvStatus.setText(message);
+        tvStatus.setVisibility(View.VISIBLE);
+    }
+
+    // Hiển thị thông báo
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
