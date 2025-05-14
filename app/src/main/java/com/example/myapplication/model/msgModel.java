@@ -2,32 +2,31 @@ package com.example.myapplication.model;
 
 public class msgModel {
     String message;
-    String senderId;
+    String senderid;
     long timeStamp;
-    String messageType; // Thêm trường này để phân loại tin nhắn (text, image, file)
-    String fileName; // Thêm trường để lưu tên file
+    String messageType;  // Thêm trường này để phân loại tin nhắn (text, image, file)
+    String fileName;     // Thêm trường để lưu tên file
     private boolean isGroupMessage = false;
 
     public msgModel() {
     }
 
     // Constructor với tất cả các tham số
-    public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName,
-            boolean isGroupMessage) {
+    public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName, boolean isGroupMessage) {
         this.message = message;
-        this.senderId = senderId;
+        this.senderid = senderId;
         this.timeStamp = timeStamp;
         this.messageType = messageType;
         this.fileName = fileName;
         this.isGroupMessage = isGroupMessage;
     }
 
-    public msgModel(String message, String senderId, long timeStamp, String messageType, String fileName) {
+    public msgModel(String message, String senderid, long timeStamp, String messageType, String fileName) {
         this.message = message;
-        this.senderId = senderId;
+        this.senderid = senderid;
         this.timeStamp = timeStamp;
         this.messageType = messageType;
-        this.fileName = fileName; // Khởi tạo tên file
+        this.fileName = fileName;  // Khởi tạo tên file
     }
 
     public String getMessage() {
@@ -38,12 +37,12 @@ public class msgModel {
         this.message = message;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public String getSenderid() {
+        return senderid;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setSenderid(String senderid) {
+        this.senderid = senderid;
     }
 
     public long getTimeStamp() {
@@ -63,11 +62,11 @@ public class msgModel {
     }
 
     public String getFileName() {
-        return fileName; // Phương thức để lấy tên file
+        return fileName;  // Phương thức để lấy tên file
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName; // Phương thức để set tên file
+        this.fileName = fileName;  // Phương thức để set tên file
     }
 
     public boolean isGroupMessage() {

@@ -1,15 +1,22 @@
 package com.example.myapplication.view;
 
 import android.content.Intent;
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.SettingGroupController;
@@ -25,12 +32,20 @@ public class SettingGroupActivity extends AppCompatActivity {
     public String userId;
 
     private SettingGroupController controller;
-    private String groupId;
+    public String groupId;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_group);
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Ánh xạ các view
         groupNameTextView = findViewById(R.id.recivername);
@@ -41,9 +56,11 @@ public class SettingGroupActivity extends AppCompatActivity {
         View outGroup = findViewById(R.id.outgroup);
         View deleteGroup = findViewById(R.id.deletegroup);
 
-
-        // Lấy groupId từ Intent
         groupId = getIntent().getStringExtra("groupId");
+        if (groupId == null) {
+            Log.e("SettingGroupActivity", "groupId is null!");
+            return;
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getUid();
@@ -123,6 +140,11 @@ public class SettingGroupActivity extends AppCompatActivity {
     private void nextManageMemberActivity() {
         Intent intent = new Intent(SettingGroupActivity.this, ManageMemberActivity.class);
         intent.putExtra("groupId", groupId);
+        startActivity(intent);
+    }
+
+    public void turnMain() {
+        Intent intent = new Intent(SettingGroupActivity.this, MainActivityGroup.class);
         startActivity(intent);
     }
 

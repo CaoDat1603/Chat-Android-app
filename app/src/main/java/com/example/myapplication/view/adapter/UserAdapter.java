@@ -11,18 +11,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.LastMessageController;
+import com.example.myapplication.controller.StatusController;
 import com.example.myapplication.model.Users;
+import com.example.myapplication.service.IOnLatestMessageCallback;
+import com.example.myapplication.service.impl.GetLatestMessage;
 import com.example.myapplication.view.ChatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
     private Context context;
+    private StatusController statusController;
+    private LastMessageController lastMessageController;
     ArrayList<Users> usersArrayList;
 
     public UserAdapter(Context context, ArrayList<Users> usersArrayList) {
         this.usersArrayList = usersArrayList;
         this.context = context;
+        this.statusController = new StatusController();
+        this.lastMessageController = new LastMessageController(new GetLatestMessage());
     }
 
     @NonNull
@@ -36,28 +48,65 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
         Users users = usersArrayList.get(position);
         holder.username.setText(users.getFullname());
-        holder.userstatus.setText(users.getStatus());
+        String readableStatus = statusController.checkOnline(users.getStatus());
+        holder.userstatus.setText(readableStatus);
 
-        // Kiểm tra và hiển thị tin nhắn cuối cùng nếu có
-        String lastMsg = users.getLastMessage();
-        if (lastMsg != null && !lastMsg.isEmpty()) {
-            holder.lastMessage.setText(lastMsg);
-        } else {
-            holder.lastMessage.setText("Chưa có tin nhắn");
-        }
+        String senderUID = FirebaseAuth.getInstance().getUid();
+        String receiverUID = users.getUserId();
 
-        // Kiểm tra và hiển thị thời gian tin nhắn cuối cùng nếu có
-        String lastMsgTime = users.getLastMessageTime();
-        if (lastMsgTime != null && !lastMsgTime.isEmpty()) {
-            holder.messageTime.setText(lastMsgTime);
-            holder.messageTime.setVisibility(View.VISIBLE);
-        } else {
-            holder.messageTime.setText("");
-            holder.messageTime.setVisibility(View.GONE);
-        }
+        lastMessageController.loadLatestMessage(senderUID, receiverUID, new IOnLatestMessageCallback() {
+            @Override
+            public void onMessageReceived(String message, long timestamp, String type) {
+                String displayMessage;
 
-        // Ẩn trạng thái tin nhắn nếu không có tin nhắn
-        holder.messageStatus.setVisibility(lastMsg != null && !lastMsg.isEmpty() ? View.VISIBLE : View.GONE);
+                if (type == null || type.equals("text")) {
+                    displayMessage = message;
+                } else {
+                    switch (type) {
+                        case "image":
+                            displayMessage = "Đã gửi 1 hình ảnh";
+                            break;
+                        case "file":
+                            displayMessage = "Đã gửi 1 tệp file";
+                            break;
+                        default:
+                            displayMessage = "Đã gửi 1 tệp";
+                            break;
+                    }
+                }
+
+                holder.lastMessage.setText(displayMessage);
+                users.setLastMessage(displayMessage);
+
+                //Format và hiển thị thời gian
+                String time = formatTimestamp(timestamp);
+                holder.messageTime.setText(time);
+                holder.messageTime.setVisibility(View.VISIBLE);
+
+                //Hiển thị biểu tượng trạng thái nếu có tin nhắn
+                holder.messageStatus.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError(String error) {
+                String lastMsg = users.getLastMessage();
+                if (lastMsg != null && !lastMsg.isEmpty()) {
+                    holder.lastMessage.setText(lastMsg);
+                    holder.messageStatus.setVisibility(View.VISIBLE);
+                } else {
+                    holder.lastMessage.setText("Chưa có tin nhắn");
+                    holder.messageStatus.setVisibility(View.GONE);
+                }
+
+                holder.messageTime.setText("");
+                holder.messageTime.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCallback(String roomId) {
+
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +122,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewholder> {
     @Override
     public int getItemCount() {
         return usersArrayList.size();
+    }
+
+    private String formatTimestamp(long timestamp) {
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM", Locale.getDefault());
+        return sdf.format(date);
     }
 
     public class viewholder extends RecyclerView.ViewHolder {

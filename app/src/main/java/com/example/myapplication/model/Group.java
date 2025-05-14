@@ -4,6 +4,10 @@ public class Group {
     private String groupId; // ID của nhóm
     private String groupName; // Tên của nhóm
     private String adminId; // ID của quản trị viên nhóm
+    private String status;
+
+    private String lastMessage;
+
     private long createdAt; // Thời gian tạo nhóm
 
     // Constructor
@@ -25,6 +29,14 @@ public class Group {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     public String getGroupName() {
@@ -49,5 +61,11 @@ public class Group {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setGroupStatus(String status) {this.status = status;}
+
+    public String getStatus() {
+        return status;
     }
 }

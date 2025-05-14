@@ -2,45 +2,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main">
 
     <!-- Header -->
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="67dp"
+        android:background="@drawable/bottom_nav_background_top"
         android:gravity="center_vertical"
-        android:background="#BDEDFF"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/turnback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/back1"
-            android:contentDescription="Back button" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/boder_squares_background"
+            android:src="@drawable/arrow_left"
+            android:scaleType="centerInside"
+            android:padding="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"/>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/calsans_regular"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Nhóm mới"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:shadowColor="#80000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="T ạ o  N h ó m"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/createButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:gravity="center"
+            android:background="@drawable/boder_squares_background"
             android:text="TẠO"
-            android:textSize="14sp"
             android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:fontFamily="@font/calsans_regular"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll1"
+        android:background="@drawable/layoutb">
     </LinearLayout>
 
     <!-- Tên nhóm -->
@@ -52,6 +74,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
         android:hint="Tên nhóm (không bắt buộc)"
+        android:textColorHint="@color/black"
         android:padding="12dp"
         android:textColor="@color/black"
         />
@@ -65,6 +88,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginHorizontal="16dp"
         android:hint="Tìm kiếm thành viên"
+        android:textColorHint="@color/black"
         android:drawablePadding="8dp"
         android:padding="12dp"
         android:textColor="@color/black"
@@ -81,23 +105,13 @@
         android:background="#7C765C"
         android:paddingBottom="8dp"/>
 
-    <!-- Danh sách người dùng đã chọn -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/selectedRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/searchRecyclerView"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="#5E817A"
-        android:paddingBottom="8dp"/>
 
     <!-- Tiêu đề Thành viên nhóm -->
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/selectedRecyclerView"
+        android:layout_below="@id/searchRecyclerView"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:text="Thành viên nhóm:"
@@ -105,5 +119,18 @@
         android:background="#BDEDFF"
         android:padding="8dp"
         android:textSize="16sp"/>
+
+    <!-- Danh sách người dùng đã chọn -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/selectedRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/textView4"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="#5E817A"
+        android:paddingBottom="8dp"/>
+
+
 
 </RelativeLayout>

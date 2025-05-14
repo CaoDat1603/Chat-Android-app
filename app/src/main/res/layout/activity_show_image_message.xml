@@ -1,5 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_height="match_parent">
 
     <!-- Thanh điều hướng trên cùng -->
@@ -7,18 +9,22 @@
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="67dp"
-        android:background="#BDEDFF"
+        android:background="@drawable/bottom_nav_background_top"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <!-- Nút quay lại -->
         <ImageButton
             android:id="@+id/turnback"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/back"
-            android:contentDescription="Back button"
-            android:scaleType="centerInside" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/boder_squares_background"
+            android:src="@drawable/arrow_left"
+            android:scaleType="centerInside"
+            android:padding="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"/>
 
         <!-- Khoảng trống giữa các nút -->
         <View
@@ -29,11 +35,15 @@
         <!-- Nút tải hình ảnh -->
         <ImageButton
             android:id="@+id/dowimage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/filed"
-            android:contentDescription="Download button"
-            android:scaleType="centerInside" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/boder_squares_background"
+            android:src="@drawable/filed"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
     <!-- Hình ảnh được hiển thị -->

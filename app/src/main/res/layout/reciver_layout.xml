@@ -58,6 +58,7 @@
     <TextView
         android:id="@+id/recivertextset"
         android:layout_width="wrap_content"
+        android:maxWidth="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/notedlayout"
         android:layout_centerVertical="true"
@@ -68,12 +69,11 @@
         android:layout_marginBottom="6.50dp"
         android:layout_toRightOf="@+id/profileContainer"
         android:background="@drawable/reciver_shape"
-        android:fontFamily="@font/spartan_regular"
+        android:fontFamily="@font/bevietnampro_regular"
         android:padding="9.10dp"
         android:text="Hello, How are you?"
         android:textColor="@color/black"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textSize="15dp" />
 
     <ImageView
         android:id="@+id/receiverImageView"
@@ -92,11 +92,11 @@
         android:maxWidth="300dp"
         android:adjustViewBounds="true" />
 
-
     <LinearLayout
         android:id="@+id/fileLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="250dp"
         android:layout_centerVertical="true"
         android:layout_below="@id/notedlayout"
         android:layout_marginStart="1.30dp"
@@ -113,9 +113,10 @@
         <TextView
             android:id="@+id/fileName"
             android:layout_width="wrap_content"
+            android:maxWidth="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/spartan_regular"
+            android:fontFamily="@font/bevietnampro_regular"
             android:padding="9.10dp"
             android:textColor="@color/black"
             android:textStyle="bold"

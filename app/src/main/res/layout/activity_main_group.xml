@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivityGroup"
-    android:background="@drawable/gradient_black_background">
+    tools:context=".view.MainActivityGroup">
 
     <LinearLayout
         android:id="@+id/toolBar"
@@ -17,34 +16,62 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:elevation="4dp"
-        android:background="#33FFFFFF">
+        android:background="@drawable/bottom_nav_background_top">
 
         <ImageView
             android:id="@+id/setting_profile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:srcCompat="@drawable/setting" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/boder_squares_background"
+            android:src="@drawable/profile"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"  />
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:fontFamily="@font/spartan_bold"
-            android:text="Nhóm Chat"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:shadowColor="#80000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2" />
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:background="@drawable/logo_noname"
+                android:scaleType="centerInside"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/calsans_regular"
+                android:text="C O R E T A L K"
+                android:textColor="#D91107"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/logoutimg"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/logout2" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/boder_squares_background"
+            android:src="@drawable/log_out"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,7 +83,7 @@
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:background="#33FFFFFF">
+        android:background="#323F75">
 
         <TextView
             android:layout_width="0dp"
@@ -83,9 +110,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/subToolbar"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="0dp"
         android:padding="8dp"
-        android:background="@drawable/gradient_black_background" />
+        android:background="@drawable/layoutb"/>
 
     <LinearLayout
         android:id="@+id/bottomBar"
@@ -96,19 +123,45 @@
         android:gravity="center"
         android:background="@drawable/bottom_nav_background">
 
-        <ImageView
-            android:id="@+id/chatOneOne"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="40dp"
-            android:src="@drawable/chat" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/chatOneOne"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/chat_one" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/chatGroup"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="40dp"
-            android:src="@drawable/reunion" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/chatGroup"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/reseau" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/calsans_regular"
+                android:text="Chat nhóm"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:shadowColor="#80000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

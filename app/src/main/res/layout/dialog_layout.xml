@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_margin="13dp"
-    android:background="#ADDFFF">
+    android:background="@drawable/bordermain">
+
 
     <ImageView
         android:id="@+id/logoutdia"
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Are you sure you want to \n log out?"
+        android:textColor="@color/black"
         android:textSize="18dp"
         android:gravity="center"
         android:layout_margin="8dp"

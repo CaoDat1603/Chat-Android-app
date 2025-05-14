@@ -1,6 +1,8 @@
 package com.example.myapplication.view;
 
 import android.content.Intent;
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,7 +11,11 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +25,7 @@ import com.example.myapplication.model.Users;
 import com.example.myapplication.view.adapter.GroupMemberAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +39,18 @@ public class ManageMemberActivity extends AppCompatActivity {
     private String adminId;
     private ManageMemberController controller;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_member);
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         controller = new ManageMemberController(this);
 
@@ -43,6 +58,7 @@ public class ManageMemberActivity extends AppCompatActivity {
         groupMemberListRecyclerView = findViewById(R.id.groupmemberlist);
         searchUsers = findViewById(R.id.searchUsers);
 
+        findViewById(R.id.addMember).setOnClickListener(v -> addMember());
         ImageButton turnback = findViewById(R.id.turnback);
         turnback.setOnClickListener(view -> finish());
 
@@ -106,9 +122,12 @@ public class ManageMemberActivity extends AppCompatActivity {
     }
 
     private void loadGroupMembers() {
-        controller.loadGroupMembers(groupId, members -> groupMemberAdapter.updateMemberList(members));
+        controller.loadGroupMembers(groupId, members -> {
+            groupMembers.clear(); // Xóa danh sách cũ
+            groupMembers.addAll(members); // Lưu danh sách mới vào biến toàn cục
+            groupMemberAdapter.updateMemberList(members); // Cập nhật adapter
+        });
     }
-
     private void filterMembers(String query) {
         List<Users> filteredMembers = new ArrayList<>();
 
@@ -130,5 +149,12 @@ public class ManageMemberActivity extends AppCompatActivity {
         intent.putExtra("groupId", groupId);
         startActivity(intent);
         finish();
+    }
+
+    void addMember() {
+        Intent intent = new Intent(this, AddMemeberActivity.class);
+        intent.putExtra("members",(Serializable) groupMembers);
+        intent.putExtra("groupId", groupId);
+        startActivity(intent);
     }
 }

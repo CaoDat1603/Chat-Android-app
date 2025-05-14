@@ -1,29 +1,29 @@
 package com.example.myapplication.view;
 
 import android.content.Intent;
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.SettingGroupController;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.controller.MainActivityGroupController;
 import com.example.myapplication.view.adapter.GroupAdapter;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivityGroup extends AppCompatActivity {
 
@@ -34,10 +34,18 @@ public class MainActivityGroup extends AppCompatActivity {
     private MainActivityGroupController controller;
     private ImageView imgSettingProfile;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_group);
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         recyclerView = findViewById(R.id.groupChatText);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -48,56 +56,41 @@ public class MainActivityGroup extends AppCompatActivity {
 
         controller = new MainActivityGroupController(this); // Khởi tạo controller
 
-        // Kiểm tra trạng thái đăng nhập
-        controller.checkUserLoginStatus();
+        boolean isBack = getIntent().getBooleanExtra("isBack", false);
+
+        if (isBack) {
+            controller.loadGroupList();
+        } else {
+            // Kiểm tra trạng thái đăng nhập
+            controller.checkUserLoginStatus();
+        }
 
         // Xử lý sự kiện đăng xuất
         imglogout = findViewById(R.id.logoutimg);
         imglogout.setOnClickListener(view -> controller.showLogoutDialog());
 
         imgSettingProfile = findViewById(R.id.setting_profile);
-        imgSettingProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.navigateToProfile();
-            }
-        });
+        imgSettingProfile.setOnClickListener(view -> controller.navigateToProfile());
 
+        // Xử lý sự kiện khi nhấn vào chat nhóm
         ImageView chatOneOne = findViewById(R.id.chatOneOne);
         chatOneOne.setOnClickListener(view -> controller.navigateToMainActivity());
 
+        // Xử lý sự kiện khi nhấn vào tạo nhóm
         ImageView createGroup = findViewById(R.id.createGroup);
         createGroup.setOnClickListener(view -> controller.navigateToCreateGroupActivity());
-
-        updateFCMToken();
-    }
-
-    private void updateFCMToken() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                            if (!task.isSuccessful()) {
-                                showMessage("Không thể cập nhật trạng thái thông báo");
-                                return;
-                            }
-
-                            String token = task.getResult();
-
-                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            DatabaseReference userRef = FirebaseDatabase.getInstance()
-                                    .getReference("user")
-                                    .child(userId);
-                            userRef.child("fcmToken").setValue(token);
-                        }
-                    });
-        }
     }
 
     // Phương thức thêm nhóm vào danh sách
     public void addGroupToList(Group group) {
         groupArrayList.add(group);
+        adapter.notifyDataSetChanged();
+    }
+
+    // Phương thức cập nhật danh sách nhóm
+    public void updateGroupList(ArrayList<Group> updatedGroups) {
+        groupArrayList.clear();
+        groupArrayList.addAll(updatedGroups);
         adapter.notifyDataSetChanged();
     }
 

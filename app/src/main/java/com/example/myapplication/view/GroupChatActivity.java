@@ -1,180 +1,120 @@
+// File: ChatActivity.java
 package com.example.myapplication.view;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Insets;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myapplication.controller.GroupChatController;
 import com.example.myapplication.controller.SettingGroupController;
 import com.example.myapplication.model.Group;
 import com.example.myapplication.model.msgModel;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import com.example.myapplication.service.IGroupChatService;
+import com.example.myapplication.service.impl.GroupChatServiceImpl;
 import com.example.myapplication.view.adapter.messagesAdapter;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 
 public class GroupChatActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private EditText messageInput;
-    private ImageButton sendFileButton, sendImageButton;
-    private CardView sendButton;
-    private String groupId, reciverName;
+    private RecyclerView msgAdapter;
+    private CardView sendbtn;
+    private String groupID, reciverName;
     public String senderUID;
+    TextView reciverNameAc;
+    private EditText textmsg;
     private ArrayList<msgModel> messagesArrayList;
     private messagesAdapter messagesAdapter;
-    private FirebaseDatabase database;
-    private GroupChatController groupChatController;
-    FirebaseAuth firebaseAuth;
-    TextView reciverNameAc;
+    private GroupChatController chatController;
     public boolean isChange = false;
 
-    //private TextView groupNameTextView;
-
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
+        EdgeToEdge.enable(this);
 
-        // Lấy thông tin từ Intent
-        Intent intent = getIntent();
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime()).toPlatformInsets();
+            int bottom = Math.max(systemBars.bottom, imeInsets.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, bottom);
+            return insets;
+        });
+
         reciverName = getIntent().getStringExtra("groupName");
-        groupId = intent.getStringExtra("groupId");
-        firebaseAuth = FirebaseAuth.getInstance();
-        senderUID = firebaseAuth.getUid();
+        groupID = getIntent().getStringExtra("groupId");
+        senderUID = FirebaseAuth.getInstance().getUid();
 
         reciverNameAc = findViewById(R.id.recivername);
         reciverNameAc.setText(reciverName);
 
-        // Khởi tạo Firebase và các thành phần
-        database = FirebaseDatabase.getInstance();
         messagesArrayList = new ArrayList<>();
+        msgAdapter = findViewById(R.id.msgadapter);
+        msgAdapter.setLayoutManager(new LinearLayoutManager(this));
         messagesAdapter = new messagesAdapter(this, messagesArrayList);
+        msgAdapter.setAdapter(messagesAdapter);
 
-        // Ánh xạ các thành phần trong layout XML
-        recyclerView = findViewById(R.id.msgadapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(messagesAdapter);
+        IGroupChatService chatService = new GroupChatServiceImpl(this, groupID, senderUID, messagesArrayList, messagesAdapter);
+        chatController = new GroupChatController(chatService);
+        chatController.initGroupChat();
 
-        messageInput = findViewById(R.id.textmsg);
-        sendFileButton = findViewById(R.id.sendFile);
-        sendImageButton = findViewById(R.id.sendImage);
-        sendButton = findViewById(R.id.sendbtn);
-        ImageButton turnback = findViewById(R.id.turnback);
-        ImageButton setting = findViewById(R.id.settinggroup);
-        //groupNameTextView = findViewById(R.id.groupNameTextView);
+        sendbtn = findViewById(R.id.sendbtn);
+        textmsg = findViewById(R.id.textmsg);
 
-        // Hiển thị tên nhóm
-        //groupNameTextView.setText("Group: " + groupId);
-
-        // Khởi tạo GroupChatController
-        groupChatController = new GroupChatController(this, database, groupId, messagesArrayList, messagesAdapter);
-
-        // Xử lý sự kiện nút gửi tin nhắn
-        sendButton.setOnClickListener(v -> {
-            String message = messageInput.getText().toString();
-            if (!message.isEmpty()) {
-                groupChatController.sendMessage(message, senderUID);  // Gửi tin nhắn qua GroupChatController
-                messageInput.setText(""); // Xóa nội dung tin nhắn sau khi gửi
-            } else {
-                Toast.makeText(GroupChatActivity.this, "Please enter a message", Toast.LENGTH_SHORT).show();
-            }
+        sendbtn.setOnClickListener(v -> {
+            chatController.sendText(textmsg.getText().toString());
+            textmsg.setText("");
         });
 
-        // Xử lý sự kiện nút gửi file
-        sendFileButton.setOnClickListener(v -> {
-            // Thực hiện chức năng gửi file
-            groupChatController.selectFile();  // Gọi phương thức để chọn file
-        });
+        findViewById(R.id.sendImage).setOnClickListener(v -> chatController.chooseImage());
+        findViewById(R.id.sendFile).setOnClickListener(v -> chatController.chooseFile());
+        findViewById(R.id.settinggroup).setOnClickListener(v -> settingGroup());
+        findViewById(R.id.turnback).setOnClickListener(v -> turnBack());
+    }
+    public void turnBack() {
+        Intent intent = new Intent(this, MainActivityGroup.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("isBack", true);
+        startActivity(intent);
+        finish();
+    }
 
-        // Xử lý sự kiện nút gửi hình ảnh
-        sendImageButton.setOnClickListener(v -> {
-            // Thực hiện chức năng gửi hình ảnh
-            groupChatController.selectImage();  // Gọi phương thức để chọn ảnh
-        });
+    void settingGroup() {
+        Intent intent = new Intent(GroupChatActivity.this, SettingGroupActivity.class);
+        intent.putExtra("groupId", groupID);
+        startActivity(intent);
+    }
 
-        // Turn back
-        turnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isChange) {
-                    // Kết thúc activity cũ và mở activity mới
-                    Intent intent = new Intent(GroupChatActivity.this, MainActivityGroup.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Tạo một task mới và xóa tất cả các activity phía trước
-                    startActivity(intent);
-                    finish();
-                } else {
-                    finish();
-                }
-            }
-        });
-
-        setting.setOnClickListener(v -> {
-            groupChatController.settingGroup();
-        });
-
-        // Kiểm tra quyền truy cập bộ nhớ
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+    public void scrollToLastMessage() {
+        if (!messagesArrayList.isEmpty()) {
+            msgAdapter.scrollToPosition(messagesArrayList.size() - 1);
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Khởi tạo lại chat khi Activity bắt đầu
-        groupChatController.initializeGroupChat();  // Đảm bảo gửi tin nhắn khi activity khởi động lại
-    }
-
-    // Phương thức này sẽ được gọi từ GroupChatController để gửi tin nhắn lên UI
-    public void sendMessageToUI(msgModel message) {
-        messagesArrayList.add(message);
-        messagesAdapter.notifyItemInserted(messagesArrayList.size() - 1);
-    }
-
-    // Phương thức này sẽ được gọi từ GroupChatController để tải các tin nhắn từ Firebase
-    public void loadMessages(ArrayList<msgModel> messages) {
-        messagesArrayList.clear();
-        messagesArrayList.addAll(messages);
-        messagesAdapter.notifyDataSetChanged();
-    }
-
-    // Phương thức cuộn tới tin nhắn mới nhất
-    public void scrollToLastMessage() {
-        recyclerView.scrollToPosition(messagesArrayList.size() - 1);
-    }
-
-    public Intent nextStingActivity() {
-        Intent intent = new Intent(GroupChatActivity.this, SettingGroupActivity.class);
-        return intent;
-    }
-
-    // Xử lý kết quả khi chọn hình ảnh hoặc file từ bộ nhớ
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             Uri fileUri = data.getData();
-            if (fileUri != null) {
-                groupChatController.uploadToFirebaseStorage(fileUri, requestCode);  // Gửi file hoặc hình ảnh lên Firebase
-            }
+            chatController.uploadFile(fileUri, requestCode);
         }
     }
 
@@ -182,7 +122,7 @@ public class GroupChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Lấy lại thông tin nhóm sau khi trở lại Activity này
-        SettingGroupController settingGroupController = new SettingGroupController(groupId);
+        SettingGroupController settingGroupController = new SettingGroupController(groupID);
         settingGroupController.getGroupInfo(new SettingGroupController.OnGroupInfoListener() {
             @Override
             public void onSuccess(Group group) {
@@ -201,5 +141,4 @@ public class GroupChatActivity extends AppCompatActivity {
             }
         });
     }
-
 }

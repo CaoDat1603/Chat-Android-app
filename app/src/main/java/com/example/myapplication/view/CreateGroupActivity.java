@@ -1,6 +1,9 @@
 package com.example.myapplication.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,7 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,10 +48,19 @@ public class CreateGroupActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
+    @SuppressLint("MissingInflatedId")
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Khởi tạo các thành phần giao diện
         groupNameEditText = findViewById(R.id.groupName);
@@ -115,31 +131,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         selectedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedRecyclerView.setAdapter(selectedAdapter);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("user");
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                allUsers.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Users user = dataSnapshot.getValue(Users.class);
-                    if (!user.getUserId().equals(adminId)) {
-                        allUsers.add(user);
-                    } else {
-                        users = user;
-                    }
-                }
-                filterUserList(""); // Lọc lại danh sách khi có dữ liệu
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                showErrorMessage("Lỗi khi tải dữ liệu người dùng.");
-            }
-        });
-
         groupController = new GroupController(this);
+        groupController.filterUser(allUsers, users, adminId);
 
         findViewById(R.id.createButton).setOnClickListener(v -> {
             if (selectedUsers.isEmpty()) {
@@ -154,7 +147,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             String groupName = groupNameEditText.getText().toString();
 
-            selectedUsers.add(users);
             groupController.createGroup(groupName, selectedUsers, adminId);
         });
 
@@ -172,7 +164,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void filterUserList(String query) {
+    public void filterUserList(String query) {
         filteredUsers.clear();
         for (Users user : allUsers) {
             if (query.isEmpty() || user.getFullname().toLowerCase().contains(query.toLowerCase())) {

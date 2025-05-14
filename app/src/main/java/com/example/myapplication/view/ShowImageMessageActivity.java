@@ -1,27 +1,46 @@
 package com.example.myapplication.view;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.graphics.Insets;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
 public class ShowImageMessageActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_image_message);
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         ImageView imageView = findViewById(R.id.full_image);
+
 
         // Lấy URL hình ảnh từ Intent
         String imageUrl = getIntent().getStringExtra("image_url");
@@ -29,7 +48,9 @@ public class ShowImageMessageActivity extends AppCompatActivity {
 
         // Hiển thị hình ảnh bằng Picasso
         if (imageUrl != null) {
-            Picasso.get().load(imageUrl).into(imageView);
+            // Giả sử bạn có thêm 1 biến "file_type" truyền qua Intent
+                imageView.setVisibility(View.VISIBLE);
+                Picasso.get().load(imageUrl).into(imageView);
         }
 
         ImageButton turnBack = findViewById(R.id.turnback);
